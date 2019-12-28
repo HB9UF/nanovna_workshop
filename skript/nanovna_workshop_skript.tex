@@ -1,0 +1,110 @@
+\documentclass[twoside,a4paper,11pt,halfparskip,DIV=11,notitlepage]{scrartcl}
+\usepackage{scrpage2}
+\usepackage{amsmath}
+\usepackage[pdfauthor={},pdftitle={},pdfstartview=FitH,pdfborder={0 0 0}]{hyperref}
+\usepackage[ngerman]{babel}
+
+\author{Mathias Weyland, HB9FRV}
+\title{NanoVNA Workshop}
+\date{UHF-Gruppe der USKA, Version 1.0}
+\pagestyle{scrheadings}
+\setkomafont{pagehead}{\sf}
+
+\usepackage[svgnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shadows}
+\addtokomafont{descriptionlabel}{\normalfont}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\definecolor{myblue}{RGB}{40,96,139}
+
+\tcbset{
+mybox/.style={
+  breakable,
+  enhanced standard,
+  boxrule=0.4pt,titlerule=-0.2pt,drop fuzzy shadow,
+  width=\linewidth,
+  title style={top color=myblue!30,bottom color=myblue!0.5},
+  overlay unbroken and first={
+    \path[fill=myblue]
+    ([xshift=5pt,yshift=-\pgflinewidth]frame.north west) to[out=0,in=180] ([xshift=20pt,yshift=-5pt]title.south west) -- ([xshift=-20pt,yshift=-5pt]title.south east) to[out=0,in=180] ([xshift=-5pt,yshift=-\pgflinewidth]frame.north east) -- cycle;
+  },
+  fonttitle=\Large\bfseries\sffamily,
+  fontupper=\sffamily,
+  fontlower=\sffamily,
+  before=\par\medskip\noindent,
+  after=\par\medskip,
+  center title,
+  toptitle=3pt,
+  top=11pt,topsep at break=-5pt,
+  colback=white
+}}
+
+\newtcolorbox{lernziele}[1][\linewidth]{mybox,width=#1,title=Lernziele}
+
+\newcounter{uebungscounter}
+\newcommand{\uebung}[1]{
+    \stepcounter{uebungscounter}
+    \section{Übung \arabic{uebungscounter}: #1}
+    \renewcommand{\labelenumi}{\arabic{uebungscounter}.\arabic{enumi}}
+}
+\newcommand{\loesungen}{
+    \section*{Lösungen zu Übung \arabic{uebungscounter}}
+}
+%\setcounter{secnumdepth}{0} % sections are level 1
+
+\sloppy
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\tableofcontents
+
+\vfill
+
+%\includegraphics[width=\textwidth]{titelbild.png} % FIXME
+
+\vfill
+
+\newpage
+
+%   \uebung{Erste Schritte}
+%   In dieser Übung trainieren Sie den Umgang mit dem GNU Radio Companion (GRC) und lernen erste Blöcke kennen.
+
+%   \begin{lernziele}
+%   \begin{itemize}
+%   \item Sie können in GNU Radio Blöcke einfügen, löschen, verbinden und trennen.
+%   \item Sie können einfache Wellenformen mit \hl{Signal Source} generieren.
+%   \item Sie können Signale im Zeit- und Frequenzraum visualisieren.
+%   \item Sie wissen, dass das Spektrum eigentlich auch negative Frequenzen aufweist.
+%   \item Sie können Flows in GRC starten und stoppen.
+%   \item Sie verstehen, wann der \hl{Throttle}-Block zum Einsatz kommt.
+%   \end{itemize}
+%   \end{lernziele}
+
+\section{Grundlagen}
+
+\begin{itemize}
+    \item Transmissions- vs. Reflexionsmessung
+    \item SWR, RL, IL
+    \item Complex Loads
+    \item Smith Diagramm
+    \item Calibration
+\end{itemize}
+
+\section{Experiment: Abschlüsse im Smith Diagramm}
+
+\section{Experiment: Antenne messen}
+
+\section{Experiment: Filter}
+
+\section{Experiment: Impedanzwandler}
+
+\section{Experiment: Balun}
+
+\section{Experiment: Koppler}
+
+\section{DIY: Eigene Last bauen}
+
+\end{document}
