@@ -97,6 +97,68 @@ mybox/.style={
 
 \section{Experiment: Antenne messen}
 
+\section{Mantelwellensperren}
+
+\subsection{Einleitung}
+
+Eine Mantelwelle ist eine Welle, die sich auf dem Aussenleiter (Mantel) eines
+Koaxialkabels ausbreitet. Dies ist in aller Regel aus verschiedenen Gründen
+unterwünscht; um die Mantelwelle zu unterbinden, wird eine Mantelwellensperre
+eingesetzt. Diese Mantelwellensperre soll für Gegentaktsignale wie das
+Empfangssignal von der Antenne zum Empfänger und das Sendesignal vom Sender
+zur Antenne durchlässig sein; für Gleichtaktsignale wie die Mantelwelle soll
+die Mantelwellensperre nicht durchlässig sein.
+
+Die Messung einer Mantewellensperre hat deshalb drei Aspekte:
+
+\begin{enumerate}
+    \item Durchlässigkeit von Gegentaktsignalen.
+    \item Dämpfung von Gleichtaktsignalen.
+    \item Verhalten unter Last (Erwärmung etc.)
+\end{enumerate}
+
+Mit einem VNA werden typischerweise nur die ersten beiden Aspekte erfasst,
+Erwärmung unter Last kann z.B. mit einem Thermomenter, einer Wärmebildkamera
+etc. erfasst werden und wird an dieser Stelle nicht besprochen.
+
+\subsection{Gegentaktmessung}\label{sec:gegentaktmessung}
+
+Die Gegentaktmessung ist einfach: Der VNA wird für eine Transmissionsmessung
+kalibriert, die Sperre wird eingeschleift und die Einfüngungsdämpdung wird
+gemessen. Eine gute Mantelwellensperre sollte bei dieser Messung eine geringe
+Einfügungsdämpfung aufweisen.
+
+\subsection{Gleichtaktmessung}
+
+Für die Gleichtaktmessung wird die Mantelwellensperre auf eine besondere
+Art und Weise mit dem VNA verbunden: Der Eingang wird mit dem Stimulus,
+der Ausgang mit dem detektierenden Port verbunden. Allerdings werden die
+beiden beiden Leiter der Leitung jeweils kurzgeschlossen und mit dem
+Innenleiter der Ports verbunden; die beiden Aussenleiter der Ports werden
+kurzgeschlossen. Wenn die so präparierte Mantewellensperre als diskretes
+Bauteil betrachtet wird (siehe FIXME), so entspricht diese Messung der
+seriellen Transmissionsmessung dieses Bauteils. Eine gute Mantelwellensperre
+sollte bei dieser Messung eine hohe Einfügungsdämpfung haben.
+
+Für diese Messung steht eine spezielle Apparatur zu Verfügung, welche die
+Aussenleiter der beiden VNA-Ports kurzschliesst. Die Mantelwellensperre
+kann dann über  Klemmen mit den beiden Innenleitern verbunden werden.
+
+\subsection{Experiment}
+Es wird eine Reihe von Mantelwellensperren unterschiedlicher Ausführung
+und Qualität auf ihre Eigenschaften hin untersucht.
+
+\begin{enumerate}
+    \item Wählen Sie eine Mantelwellensperre für Ihre Messung aus.
+    \item Bereiten Sie den VNA für eine Transmissionsmessung im Kurzwellenbereich vor und kalibrieren Sie das Gerät.
+    \item Prüfen Sie die Gegentakteigenschaften der Sperre wie in Abschnitt \ref{sec:gegentaktmessung} beschrieben.
+    \item Entfernen Sie die Messkabel und befestigen Sie die Testapparatur für die Messung der Gleichtakteigenschaften (Siehe Abbildung \ref{fig:gleichtaktmessung}). %FIXME Bild
+    \item Bewegen Sie die Klemmen und betrachten Sie die Auswirkungen auf die gemessene Dämpfung. Werden die beiden Klemmen nahe beieinander gehalten, nimmt die Dämpfung aufgrund von Kopplung ab.
+    \item Verbinden Sie die beiden Klemmen und kalibrieren Sie das Gerät erneut für eine Transmissionsmessung.
+    \item Schlissen Sie die Mantelwellensperre an, indem Sie an Ein- und Ausgang der Mantelwellensperre jeweils eine Klemme befestigen. Die Klemme soll jeweils beide Leitungen kurzschliessen oder mit dem Aussenleiter verbunden sein.
+\end{enumerate}
+
+
 \section{Experiment: Filter}
 
 \section{Experiment: Impedanzwandler}
