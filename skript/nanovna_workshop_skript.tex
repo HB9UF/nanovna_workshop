@@ -3,6 +3,10 @@
 \usepackage{amsmath}
 \usepackage[pdfauthor={},pdftitle={},pdfstartview=FitH,pdfborder={0 0 0}]{hyperref}
 \usepackage[ngerman]{babel}
+\usepackage{float}
+\usepackage[european]{circuitikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
 
 \author{Mathias Weyland, HB9FRV}
 \title{NanoVNA Workshop}
@@ -10,7 +14,6 @@
 \pagestyle{scrheadings}
 %\setkomafont{pagehead}{\sf}
 
-\usepackage[svgnames]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{shadows}
 \addtokomafont{descriptionlabel}{\normalfont}
@@ -189,4 +192,109 @@ Es werden eine Reihe von Mantelwellensperren unterschiedlicher Ausführung
     \item Schlissen Sie die Mantelwellensperre an, indem Sie an Ein- und Ausgang der Mantelwellensperre jeweils eine Klemme befestigen. Die Klemme soll jeweils beide Leitungen kurzschliessen oder mit dem Aussenleiter verbunden sein.
 \end{enumerate}
 
+\section{Experiment: Quarz}
+
+\subsection{Einleitung}
+Ein Schwingquarz ist ein Bauteil, welches zur Erzeugung von Schwingungen oder
+als Filter verwendet werden kann. Ein vereinfachtes Ersatzschaltbild ist in
+Abbildung \ref{fig:quarzersatz} dargestellt. 
+
+\begin{figure}[H]
+    \begin{center}
+    \begin{circuitikz} \draw
+        (0,0) to[short,o-*] (1,0) to[short] 
+            (1,-1) to[L=$L_1$] (3,-1) to[C=$C_1$] (5,-1) to[R=$R_1$] (7,-1) to[short] (7,0) to[short,*-o] (8,0)
+        (1,0) to[short] (1,1) to[C=C$_0$] (7,1) to[short] (7,0);
+    \end{circuitikz}
+    \end{center}
+    \caption{Vereinfachtes Ersatzschaltbild eines Schwingquarzes.}
+    \label{fig:quarzersatz}
+\end{figure}
+
+Im Ersatzschaltbild ist zu erkennen, dass der Schwingquarz aus einem Serien-Schwingkreis ($L_1$, $C_1$, $R_1$)
+und einer dazu parallelen Kapazität C$_0$ besteht. Der Quarz hat aufgrund dieser Schaltung zwei Resonanzstellen:
+Wie in Abbildung \ref{fig:quarzidealplot} gezeigt erfolgt die erste beim
+Nulldurchgang des Blindwiderstandes, bei der zweiten ist der Blindwiderstand
+unendlich gross. Diese beiden Resonanzstellen werden Resonanzfrequenz $f_r$
+bzw. Antiresonanzfrequenz $f_a$ genannt. $f_r$ ist stets etwas geringer als
+$f_a$. Für die Frequenz des Schwingquarzes wird $f_r$ angegeben, welche
+annähernd (aber nicht genau) der Resonanzfrequenz des Serienschwingkreises
+aus $L_1$, $C_1$ und $R_1$ entspricht:
+
+$$
+f_r \approx \frac{1}{2\pi\sqrt{L_1\cdot C_1}}
+$$
+
+
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{set layers}
+\begin{axis}[
+    xmin=15.89, xmax=15.95,
+    ymin=-65, ymax=5,
+    grid=both,
+    ylabel={Dämpfung $S_{21}$},
+    ytick = {-60,-50,...,0},
+    ticks=none,
+    height=6cm,
+    width=0.9\textwidth,
+    major grid style={black!10}
+]
+\addplot[color=black] table[,x index = {0}, y index = {1}] {quarz.dat};
+\end{axis}
+\begin{axis}[
+    xmin=15.89, xmax=15.95,
+    ymin=-10000, ymax=10000,
+    grid=none,
+    separate axis lines,
+    ylabel style = {align=center},
+    xlabel={Frequenz},
+    ylabel={Blindwiderstand $X$},
+    ticks=none,
+    ymajorticks=true,
+    yminorticks=true,
+    scaled ticks=false,
+    ytick = {0},
+    axis y line*=right,
+    height=6cm,
+    width=0.9\textwidth,
+    major grid style={black!10}
+]
+\addplot[color=black,dashed,restrict x to domain=15.89:15.9234] table[,x index = {0}, y index = {2}] {quarz.dat};
+\addplot[color=black,dashed,restrict x to domain=15.9236:15.95] table[,x index = {0}, y index = {2}] {quarz.dat};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\caption{Einfügungsdämpfung (ausgezogen) und Blindwiderstand $X$ (gestrichelt, negativ wenn kapazitiv) der Ersatzschaltung
+aus Abbildung \ref{fig:quarzersatz}. Es sind zwei Resonanzstellen sichtbar.}
+\label{fig:quarzidealplot}
+\end{figure}
+
+Mit einer Transmissionsmessung lassen sich $f_r$ und $f_a$ messen, wobei besonders $f_a$ von parasitären Komponenten
+stark beeinflusst werden kann. Der Quarz wird für die Messung in die Zusatzapparatur eingespannt, die auch für die
+Charakterisierung der Mantelwellensperre benutzt worden ist. Dabei müssen folgende Punkte beachtet werden:
+
+\begin{itemize}
+    \item Weil Schwingquarze sehr schmalbandig sind und der NanoVNA nur 101 Punkte aufnimmt, muss zur Verhinderung grosser Messfehler ein entsprechend kleiner Frequenzbereich ausgewählt werden.
+    \item Weil das Ersatzschaltbild aus Abbildung \ref{fig:quarzersatz} lediglich eine Vereinfachung darstellt, werden bei der Messung in der Praxis oberhalb von $f_r$ Nebenresonanzen auftreten.
+\end{itemize}
+
+\subsection{Experiment}
+
+Es wird ein 16~MHz Schwingquarz charakterisiert.
+
+\begin{enumerate}
+    \item Befestigen Sie die Testapparatur für das Einschleifen von Bauteilen (FIXME) an Ihren NanoVNA.
+    \item Decken Sie mit dem Frequenzbereich den gesamten Kurzwellenbereich ab und kalibrieren Sie den VNA für eine
+        Durchgangsmessung, nachdem Sie die beiden Klemmen kurzgeschlossen haben.
+    \item Montieren Sie den Quarz und führen Sie eine Transmissionsmessung durch? Finden Sie die Resonanzfrequenz und
+        mit dem Marker und notieren Sie sie.
+    \item Wählen Sie eine feinere Spanne von 15.75~MHz bis 16.25~MHz,
+        rekalibrieren Sie das Gerät und suchen Sie die Resonanzfrequenz erneut. Wie stark unterscheiden sich die ermittelten Werte?
+    \item Stellen Sie sicher, dass Sie den Grund für die Abweichung der beiden Messungen genau verstehen. Wie genau ist die zweite Messung?
+    \item Beachten Sie die Nebenresonanzen, die in Abbildung \ref{fig:quarzidealplot} nicht auftreten.
+
+\end{enumerate}
 \end{document}
