@@ -102,7 +102,7 @@ mybox/.style={
 
 \section{Experiment: Antenne messen}
 
-\section{Filter}
+\section{Filter}\label{sec:filter}
 
 \subsection{Theorie}
 Filter lassen einige Frequenzen des Spektrums passieren (Passband), während
@@ -127,11 +127,100 @@ untersucht.
         bei Zuhilfenahme oder Weglassen von Adapter zwischen Kalibrierung und
         Messung, ein Fehler eingeführt wird.
     \item Schleifen Sie das Filter ein und charakterisieren Sie es.
+    \item Konsultieren Sie im aktuellen Aufbau auch die Reflexionsmessung.
     \item Zusatzfrage zur Messung der Kavitäten: Ein UHF Umsetzer benötigt eine
         Iolation von ca. 80~dB. Kann dieser Umstand mit dem NanoVNA überprüft werden?
 
 
 \end{enumerate}
+
+\section{Koaxiale Stub-Filter}
+\subsection{Theorie}
+Eine Leitung -- z.B. ein Koaxialkabel -- der Länge $\lambda/4$ hat besondere
+Eigenschaften: Ein Kurzschluss am einen Ende sieht vom anderen Ende aus wie
+eine offene Verbindung; eine offene Verbindung am einen Ende sieht vom anderen
+Ende aus wie ein Kurzschluss. Die Impedanz wird also transformiert, die
+Struktur wird deshalb auch Viertelwellentransformator genannt. Im Smith-Diagramm
+wird eine Abschlussimpedanz am Ende der Leitung in einem Halbkreis im Gegenuhrzeigersinn
+rotiert. Zwei $\lambda/4$-Leitungen hintereinander entsprechen einer Leitung
+der Länge $\lambda/2$, im Smith-Diagramm erfolgen zwei Rotationen um je einen
+Halbkreis bzw. eine Rotation um einen Vollkreis: Die $\lambda/2$-Leitung
+transformiert eine beliebige Impedanz (abgesehen von Verlusten im Kabel) auf
+sich selbst.
+
+Diese Eigenschaft kann genutzt werden, um mit Koaxialkabel einen relativ
+schmalbandigen Sperr-Filter (Notch) zu implementieren. Dazu wird, wie in Abbildung
+\ref{fig:quarterwavestub} gezeigt, mit einem T-Stück die $\lambda/4$-Leitung
+parallel geschaltet. 
+
+Die Viertelwellentransformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
+soll deshalb an dieser Stelle für etwas Klarheit sorgen: Für eine Frequenz von
+30~MHz ist die Wellenlänge ca. $\lambda$=10~m. Eine Halbwellenleitung hat deshalb
+die Länge $\lambda/2$=5~m und eine Vierteilwellenleitung $\lambda/4$=2.5~m. Ein
+Kurzschluss am Ende dieser $\lambda/4$ Leitung wird deshalb bei 30~MHz zu einer
+offenen Verbindung transformiert, welche die beiden anderen am T-Stück
+angeschlossenen Leitungen keinen Einfluss hat. Bei der doppelten Frequenz, also
+60~MHz, hat diese Leitung aber nicht mehr die Länge  $\lambda/4$, sondern
+$\lambda/2$! Da die Leitung am Ende nach wie vor kurzgeschlossen ist, wird dieser
+Kurzschluss bei 60~MHz also unmittelbar in das T-Stück transformiert, und ein
+Kurzschluss führt zu einer Totalreflexion: Die Struktur sperrt bei 60~MHz. Das
+selbe Phänomen tritt auch bei 120~MHz, 180~MHz etc. auf. Die Einfügungsdämpfung
+ist in Abbildung \ref{fig:quarterwaveplot} dargestellt. Die gestrichelte Linie
+zeigt ein Stub mit offenem (anstelle eines kurzgeschlossenen) Ende. Die Sperrwirkung
+erfolgt dort bereits bei 30~Mhz, da bei dieser Frequenz das offene Ende in einen
+Kurzschluss transformiert wird.
+
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin=0, xmax=300,
+    ymin=-35, ymax=5,
+    grid=both,
+    xlabel={Frequenz / MHz},
+    ylabel={Dämpfung $S_{21}$ / dB},
+    xtick = {0,30,...,300},
+%   ticks=none,
+    height=6cm,
+    width=0.9\textwidth,
+    major grid style={black!10}
+]
+\addplot[color=black] table[,x index = {0}, y index = {1}] {quarterwave.dat};
+\addplot[color=black,dashed] table[,x index = {0}, y index = {2}] {quarterwave.dat};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\caption{Einfügungsdämpfung eines Stub-Filters der Länge 2.5~m. Die ausgezogene Linie beschreibt den Filterverlauf
+eines kurzgeschlossenen Stubs, wärend die gestrichelte Linie den Filterverlauf eines Stubs mit offenem Ende beschreibt.}
+\label{fig:wuarterwaveplot}
+\end{figure}
+
+Das Vorgehen für die Messung eines Stub-Filters mit dem NanoVNA unterscheidet
+sich nicht von den übrigen Filtermessungen in Abschnitt \ref{sec:filter}. Weil
+aber interessante leitungstheoretische Aspekte eine Rolle spielen, werden diese
+Stub-Filter hier separat behandelt.
+
+\subsection{Messung}
+% Requirements:
+% 2x BNC-SMA Adapter
+% BNC T-Stück
+% Versch. BNC Kabel
+% BNC Female-Female Adapter
+% Extra BNC-SMA Adapter für Abschluss
+
+Es werden Stub-Filter verschiedenere Länge mit offenem und kurgeschlossenem Ende charakterisiert.
+
+\begin{enumerate}
+    \item Bauen Sie das Stub-Filter wie in Abbildung \ref{fig:quarterwavestub} auf und schliessen Sie ihn für eine
+        Transmissionsmessung an den NanoVNA an.
+    \item Kalibrieren Sie das Messgerät, während der Stub vom T-Stück getrennt ist.
+    \item Schliessen Sie Leitungen verschiedener Länge an den dritten Anschluss des T-Stücks, nachdem Sie deren
+        Länge gemessen haben. Sie können auch mehrere Kabel mit einem Adapter verbinden. Stimmen die Ergebnisse qualitativ?
+    \item Schliessen Sie den Stub mit ihrem Kalibrierungs-Kit und einem Adapter kurz. Wie verändert sich die Filterkurve?
+    \item Bestimmen Sie den Verkürzungsfaktor des verwendeten Koaxialkabels.
+    \item Konsultieren Sie im aktuellen Aufbau auch die Reflexionsmessung.
+\end{enumerate}
+
 
 \section{Mantelwellensperren}
 
