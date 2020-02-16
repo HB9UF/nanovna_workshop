@@ -4,6 +4,8 @@
 \usepackage[pdfauthor={},pdftitle={},pdfstartview=FitH,pdfborder={0 0 0}]{hyperref}
 \usepackage[ngerman]{babel}
 \usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows}
 \usepackage[european]{circuitikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
@@ -299,4 +301,149 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
     \item Untersuchen Sie das Oberschwingungsverhalten des Bauteils.
 
 \end{enumerate}
+
+\section{Menü}
+
+\newpage % FIXME
+
+\scalebox{0.93}{\rotatebox{90}{\begin{tikzpicture}[font=\sffamily]
+    \definecolor{marker}{HTML}{f9f871};
+    \definecolor{stimulus}{HTML}{ffc75f};
+    \definecolor{cal}{HTML}{ff9671};
+    \definecolor{recall}{HTML}{ff6f91};
+    \definecolor{config}{HTML}{d65db1};
+    % Spare color: #845ec2
+    \definecolor{trace0}{RGB}{255,200,0};
+    \definecolor{trace1}{RGB}{0,155,255};
+    \definecolor{trace2}{RGB}{0,220,0};
+    \definecolor{trace3}{RGB}{220,0,220};
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \tikzstyle{marker}=[fill=marker]
+    \tikzstyle{stimulus}=[fill=stimulus]
+    \tikzstyle{cal}=[fill=cal]
+    \tikzstyle{recall}=[fill=recall]
+    \tikzstyle{config}=[fill=config]
+    % Main
+    \node[menu] (display) {Display};
+    \node[menu,marker,below of=display] (marker) {Marker};
+    \node[menu,stimulus,below of=marker] (stimulus) {Stimulus};
+    \node[menu,cal,below of=stimulus] (cal) {Cal};
+    \node[menu,recall,below of=cal] (recall) {Recall};
+    \node[menu,config,below of=recall] (config) {Config};
+
+    % Display
+    \node[menu,right=30em of display] (trace) {Trace};
+    \node[menu,below of=trace] (format) {Format};
+    \node[menu,below of=format] (scale) {Scale};
+    \node[menu,below of=scale] (channel) {Channel};
+    \node[menu,below of=channel] (transform) {Transform};
+
+    \node[menu,right=30em of trace] (trace0) {\colorbox{trace0}{Trace 0}};
+    \node[menu,below of=trace0] (trace1) {\colorbox{trace1}{Trace 1}};
+        \node[menu,below of=trace1] (trace2) {\colorbox{trace2}{Trace 2}};
+        \node[menu,below of=trace2] (trace3) {\colorbox{trace3}{Trace 3}};
+
+    \node[menu,right=20em of format]  (logmag) {Logmag};
+    \node[menu,below of=logmag]  (phase) {Phase};
+    \node[menu,below of=phase]  (delay) {Delay};
+    \node[menu,below of=delay]  (smith) {Smith};
+    \node[menu,below of=smith]  (swr) {SWR};
+    \node[menu,below of=swr]  (more) {More...};
+
+    \node[menu,right=10em of more]  (polar) {Polar};
+    \node[menu,below of=polar]  (linear) {Linear};
+    \node[menu,below of=linear] (real) {Real};
+    \node[menu,below of=real]  (imag) {Imag};
+    \node[menu,below of=imag]  (resistance) {Resistance};
+    \node[menu,below of=resistance] (reactance) {Reactance};
+
+    \node[menu,below right=14em and 20em of scale]  (scalediv) {Scale/Div};
+    \node[menu,below of=scalediv]  (referenceposition) {Ref. Pos};
+    \node[menu,below of=referenceposition]  (electricaldelay) {Elec. Delay};
+
+    \node[menu,right=10em of channel] (channel0) {CH 0};
+    \node[menu,below of=channel0] (channel1) {CH 1};
+
+    \node[menu,below right=5em and 10em of transform] (transformon) {Transf. on};
+    \node[menu,below of=transformon] (lowpassimpulse) {LP impulse};
+    \node[menu,below of=lowpassimpulse] (lowpassstep) {LP step};
+    \node[menu,below of=lowpassstep] (bandpass) {Bandpass};
+    \node[menu,below of=bandpass] (window) {Window};
+    \node[menu,below of=window] (velocityfactor) {Vel. Factor};
+
+    \node[menu,below right=7em and 10em of window] (minimum) {Minimum};
+    \node[menu,below of=minimum] (normal) {Normal};
+    \node[menu,below of=normal] (maximum) {Maximum};
+
+    % Marker
+    \node[menu,marker,below right=26em and 30em of marker] (selectmarker) {Select M.};
+    \node[menu,marker,below of=selectmarker] (markerstart) {Start};
+    \node[menu,marker,below of=markerstart] (markerstop) {Stop};
+    \node[menu,marker,below of=markerstop] (markercenter) {Center};
+    \node[menu,marker,below of=markercenter] (markerspan) {Span};
+
+    \node[menu,marker,right=10em of selectmarker] (marker1) {Marker 1};
+    \node[menu,marker,below of=marker1] (markeri) {...};
+    \node[menu,marker,below of=markeri] (marker4) {Marker 4};
+    \node[menu,marker,below of=marker4] (alloff) {All Off};
+
+    % Stimulus
+    \node[menu,stimulus,right=20em of stimulus] (start) {Start};
+    \node[menu,stimulus,below of=start] (stop) {Stop};
+    \node[menu,stimulus,below of=stop] (center) {Center};
+    \node[menu,stimulus,below of=center] (span) {Span};
+    \node[menu,stimulus,below of=span] (cwfreq) {CW Freq};
+    \node[menu,stimulus,below of=cwfreq] (pausesweep) {Pause Swp.};
+
+    % Cal
+    \node[menu,cal,right=10em of cal] (calibrate) {Calibrate};
+    \node[menu,cal,below of=calibrate] (calsave) {Save};
+    \node[menu,cal,below of=calsave] (reset) {Reset};
+    \node[menu,cal,below of=reset] (correction) {Correction};
+
+    \node[menu,cal,below right=12em and 10em of calibrate] (open) {Open};
+    \node[menu,cal,below of=open] (short) {Short};
+    \node[menu,cal,below of=short] (load) {Load};
+    \node[menu,cal,below of=load] (isoln) {Isoln};
+    \node[menu,cal,below of=isoln] (thru) {Thru};
+    \node[menu,cal,below of=thru] (done) {Done};
+
+    \node[menu,cal,below right=24em and 10em of calsave] (save0) {Save 0};
+    \node[menu,cal,below of=save0] (savei) {...};
+    \node[menu,cal,below of=savei] (save4) {Save 4};
+
+    % Recall
+    \node[menu,recall,below right=10 em and 10em of recall] (recall0){Recall 0};
+    \node[menu,recall,below of=recall0] (recalli){...};
+    \node[menu,recall,below of=recalli] (recall4){Recall 4};
+
+    % Config
+    \node[menu,config,below right=20em and 10em of config] (touchcal) {Touch Cal};
+    \node[menu,config,below of=touchcal] (touchtest) {Touch Test};
+    \node[menu,config,below of=touchtest] (configsave) {Save};
+    \node[menu,config,below of=configsave] (version) {DFU};
+
+    \draw[thick,-stealth'] (display) -- (trace);
+    \draw[thick,-stealth'] (marker) -- +(25em,0em) |- (selectmarker);
+    \draw[thick,-stealth'] (stimulus) -- (start);
+    \draw[thick,-stealth'] (cal) -- (calibrate);
+    \draw[thick,-stealth'] (recall) -- +(5.5em,0em) |- (recall0);
+    \draw[thick,-stealth'] (config) -- +(4.5em,0em) |- (touchcal);
+
+    \draw[thick,-stealth'] (trace) -- (trace0);
+    \draw[thick,-stealth'] (format) -- (logmag);
+    \draw[thick,-stealth'] (scale) -- +(15em,0em) |- (scalediv);
+    \draw[thick,-stealth'] (channel) -- (channel0);
+    \draw[thick,-stealth'] (transform) -- +(5em,0em) |- (transformon);
+    \draw[thick,-stealth'] (window) -- +(5em,0em) |- (minimum);
+
+    \draw[thick,-stealth'] (more) -- (polar);
+
+    \draw[thick,-stealth'] (selectmarker) -- (marker1);
+
+    \draw[thick,-stealth'] (calibrate) -- +(5.5em,0em) |- (open);
+    \draw[thick,-stealth'] (calsave) -- +(4.5em,0em) |-(save0);
+\end{tikzpicture}}}
+
+
 \end{document}
