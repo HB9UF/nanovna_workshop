@@ -147,7 +147,7 @@ untersucht.
     \item Schleifen Sie das Filter ein und charakterisieren Sie es.
     \item Konsultieren Sie im aktuellen Aufbau auch die Reflexionsmessung.
     \item Zusatzfrage zur Messung der Kavitäten: Ein UHF Umsetzer benötigt eine
-        Iolation von ca. 80~dB. Kann dieser Umstand mit dem NanoVNA überprüft werden?
+        Isolation von ca. 80~dB. Kann dieser Umstand mit dem NanoVNA überprüft werden?
 
 
 \end{enumerate}
@@ -170,6 +170,7 @@ Diese Eigenschaft kann genutzt werden, um mit Koaxialkabel einen relativ
 schmalbandigen Sperr-Filter (Notch) zu implementieren. Dazu wird, wie in Abbildung
 \ref{fig:quarterwavestub} gezeigt, mit einem T-Stück die $\lambda/4$-Leitung
 parallel geschaltet. 
+% FIXME: Alternative HB9UF print
 
 Die Viertelwellentransformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
 soll deshalb an dieser Stelle für etwas Klarheit sorgen: Für eine Frequenz von
@@ -241,6 +242,7 @@ Es werden Stub-Filter verschiedenere Länge mit offenem und kurgeschlossenem End
 
 
 \section{Mantelwellensperren}
+% FIXME: Kerne usw.
 
 \subsection{Theorie}
 
@@ -326,12 +328,12 @@ Wie in Abbildung \ref{fig:quarzidealplot} gezeigt erfolgt die erste beim
 Nulldurchgang des Blindwiderstandes, bei der zweiten ist der Blindwiderstand
 unendlich gross. Diese beiden Resonanzstellen werden Resonanzfrequenz $f_r$
 bzw. Antiresonanzfrequenz $f_a$ genannt. $f_r$ ist stets etwas geringer als
-$f_a$. Für die Frequenz des Schwingquarzes wird $f_r$ angegeben, welche
-annähernd (aber nicht genau) der Resonanzfrequenz des Serienschwingkreises
-aus $L_1$, $C_1$ und $R_1$ entspricht:
+$f_a$. Für die Frequenz des Schwingquarzes wird $f_r$ angegeben, welche der
+Resonanzfrequenz des Serienschwingkreises aus $L_1$, $C_1$ und $R_1$
+entspricht:
 
 $$
-f_r \approx \frac{1}{2\pi\sqrt{L_1\cdot C_1}}
+f_r = \frac{1}{2\pi\sqrt{L_1\cdot C_1}}
 $$
 
 
