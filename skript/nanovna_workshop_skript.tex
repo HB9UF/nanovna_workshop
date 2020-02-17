@@ -28,6 +28,10 @@
     }%
 }%
 
+\newcommand*\cleartoleftpage{%
+  \clearpage
+  \ifodd\value{page}\hbox{}\newpage\fi
+}
 
 \title{NanoVNA Workshop}
 \author{UHF-Gruppe der USKA, Version 0.1}
@@ -83,6 +87,7 @@ mybox/.style={
 \maketitle
 \thispagestyle{empty}
 
+\setcounter{tocdepth}{1}
 \tableofcontents
 
 \vfill
@@ -107,6 +112,8 @@ mybox/.style={
 %   \end{itemize}
 %   \end{lernziele}
 
+% FIXME: Einleitung
+
 \section{Grundlagen}
 
 \begin{itemize}
@@ -117,9 +124,24 @@ mybox/.style={
     \item Calibration
 \end{itemize}
 
-\section{Experiment: Abschlüsse im Smith Diagramm}
+\section{Bedienung NanoVNA}
+\begin{itemize}
+    \item Frequenzeinstellung
+    \item Kanaleinstellung
+    \item Kalibrierung
+    \item Trace-Optionen
+\end{itemize}
 
-\section{Experiment: Antenne messen}
+\section{FIXME: Antenne}
+
+\section{FIXME: Abschlüsse/Impedanzen: Widerstände, Spulen, Kondensatoren}
+\begin{itemize}
+    \item Vergleich mit Bauteiltester
+    \item Parasitäre Kapazität in Spulen
+    \item Koaxialkabel (insb. 75 Ohm)?
+    \item Langes, schleches Koax?
+    \item Dummy Load?
+\end{itemize}
 
 \section{Schwingkreise, Resonanzfrequenzen, Anpassung}
 % FIXME: Nach Bauteil-Impedanz
@@ -435,7 +457,7 @@ untersucht.
 
 \end{enumerate}
 
-\section{Koaxiale Stub-Filter}
+\section{Koaxiale Stub-Filter}\label{sec:stubfilter}
 \subsection{Theorie}
 Eine Leitung -- z.B. ein Koaxialkabel -- der Länge $\lambda/4$ hat besondere
 Eigenschaften: Ein Kurzschluss am einen Ende sieht vom anderen Ende aus wie
@@ -472,7 +494,7 @@ zeigt ein Stub mit offenem (anstelle eines kurzgeschlossenen) Ende. Die Sperrwir
 erfolgt dort bereits bei 30~Mhz, da bei dieser Frequenz das offene Ende in einen
 Kurzschluss transformiert wird.
 
-\begin{figure}[H]
+\begin{figure}
 \begin{center}
 \begin{tikzpicture}
 \begin{axis}[
@@ -697,7 +719,37 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 
 \end{enumerate}
 
-\section{Menü}
+\section{FIXME: Transformatoren zur Impedanzwandlung}\label{sec:impedanztrafo}
+
+\section{FIXME (zu erwägen): Antennengewinn}
+
+\section{FIXME (zu erwägen): TDR}
+
+\section{FIXME (zu erwägen): Software NanoVNA Saver}
+
+\section{FIXME (zu erwägen): Firmware Upgrade}
+
+\section{FIXME (zu erwägen): Zubehör}
+
+%   https://www.nonstopsystems.com/radio/frank_radio_coax-sw.htm
+
+%   Grid dip meter
+
+%   Zubehör:
+%   - USB C Kabel (gute Qualität)
+%   - USB C Adapter
+%   - Anderes Calkit
+%   - Stift
+%   - Schutzfolie
+%   - Case
+%   - Testprint
+%   - Ladestrom
+%   - Firmware mods
+%https://www.rtl-sdr.com/nanovna-version-2-0-first-pcb-pictures-released-nanovna-naming-credit-clarifications/
+%http://ormpoa.altervista.org/firmware.htm
+% Weiterführende Literatur
+
+\section{Menü-Übersicht} % FIXME Is this printed?
 
 \newpage % FIXME
 
