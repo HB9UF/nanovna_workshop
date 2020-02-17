@@ -10,9 +10,24 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
 
-\usepackage{soul}
 \definecolor{HB9UFblue}{RGB}{0,61,165}
 \definecolor{HB9UFred}{HTML}{ED135A}
+
+\newcommand{\uline}[1]{%
+    \tikz[baseline=(todotted.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
+        \draw[color=HB9UFblue,thick] (todotted.south west) -- (todotted.south east);
+    }%
+}%
+
+\newcommand{\udash}[1]{%
+    \tikz[baseline=(todotted.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
+        \draw[dashed,color=HB9UFred,thick] (todotted.south west) -- (todotted.south east);
+    }%
+}%
+
+
 \title{NanoVNA Workshop}
 \author{UHF-Gruppe der USKA, Version 0.1}
 \date{Mathias Weyland, HB9FRV} % FIXME: Und andere
@@ -25,7 +40,6 @@
 \addtokomafont{descriptionlabel}{\normalfont}
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}
-\definecolor{myblue}{RGB}{40,96,139}
 
 \tcbset{
 mybox/.style={
@@ -189,8 +203,8 @@ Kurzschluss transformiert wird.
     width=0.9\textwidth,
     major grid style={black!10}
 ]
-\addplot[color=black] table[,x index = {0}, y index = {1}] {quarterwave.dat};
-\addplot[color=black,dashed] table[,x index = {0}, y index = {2}] {quarterwave.dat};
+\addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {quarterwave.dat};
+\addplot[color=HB9UFred,thick,dashed] table[,x index = {0}, y index = {2}] {quarterwave.dat};
 \end{axis}
 \end{tikzpicture}
 \end{center}
@@ -330,14 +344,14 @@ $$
     xmin=15.89, xmax=15.95,
     ymin=-65, ymax=5,
     grid=both,
-    ylabel={Dämpfung $S_{21}$},
+    ylabel={\uline{Dämpfung $S_{21}$}},
     ytick = {-60,-50,...,0},
     ticks=none,
     height=6cm,
     width=0.9\textwidth,
     major grid style={black!10}
 ]
-\addplot[color=black] table[,x index = {0}, y index = {1}] {quarz.dat};
+\addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {quarz.dat};
 \end{axis}
 \begin{axis}[
     xmin=15.89, xmax=15.95,
@@ -346,7 +360,7 @@ $$
     separate axis lines,
     ylabel style = {align=center},
     xlabel={Frequenz},
-    ylabel={Blindwiderstand $X/\Omega$},
+    ylabel={\udash{Blindwiderstand $X/\Omega$}},
     ticks=none,
     ymajorticks=true,
     yminorticks=true,
@@ -357,8 +371,8 @@ $$
     width=0.9\textwidth,
     major grid style={black!10}
 ]
-\addplot[color=black,dashed,restrict x to domain=15.89:15.9234] table[,x index = {0}, y index = {2}] {quarz.dat};
-\addplot[color=black,dashed,restrict x to domain=15.9236:15.95] table[,x index = {0}, y index = {2}] {quarz.dat};
+\addplot[color=HB9UFred,thick,dashed,restrict x to domain=15.89:15.9234] table[,x index = {0}, y index = {2}] {quarz.dat};
+\addplot[color=HB9UFred,thick,dashed,restrict x to domain=15.9236:15.95] table[,x index = {0}, y index = {2}] {quarz.dat};
 \end{axis}
 \end{tikzpicture}
 \end{center}
