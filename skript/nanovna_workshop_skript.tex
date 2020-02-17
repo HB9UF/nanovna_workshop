@@ -9,6 +9,7 @@
 \usepackage[european]{circuitikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
+\usepgfplotslibrary{smithchart}
 
 \definecolor{HB9UFblue}{RGB}{0,61,165}
 \definecolor{HB9UFred}{HTML}{ED135A}
@@ -119,6 +120,240 @@ mybox/.style={
 \section{Experiment: Abschlüsse im Smith Diagramm}
 
 \section{Experiment: Antenne messen}
+
+\section{Schwingkreise, Resonanzfrequenzen, Anpassung}
+\subsection{Theorie}
+Es gibt mehrere Gründe, sich mit der Messung von Schwingkreisen
+auseinanderzusetzen. Der einfachste besteht darin, die Resonanzfrequenz
+eines solchen zu ermitteln -- dies schliesst auch die Eigenresonanzfrequenz von
+Bauteilen ein. Dann ist es möglich, Spulen und Kondensatoren genauer zu
+bestimmen, indem sie zu einem Schwingkreis geschaltet werden: Ist die
+Induktivität einer Spule gesucht, wird diese Spule mit einem Kondensator
+mit bekannter Kapazität zu einem Schwingkreis verschaltet, die Resonanzfrequenz
+gemessen und mit der gemessenen Resonanzfrequenz $f$ und der bekannten
+Kapazität $C$ die gesuchte Induktivität $L$ berechnet. Schliesslich sind
+Schwingkreise einfache Modelle von Antennen.
+
+\subsubsection{Schwingkreis und Resonanzfrequenz}
+Ein Schwinkreis ergibt sich, wenn ein Widerstand $R$, eine Induktivität $L$
+und eine Kapazität $C$ in Serie geschaltet werden (Serienschwingkreis, siehe
+Abbildung \ref{fig:schwingkreis}). Es besteht auch die Möglichkeit, diese drei
+Bauteile parallel zu schalten (Parallelschwingkreis).
+
+\begin{figure}[H]
+    \begin{center}
+    \begin{circuitikz} \draw
+        (0,0) to[short,o-] (1,0) to[L=$L$] (3,0) to[C=$C$] (5,0) to[R=$R$] (7,0) to[short,-o] (8,0);
+    \end{circuitikz}
+    \end{center}
+    \caption{Ein Serienschwingkreis bestehend aus einer Spule/Induktivität $L$,
+    einem Kondensator/Kapazität $C$ und einem Widerstand $R$.}
+    \label{fig:schwingkreis}
+\end{figure}
+
+Bei einer bestimmten Frequenz, der Resonanzfrequenz $f_r$, heben sich die
+Blindwiderstände von $L$ und $C$ genau auf. Es gilt:
+
+$$
+f_r = \frac{1}{2\pi\sqrt{L\cdot C}}
+$$
+
+Sind also $L$ und $C$ bekannt, so lässt sich $f_r$ berechnen, ebenso lässt ich
+$L$ berechnen, falls $C$ und $f_r$ bekannt sind etc. Abbildung \ref{fig:resonanzplot}
+zeigt den Blindwiderstand (links, gestrichelte Linie) im Serienschwingkreis als Funktion der Frequenz. Es
+handelt sich dabei um die Darstellung der Grösse $X_L-X_C$ aus Abbildung \ref{fig:XRLC}.
+Unterhalb der Resonanzfrequenz ist der Blindwiderstand negativ, der
+Schwingkreis hat also eine kapazitive Komponente bzw. der Kondensator
+dominiert. Oberhalb der Resonanzfrequenz ist der Blindwiderstand positiv, der
+Schwingkreis ist induktiv bzw. die Spule dominiert. Bei einer Resonanzfrequenz
+von $f_r\approx$5~MHz ist der Blindwiderstand 0~$\Omega$, lediglich $R=50$~$\Omega$
+ist am Eingang sichtbar. Ein Abschluss von 50~$\Omega$ entspricht einer perfekten
+Anpassung und deshalb entsteht bei dieser Frequenz überhaupt kein Rückfluss.
+Die selben Sachverhalte sind auf der rechten Seite von Abbildung
+\ref{fig:resonanzplot} im Smith-Diagram erkennbar. Die Analogie zu Verhalten
+einer Antenne im Umfeld ihrer Resonanzfrequenz ist offensichtlich.
+\begin{figure}
+\begin{center}\begin{tikzpicture}
+\begin{axis}[
+    xmin=1, xmax=9,
+    ymin=-70,ymax=10,
+    grid=both,
+    xlabel={Frequenz $f$/MHz},
+    ylabel={\uline{R\"uckfluss $S_{11}$}},
+    height=6cm,
+    width=0.45\textwidth,
+    major grid style={black!10}
+]
+\addplot[mark=none,color=HB9UFblue,thick]  table[x index = {0}, y index = {1}] {schwingkreis.dat};
+\end{axis}
+\begin{axis}[
+    xmin=1, xmax=9,
+    ymin=-280,ymax=40,
+    grid=none,
+    separate axis lines,
+    ylabel style = {align=center},
+    ylabel={\udash{Blindwiderstand $X/\Omega$}},
+    ticks=none,
+    xmajorticks=false,
+    xminorticks=false,
+    ymajorticks=true,
+    yminorticks=false,
+    scaled ticks=false,
+    ytick = {-240,-160,-80,0},
+    axis y line*=right,
+    height=6cm,
+    width=0.45\textwidth,
+    major grid style={black!10}
+]
+\addplot[mark=none,dashed,color=HB9UFred,thick]  table[x index = {0}, y index = {2}] {schwingkreis.dat};
+\fill [fill=black] (axis cs:5.033,0) circle [radius=2pt];
+\node [below]  at  (axis cs:5.033,0) {$f_r$};
+\end{axis}
+\end{tikzpicture}
+\hfill
+\begin{tikzpicture}
+    \begin{smithchart}[width=0.46\textwidth]
+\pgfplotsset{yticklabel in circle}
+\addplot[thick,smooth,color=HB9UFblue] table[x index = {3}, y index = {4}] {schwingkreis.dat};
+\fill [fill=black] (axis cs:1,0) circle [radius=2pt];
+\node [below left]  at  (axis cs:1,0) {$f_r$};
+\end{smithchart}
+\end{tikzpicture}\end{center}
+\caption{Links: Rückfluss und Blindwiderstand des Schwingkreises aus Abbildung \ref{fig:schwingkreis} mit 
+$L$=1~$\mu$H, $C$=1~nF, $R$=50~$\Omega$. Rechts: Smith-Diagramm der Eingangsimpedanz dieser Schaltung.}
+\label{fig:resonanzplot}
+\end{figure}
+
+\subsubsection{Anpassung}
+Manchmal ist es wünschenswert, eine Impedanz in eine andere umzuwandeln. Dies ist beispielsweise der Fall,
+wenn ein hochomiges Bauteil in einem 50~$\Omega$ System verwendet werden soll, oder wenn eine Last
+(z.B. Antenne) auf der Zielfrequenz eine Impedanz aufweist, die fernab der Systemimpedanz liegt und eine
+genügende Leistungsübertragung nicht erbracht wird. In diesem Fall kommen Transformatoren zur Impedanzwandlung
+(siehe \ref{sec:impedanztrafo}), speziell konfigurierte Leitungen 
+% FIXME: siehe ...
+oder Anpass-Netzwerke zum Einsatz. Letztere bestehen aus Kombinationen von Kapazitäten und Induktivitäten,
+mit denen die Impedanzanpassung vorgenommen wird. Die einfachste Möglichkeit hierfür ist der in Abbildung
+\ref{fig:lmatch} gezeigte L-Match.
+
+\begin{figure}[H]
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[L,*-] (3,-2) node[ground] {};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[C,*-] (3,-2) node[ground] {};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[L,*-] (3,-2) node[ground] {};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[C,*-] (3,-2) node[ground] {};
+    \end{circuitikz}}
+
+    \vspace{3em}
+    % zweite Reihe startet hier
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[L,*-] (1,-2) node[ground] {};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[C,*-] (1,-2) node[ground] {};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[L,*-] (1,-2) node[ground] {};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[C,*-] (1,-2) node[ground] {};
+    \end{circuitikz}}
+
+    \caption{L-Match: Verschiedene Anordnungen von Kapazitäten und Induktivitäten zur Anpassung der Impedanz.}
+    \label{fig:lmatch}
+\end{figure}
+
+Keine dieser Schaltungen ermöglicht die Anpassung einer beliebigen Impedanz zu
+einer anderen beliebigen Impedanz. Es ist allerdings möglich, die Bauteilwerte
+variabel zu gestalten und mehrere L-Matches zusammenzuschalten, um die
+Anpassungemöglichkeiten zu erweiterten. Ein in diesem Sinn beliebter Ansatz 
+ist der in Abbildung \ref{fig:tmatch} dargestellte T-Match.
+
+\begin{figure}[H]
+    \begin{center}
+    \begin{circuitikz} \draw
+        (0,0) to[short,o-] (1,0) to[vC,mirror] (3,0) to[vC,mirror] (5,0) to[short,-o] (6,0)
+        (3,0) to[short,*-] (3,-1) to[vL,invert,mirror] (3,-3) node[ground] {};
+    \end{circuitikz}
+    \end{center}
+    \caption{T-Match: Beliebte Schaltung zur Impedanzanpassung (Matchbox/Antennen-Tuner). Es handelt sich um einen
+    Verbund zweier variabler L-Matches aus Abbildung \ref{fig:lmatch}.}
+    \label{fig:tmatch}
+\end{figure}
+
+\subsection{Messung}
+% Requirements_
+% - RLC Schwingkreis
+% - Alligator lead
+% - Mess-Apparatur Reflexionsmessung
+% - Tuner
+% - Adapter for tuner
+% - Extra Calkit
+
+
+% FIXME: Zwei verschiedene Schwingkreise
+Diese Messung ist zweiteilig. Zunächst wird ein Serienschwinkgkreis ($R$=50~$\Omega$a
+$L$=FIXME~H und $C$=FIXME~F), als solches gemessen. Anschliessend wird er als
+Antennenmodell verwendet, dessen Impedanz mit einem Tuner angepasst wird.
+
+\begin{enumerate}
+    \item Berechnen Sie die Resonanzfrequenz des Schwingkreises und stellen Sie den
+        Frequenzbereich des NanoVNA auf einen sinnvollen Bereich ein, so dass die
+        Resonanzfrequenz in der Mitte ist.
+    \item Kalibrieren Sie den NanoVNA für eine Reflexionsmessung und schliessen Sie
+        anschliessend den Schwingkreis (FIXME: mit welchem Adapter?) an.
+    \item Betrachten Sie die Rückflussdämpfung (``LogMag''), wie auch Wirkwiderstand
+        (``Resistance'') und Blindwiderstand (``Reactance'').
+        \textbf{Entspricht das Resultat Ihren Erwartungen?}
+    \item Betrachten Sie anschliessend die Messung im Smith-Diagramm. \textbf{Können Sie die
+        Anzeige erklären?}
+    \item Schliessen Sie den Widerstand kurz. \textbf{Wie verändert sich die Rückflussdämpfung
+        und die Anzeige im Smith-Diagramm?}\\
+        \hline
+    \item Betrachten Sie das Innere des Tuners und identifizieren Sie die Bauteile aus 
+        Abbildung \ref{fig:tmatch}.
+    \item Schleifen Sie den Tuner zwischen Modell-Antenne und Messgerät und erneuern Sie die
+        Kalibrierung? \textbf{Wo schliessen Sie das Kalibirierungskit an, um die Impedanz
+        am Eingang des Tuners zu sehen?}
+    \item Schalten Sie den Tuner auf ``Bypass'' und stellen Sie sicher, dass Sie das selbe
+        Messresultat sehen wie bisher.
+    \item Verwenden Sie den Tuner, um unter Betrachtung der Rückführungsdämpfung eine
+        Anpassung bei FIXME~MHz zu erzielen. \textbf{Was geschieht beim Betätigen der
+        Abstimmknöpfe mit dem Dämpfungsminimum?}
+    \item Reduzieren Sie die Frequenzspanne so, dass im Smith-Diagramm lediglich ein
+        kleiner Punkt für FIXME~MHz angezeigt wird. Wiederholen Sie die
+        vorausgehende Teilaufgabe und \textbf{vergewissern Sie sich, dass die Anpassung
+        dann erfolgt, wenn der Punkt ins Zentrum des Diagrammes wandert}.
+    \item Machen Sie die Reduktion der Frequenzspanne rückgängig und betrachten Sie, wie
+        der Tuner die ganze Impedanzkurve im Smith-Diagramm beeinflusst.
+\end{enumerate}
 
 \section{Filter}\label{sec:filter}
 
