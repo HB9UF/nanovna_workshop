@@ -11,6 +11,14 @@
 \pgfplotsset{compat=1.16}
 \usepgfplotslibrary{smithchart}
 
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{pifont}
+\usepackage{xspace}
+\DeclareUnicodeCharacter{2460}{\ding{172}\xspace}
+\DeclareUnicodeCharacter{2461}{\ding{173}\xspace}
+\renewcommand{\textdegree}{\si{\degree}\xspace}
+
 \definecolor{HB9UFblue}{RGB}{0,61,165}
 \definecolor{HB9UFred}{HTML}{ED135A}
 
@@ -27,6 +35,8 @@
         \draw[dashed,color=HB9UFred,thick] (todotted.south west) -- (todotted.south east);
     }%
 }%
+
+\newcommand{\Ohm}{$\Omega$\xspace}
 
 \newcommand*\cleartoleftpage{%
   \clearpage
@@ -116,13 +126,576 @@ mybox/.style={
 
 \section{Grundlagen}
 
+\subsection{Ports, Reflexions- und Transmissionsmessung}
+Netzwerkanalysatoren sind Geräte, mit denen Transmissions- und
+Reflexionseigenschaften von Hochfrequenznetzwerken frequenzabhängig ermittelt
+werden können. Sie dienen dem Ausmessen von Antennen, Filtern, Transformatoren,
+Baluns, Matching-Netzwerken, Splittern, Verstärkern, Stubs und vielem mehr. Ein
+vollwertiger Netzwerkanalysator hat zwei Anschlüsse (sogenannte Ports), ① und ②.
+Das Gerät kann sowohl an Port ① als auch an Port ② ein Prüfsignal (einen 
+Stimulus) generieren. Bei aktiviertem Stimulus wird gemessen, wie viel des
+Signals reflektiert wird (also in den aussendenden Port zurück gelangt), und
+wie viel davon das zu testende Netzwerk durchwandert und zum jeweils anderen
+Port gelangt (Transmission).
+
+Viele Geräte -- darunter auch der NanoVNA -- implementieren vielfach nur einen Teil
+dieser Messungen. Manchmal kommt der Stimulus nur aus einem der beiden Ports
+und der Prüfling muss von Hand umgedreht werden; oder es sind nur
+Reflexionsmessungen möglich, letzteres z.B. bei einem Antennen-Analyzer. So
+oder so wird entweder nur die Amplitude (skalar) oder die Amplitude und Phase
+(Vektor) gemessen (siehe Abschnitt \ref{sec:vectors}).
+
+Die Reflexions- und die Transmissionsmessung sind in
+Abbildung \ref{fig:testset} schematisch dargestellt: Ein aus Port ① ausgehender
+Stimulus trifft auf einen Prüfling (ein Filter, eine Antenne etc.). Ein Teil
+der eintreffenden Energie wird zurück zu Port ① reflektiert und dort gemessen
+(Reflexionsmessung). Der Rest wird entweder vom Prüfling in Wärme umgewandelt,
+als Radiowelle abgestrahlt oder gelangt (falls vorhanden) an den Ausgang des
+Prüflings. Die Energie am Ausgang des Prüflings wird Port ② zugeführt
+und dort gemessen (Transmissionsmessung).
+
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[text width=6em, text centered,, node distance=8em]
+            \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=3em]
+            \node[box] (p1) {\sf\Large{Port ①}};
+            \node[box,right=of p1] (dut) {\sf\Large{DUT}};
+            \node[box,right=of dut] (p2) {\sf\Large{Port ②}};
+
+            \draw[-stealth',thick,transform canvas={yshift=2mm}] (p1) -- node[above] {\sf Stimulus} (dut);
+            \draw[-stealth',thick,transform canvas={yshift=-2mm}] (dut) -- node[below]{\sf Reflexion} (p1);
+            \draw[-stealth',thick] (dut) -- node[above] {\sf Transmission} (p2);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Ein aus Port ① ausgehender Stimulus trifft auf einen Prüfling (device under test (DUT), z.B
+        ein Filter, eine Antenne etc.). Ein Teil der eintreffenden Energie wird zurück zu Port ① reflektiert
+        (Reflexionsmessung). Der Rest wird entweder vom Prüfling in Wärme umgewandelt, als Radiowelle
+        abgestrahlt oder gelangt (falls vorhanden) an den Ausgang des Prüflings. Die Energie am Ausgang
+        des Prüflings wird Port ② zugeführt und dort gemessen (Transmissionsmessung).}
+    \label{fig:testset}
+\end{figure}
+
+\subsection{Rückführungsdämpfung, Einfügedämpfung und Standing Wave Ratio}
+
+Die durch Reflexion zurückgeführte Leistung wird mit der Leistung des Stimulus verglichen. Reflektiert
+der Prüfling die gesamte Leistung, so erhält Port ① genausoviel Leistung zurück, wie er im Stimulus
+ausgesandt hat (Kabeldämpfungen werden durch Kalibrierung korrigiert und sind deshalb hier vernachlässigt,
+siehe Abschnitt \ref{sec:calibration}). Da die beiden Leistungen gleich gross sind, spricht man von
+einer Rückführungsdämpfung von 0~dB. Reflektiert der Prüfling die halbe Leistung des Stimulus so spricht
+man von einer Rückführungsdämpfung von 3~dB. Oft wird die Rückführungsdämpfung negativ angegeben, also
+in diesem Fall -3~dB, was nicht ganz korrekt ist - es handelt sich ja schliesslich um eine Dämpfung 
+und -3~dB Dämpfung wären +3~dB Verstärkung, was in dieser passiven Situation nicht eintreten kann.
+Im Folgenden wird diese Konvention trotzdem verwendet, weil sie sich eingebürgert hat.
+
+% FIXME: Einfügedämpfung: Definieren, sicherstellen dass diese Grösse richtig ist.
+
+Das im Amateurfunk beliebte Stehwellenverhältnis (standing wave ratio, SWR) bezeichnet eigentlich
+ein Amplitudenverhältnis von speziellen Stellen entlang einer Leitung (z.B. Koaxialkabel oder
+Hühnerleiter). Bei der Bestimmung des SWR wird aber in den seltensten Fällen die Leitung an sich
+untersucht. Oft ist die Leitung auch derart kurz, dass diese speziellen Stellen gar nicht auftreten.
+Der Begriff ist deshalb leider etwas fehlgeleitet. Tatsächlich wird in aller Regel die Rückführungsdämpfung
+gemessen und mit den entsprechenden Formeln in ein Stehwellenverhältnis umgesetzt. Tabelle \ref{tab:rlswr}
+gibt den Zusammenhang zwischen Rückführungsdämpfung und SWR für ausgewählte Grössen an.
+
+\begin{table}[H]
+    \caption{Gegenübertellung von SWR, Rückführungsdämpfung und dem prozentualen Anteil reflektierter Leistung.}
+    \label{tab:rlswr}
+\begin{center}\begin{tabular}{SSS}\toprule
+{\textbf{SWR}} & {\textbf{Rückführung}} & {\textbf{\% Reflkt.}}\\\midrule
+1.0 & {-$\infty$} & 0.0\\
+1.1 & -26.44 & 0.2\\
+1.2 & -20.83 & 0.8\\
+1.3 & -17.69 & 1.7\\
+1.4 & -15.56 & 2.8\\
+1.5 & -13.98 & 4.0\\
+1.6 & -12.74 & 5.3\\
+1.7 & -11.73 & 6.7\\
+1.8 & -10.88 & 8.2\\
+1.9 & -10.16 & 9.6\\
+2.0 & -9.54 & 11.1\\
+2.2 & -8.52 & 14.1\\
+2.4 & -7.71 & 17.0\\
+2.6 & -7.04 & 19.8\\
+2.8 & -6.49 & 22.4\\\bottomrule
+\end{tabular}
+\hspace{1cm}
+\begin{tabular}{SSS}\toprule
+{\textbf{SWR}} & {\textbf{Rückführung}} & {\textbf{\% Reflkt.}}\\\midrule
+3 & -6.02 & 25.0\\
+4 & -4.44 & 36.0\\
+5 & -3.52 & 44.4\\
+6 & -2.92 & 51.0\\
+7 & -2.5 & 56.3\\
+8 & -2.18 & 60.5\\
+9 & -1.94 & 64.0\\
+10 & -1.74 & 66.9\\
+20 & -0.87 & 81.9\\
+30 & -0.58 & 87.5\\
+40 & -0.43 & 90.6\\
+50 & -0.35 & 92.3\\
+60 & -0.29 & 93.5\\
+80 & -0.22 & 95.1\\
+100& -0.17 & 96.2\\\bottomrule
+\end{tabular}\end{center}
+\end{table}
+
+Eine andere Darstellung des selben Zusammenhangs ist im Nomogramm in Abbildung
+\ref{fig:rlnomogramm} zu sehen.
+
+\begin{figure}[t]
+    % FIXME: Check if the math is right
+    \begin{center}\begin{tikzpicture}[scale=1.25]
+        % Return loss
+        % [13, 10, 8.5, 7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.9, 0.7, 0.5, 0.3, 0.1]
+        % [9, 8, 7, 6, 5, 4, 3, 2, 1, 0.8, 0.6, 0.4, 0.2, 0]
+        % for i in y1: print("%.1f / %f, " % (i,  10**(-i/10)),)
+        \foreach \rl/\x in {13 / 0.050119, 10 / 0.1, 8.5 / 0.141254, 7.5 / 0.177828, 6.5 / 0.223872, 5.5 / 0.281838, 4.5 / 0.354813, 3.5 / 0.446684, 2.5 / 0.562341, 1.5 / 0.707946, 0.9 / 0.812831, 0.7 / 0.851138, 0.5 / 0.891251, 0.3 / 0.933254, 0.1 / 0.97723}
+        {
+            \node[above] at ({\x*10},0.) {\sf\tiny{\rl}};
+            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
+        }
+        \foreach \rl/\x in { 9 / 0.125893, 8 / 0.158489, 7 / 0.199526, 6 / 0.251189, 5 / 0.316228, 4 / 0.398107, 3 / 0.501187, 2 / 0.630957, 1 / 0.794328, 0.8 / 0.831764, 0.6 / 0.870964, 0.4 / 0.912011, 0.2 / 0.954993, 0 / 1.000000}
+        {
+            \node[below] at ({\x*10},0.) {\sf\tiny{\rl}};
+            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
+        }
+        \node[above] at (0,0) {\sf\tiny{$\infty$}};
+        \draw (0,0.05) -- (0,-0.05);
+        \draw (0,0) -- (10,0);
+        \node[right] at (10,0) {~\sf\scriptsize{RL (dB)}};
+
+        % SWR
+        % FIXME: infty
+        % [1, 1.5, 1.9, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 12, 16, 20, 40]
+        % [1.3, 1.7, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 18, 30, 50]
+        %for i in x: print("%.1f / %f, " % (i,  ((i-1) / (i+1))**2 ))
+        \begin{scope}[yshift=-20]
+        \foreach \s/\x in {1.0 / 0.000000, 1.5 / 0.040000, 1.9 / 0.096314, 2.5 / 0.183673, 3.5 / 0.308642, 4.5 / 0.404959, 5.5 / 0.479290, 6.5 / 0.537778, 7.5 / 0.584775, 8.5 / 0.623269, 9.5 / 0.655329, 12 / 0.715976, 16 / 0.778547, 20 / 0.818594, 40 / 0.904819}
+        {
+            \node[above] at ({\x*10},0.) {\sf\tiny{\s}};
+            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
+        }
+        \foreach \s/\x in {1.3 / 0.017013, 1.7 / 0.067215, 2 / 0.111111, 3 / 0.250000, 4 / 0.360000, 5 / 0.444444, 6 / 0.510204, 7 / 0.562500, 8 / 0.604938, 9 / 0.640000, 10 / 0.669421, 14 / 0.751111, 18 / 0.800554, 30 / 0.875130, 50 / 0.923106 }
+        {
+            \node[below] at ({\x*10},0.) {\sf\tiny{\s}};
+            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
+        }
+        \node[above] at (10,0) {\sf\tiny{$\infty$}};
+        \draw (10,0.05) -- (10,-0.05);
+        \draw (0,0) -- (10,0);
+        \node[right] at (10,0) {~\sf\scriptsize{SWR}};
+        \end{scope}
+
+        % Reflected power [%]
+        \begin{scope}[yshift=-40]
+         \foreach \x in {0,10,20,...,100}
+         {
+             \node[above] at ({\x/10},0.) {\sf\tiny{\x}};
+             \draw (\x/10,0.05) -- (\x/10,-0.05);
+         }
+        \draw (0,0) -- (10,0);
+        \node[right] at (10,0) {~\sf\scriptsize{\% Reflkt.}};
+        \end{scope}
+    \end{tikzpicture}\end{center}
+    \caption{Nomogramm des Zusammenhangs zwischen Rückfürungsdämpfung (return loss, RL),
+    Stehwellenverhältnis (standing wave ratio, SWR) und dem Anteil der reflektierten Leistung (\% Reflkt.).}
+    \label{fig:rlnomogramm}
+\end{figure}
+
+
+Die Einfügedämpfung ist ebenfalls ein Leistungsverhältnis: Die Leistung, die
+bei eingesetztem Prüfling zu Port ② gelangt wird verglichen mit der Leistung
+in Port ②, wenn der Prüfling nicht eingesetzt ist. Dieser Sachverhalt ist in
+Abbildung \ref{fig:insertionloss} dargestellt. Die Einfügedämpfung ist dabei
+definiert als $d=P_b/P_a$ bzw $10\cdot\log{(d)}$ in Dezibel. Daraus wird erkennbar,
+dass ein ``perfekt transparenter'' Prüfling eine Einfügedämpfung von 0~dB
+hat. Sorgt ein Prüfling dafür, dass nur noch die halbe Leistung zu Port ②
+gelangt, so hat er eine Einfügedämpfung von 3~dB usw. Auch hier wird manchmal
+die Einfügedämpfung salopperweise negativ angegeben, was eigentlich falsch ist.
+
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[text width=5em,text centered,node distance=4em]
+            \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=2em]
+            \node[box] (p1) {\sf{Port ①}};
+            \node[box] (p2) at (10,0) {\sf{Port ②}, $P_a$};
+
+            \draw[-stealth',thick] (p1) --  (p2);
+        \end{tikzpicture}
+
+        \vspace{5mm}
+
+        \begin{tikzpicture}[text width=5em,text centered,node distance=4em]
+            \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=2em]
+            \node[box] (p1) {\sf{Port ①}};
+            \node[box] (dut) at (5,0) {\sf{DUT}};
+            \node[box] (p2) at (10,0) {\sf{Port ②}, $P_b$};
+
+            \draw[-stealth',thick] (p1) --  (dut);
+            \draw[-stealth',thick] (dut) -- (p2);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Erklärung Einfügedämpfung: Die Leistung $P_a$ ohne Prüfling wird
+    verglichen zur Leistung $P_b$ mit Prüfling (device under test, DUT).}
+    \label{fig:insertionloss}
+\end{figure}
+
+\subsection{Reaktive Lasten}\label{sec:vectors}
+Bis jetzt wurden sämtliche Überlegungen anhand von Verhältnissen zwischen
+aus- und eingehenden Leistungen gemacht. Messungen dieser Grössen werden
+skalare Messungen bezeichnet. Der NanoVNA bietet allerdings die Möglichkeit,
+nicht nur skalar, sondern vektoriell zu arbeiten. Das bedeutet, dass er auch
+Informationen über die Phase der ein- und ausgehenden Signale verarbeiten kann.
+
+Dies ist im Zusammenhang mit reaktiven Elementen (Spule/Induktivität,
+Kondensator/Kapazität, Antenne ausserhalb der Resonanz etc.) wichtig: Reaktive
+Elemente haben einen Blindwiderstand, der in aller Regel frequenzabhängig ist.
+Dies ist in Abbildung \ref{fig:XRLC} dargestellt: Der Blindwiderstand $X$ eines
+Widerstandes $R$ ist $X_R=0~\Omega$ ungeachtet der Frequenz, der Blindwiderstand
+einer (idealen) Induktivität $L$ nimmt mit der Frequenz $f$ zu ($X_L=2\pi f L$)
+und der Blindwiderstand einer Kapazität $C$ nimmt mit zunehmender Frequenz $f$
+ab ($X_C=(2\pi f C)^{-1}$).
+
+Spulen und Kondensatoren sind in Bezug auf ihren Blindwiderstand duale Elemente:
+Werden sie in Serie geschaltet, so wirken $X_L$ und $X_C$ entgegengesetzt, und
+wenn beide gleich gross sind, dann heben sie sich genau auf. In einem
+Schwingkreis oder einer Antenne ist dies genau bei Resonanz erfüllt (vgl. auch
+Abbildung \ref{fig:resonanzplot} in Abschnitt \ref{sec:schwingkreis}). Weil
+$X_L$ und $X_C$ entgegengesetzt wirken, wird der kapazitive Blindwiderstand
+$X_C$ oft negativ angegeben. So wird erkennbar, ob der Blindwiderstand induktiv
+oder kapazitiv ist. Auch über diese Konvention lässt sich debattieren.
+
+\begin{figure}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title = {Widerstand},
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=both,
+            xlabel={Frequenz $f$/Hz},
+            ylabel={\uline{Blindwiderstand $X/\Omega$}},
+            xticklabels={},
+            yticklabels={},
+            ytick = {-400,-200,0,200,400},
+            height=4cm,
+            width=0.3\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0};
+        \end{axis}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=none,
+            separate axis lines,
+            ylabel style = {align=center},
+            ticks=none,
+            xmajorticks=true,
+            xminorticks=false,
+            ymajorticks=true,
+            yminorticks=false,
+            scaled ticks=false,
+            xtick = {0},
+            ytick = {0},
+            axis y line*=right,
+            height=4cm,
+            width=0.3\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {300};
+        \end{axis}
+    \end{tikzpicture}\hfill
+    \begin{tikzpicture}
+        \begin{axis}[
+            title = {Induktivität},
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=both,
+            xlabel={Frequenz $f$/Hz},
+            xticklabels={},
+            yticklabels={},
+            ytick = {-400,-200,0,200,400},
+            height=4cm,
+            width=0.3\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {40*x};
+        \end{axis}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=none,
+            separate axis lines,
+            ylabel style = {align=center},
+            ticks=none,
+            xmajorticks=true,
+            xminorticks=false,
+            ymajorticks=true,
+            yminorticks=false,
+            scaled ticks=false,
+            xtick = {0},
+            ytick = {0},
+            axis y line*=right,
+            height=4cm,
+            width=0.3\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {0};
+        \end{axis}
+    \end{tikzpicture}\hfill
+    \begin{tikzpicture}
+        \begin{axis}[
+            title = {Kapazität},
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=both,
+            xlabel={Frequenz $f$/Hz},
+            xticklabels={},
+            yticklabels={},
+            ytick = {0,200,400},
+            height=4cm,
+            width=0.3\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0.2:10,color=HB9UFblue,thick] {200/x};
+        \end{axis}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=none,
+            separate axis lines,
+            ylabel style = {align=center},
+            ylabel={\udash{Wirkwiderstand $R/\Omega$}},
+            ticks=none,
+            xmajorticks=true,
+            xminorticks=false,
+            ymajorticks=true,
+            yminorticks=false,
+            scaled ticks=false,
+            xtick = {0},
+            ytick = {0},
+            axis y line*=right,
+            height=4cm,
+            width=0.3\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {0};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Blindwiderstand eines Widerstandes (Bauteil), einer Induktivität ($X_L$) und einer
+    Kapazität ($X_C$) von links nach rechts. Der Wirkwiderstand ist jeweils gestrichelt gezeichnet.}
+    \label{fig:XRLC}
+\end{figure}
+
+\subsection{Phasenverschiebung mit reaktiven Lasten}
+Ein Spannungsteiler bestehend aus zwei 100~$\Omega$ (Wirk-)Widerständen halbiert die Eingangspannung,
+bei Gleichspannung wie auch bei Wechselspannung. % FIXME SIehe Abbildung ...?
+Es wäre nun naheliegend anzunehmen, dass man einen dieser beiden Widerstände
+durch eine Induktivität oder Kapazität mit einem Blindwiderstand von 100~$\Omega$
+ersetzen könnte und nach wie vor über einen Spannungsteiler verfügt, welcher
+die Eingangsspannung halbiert, das ist allerdings nicht der Fall, wie Abbildung
+\ref{fig:phasenverschiebung} aufzeigt: Oben erfolgt die Halbierung der Spannung
+wie beschrieben. In der unteren Hälfte der Abbildung ist der 100~$\Omega$
+Widerstand durch eine Spule ersetzt, welche bei der Testfrequenz von $f=$100~MHz
+$X_L=100$~$\Omega$ aufweist. Dennoch weist $U_L$ mehr als die halbe Amplitude von
+$U_Q$ auf; ausserdem wird die Phasenverschiebung sichtbar. Diese Beobachtungen
+lassen eine Reihe von Schlussfolgerungen zu, die im Weiteren wichtig sein werden:
+
 \begin{itemize}
-    \item Transmissions- vs. Reflexionsmessung
-    \item SWR, RL, IL
-    \item Complex Loads
-    \item Smith Diagramm
-    \item Calibration
+    \item Die Blindwiderstände der betrachteten Komponenten sind frequenzabhängig,
+        Wirkwiderstände sind es nicht.
+    \item Blindwiderstände führen zu Phasenverschiebungen, Wirkwiderstände nicht.
+    \item Wirk- und Blindwiderstände dürfen nicht ``einfach so'' miteinander
+        verrechnet werden, denn das so gefundene Resultat mit dem Spannungsteiler 
+        stimmt nicht mit dem Experiment überein. Wenn, dann gibt es strikte und
+        offenbar nicht-triviale Regeln, wie gerechnet werden muss.
 \end{itemize}
+
+Übrigens hat eine Spule in der Praxis zusätzlich zu Blindwiderstand auch immer
+selbst einen Wirkwiderstand, weil der Draht, aus dem sie gewickelt ist,
+verlustbehaftet ist. 
+
+
+\begin{figure}
+    \scalebox{0.8}{\begin{circuitikz}
+        \draw (0,0) to[sinusoidal voltage source=$U_Q$] (0,-4)
+              (0,0) to[short] (3,0) to[R,a=100~$\Omega$] (3,-2) to[short,-o] (5,-2)
+              (3,-2) to[R,a=100~$\Omega$,*-*] (3,-4) to[short,-o] (5,-4)
+              (3,-4) to[short,-*] (0,-4) node[ground] {};
+        \draw[-stealth',shorten >=3mm,shorten <=3mm] (5,-2) -- node[right]{$U_L$} (5,-4);
+     \end{circuitikz}}
+    \hfill
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-1.25,ymax=1.25,
+            ylabel={Spannung / V},
+            grid=both,
+            xlabel={Zeit / ns},
+            yticklabels={},
+            xtick = {0,2.5,5,7.5,10},
+            ytick = {-1,-0.5,0,0.5,1},
+            height=4cm,
+            width=0.6\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0.5*sin(3600*x)} node[below,pos=0.45] {$U_L$};
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {sin(3600*x)} node[above,pos=0.45] {$U_Q$};;
+        \end{axis}
+    \end{tikzpicture}
+
+    \vspace{5mm}
+
+    \scalebox{0.8}{\begin{circuitikz}
+        \draw (0,0) to[sinusoidal voltage source=$U_Q$] (0,-4)
+              (0,0) to[short] (3,0) to[R,a=100~$\Omega$] (3,-2) to[short,-o] (5,-2)
+              (3,-2) to[L,a=160~nH,*-*] (3,-4) to[short,-o] (5,-4)
+              (3,-4) to[short,-*] (0,-4) node[ground] {};
+        \draw[-stealth',shorten >=3mm,shorten <=3mm] (5,-2) -- node[right]{$U_L$} (5,-4);
+     \end{circuitikz}}
+    \hfill
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-1.25,ymax=1.25,
+            ylabel={Spannung / V},
+            grid=both,
+            xlabel={Zeit / ns},
+            yticklabels={},
+            xtick = {0,2.5,5,7.5,10},
+            ytick = {-1,-0.5,0,0.5,1},
+            height=4cm,
+            width=0.6\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0.7*sin(3600*x+45)} node[below,pos=0.45] {$U_L$};
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {sin(3600*x)} node[above,pos=0.45] {$U_Q$};;
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Oben: Ein Spannungsteiler halbiert die Spannung: $U_L$ hat die
+    halbe Amplitude von $U_Q$. Unten: Phasenverschiebung durch reaktives Element. Bei
+einer Frequenz von $f=100$~MHz hat eine Induktivität von 160~nH genau
+$X_L=100$~$\Omega$. Dennoch wird die Spannung nicht halbiert, stattdessen wird eine Phasenverschiebung sichtbar.}
+    \label{fig:phasenverschiebung}
+\end{figure}
+
+\subsection{Das Smith-Diagramm}
+Aus dem letzten Abschnitt wird klar: Die betrachteten Bauteile Widerstand, Kondensator und Spule haben Wirk- und
+Blindwiderstände, und eine Serienschaltung aus einem Widerstand von
+$R=100$~$\Omega$ und einer Spule mit einem Blindwiderstand von $X_L=100$~$\Omega$ hat nicht einen Ersatzwiderstand
+von 100~$\Omega$. Bis auf weiteres werden Wirk- und Blindwiderstand als separate Grössen geführt. Ein Bauteil,
+oder eine Kombination von Bauteilen, kann auf diese Art einen Wirkwiderstand
+$R\ge0$, wie auch einen Blindwiderstand $X$ haben. Ist der Blindwiderstand positiv, so handelt es sich um ein
+Induktivität; ein negativer Blindwiderstand beschreibt eine Kapazität. Für ein Bauteil oder eine Schaltung
+aus Bauteilen kann also z.B. gelten: $R=200$~$\Omega$, $X=100$~$\Omega$. Diese Grösse wird Impedanz $Z$ genannt
+und lässt sich in einem Koordinatensystem als Punkt darstellen, wenn $R$ auf
+der horizontalen und $X$ auf der vertikalen Achse abgetragen wird. Das Beispiel
+ist in Abbildung \ref{fig:euler} in  blau gezeichnet. 
+
+Auch im Smith-Diagramm wird genau diese Information (also eine Impedanz bestehend aus Wirk- und Blindwiderstand)
+ebenfalls als Punkt dargestellt. Ein Punkt im Smith-Diagramm unterscheidet sich in dieser Hinsicht also nicht
+von einem Punkt im eingangs besprochenen Koordinaten-System. Der Unterschied ist lediglich, dass im Smith-Diagramm
+die ``Achsen'' eine andere Form, welche auf den ersten Blick sehr sonderbar erscheinen mag. Punkt (und damit Impedanzen)
+im Smith-Diagramm folgen diesen Regeln:
+
+
+\begin{enumerate}
+\item Üblicherweise wird das Smith-Diagramm auf 50~$\Omega$ normalisiert, so dass
+    der Punkt genau in der Mitte $R=50$~\Ohm und $X=0$~\Ohm aufweist.
+\item Auf der Horizontalen in der Mitte des Diagrammes sind alle Impedanzen mit $X=0$~\Ohm, also alle Impedanzen
+    ohne Blindanteil.
+\item Der Punkt ganz links auf dieser Horizontalen ist $R=0$~\Ohm, also eine Impedanz ohne Wirk- und Blindwiderstand
+    bzw. ein Kurzschluss.
+\item Der Punkt ganz rechts auf der selben Horizontalen ist $R=\infty$~\Ohm, also eine offene Verbindung.
+\item Punkte oberhalb der Horizontalen sind induktive Impedanzen ($X>0$~\Ohm).
+\item Punkte unterhalb der Horizontalen sind kapazitive Impedanzen ($X<0$~\Ohm).
+\item Punkte auf der umgebenden Kreislinie haben keinen Wirkwiderstand, sie sind also rein induktiv bzw. kapazitiv.
+\end{enumerate}
+
+\begin{figure}[t]
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                xmin=-5, xmax=355,
+                ymin=-155,ymax=155,
+                xlabel={$R/\Omega$},
+                ylabel={$X/\Omega$},
+                grid=both,
+                height=7cm,
+                axis x line=center,
+                axis y line=center,
+                width=0.9\textwidth,
+                major grid style={black!10}
+            ]
+            \fill [fill=HB9UFblue] (axis cs:200,100) circle [radius=3pt] node[right] {$R=200$~\Ohm, $X=100$\Ohm};
+            \fill [fill=black] (axis cs:50,0) circle [radius=2pt] node[above right] {$R=50$~\Ohm, $X=0$~\Ohm};
+            \fill [fill=black] (axis cs:0,100) circle [radius=2pt] node[right] {$R=0$~\Ohm, $X=100$~\Ohm (Spule)};
+            \fill [fill=black] (axis cs:0,-100) circle [radius=2pt] node[right] {$R=0$~\Ohm, $X=-100$~\Ohm (Kondensator)};
+            \fill [fill=black] (axis cs:0,0) circle [radius=2pt];
+            \draw[stealth'-] (axis cs:5,5) -- (axis cs:40,40) node[above right] {$R=0$~\Ohm, $X=0$~\Ohm (Kurzschluss)};
+        \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    \caption{Darstellung einer Impedanz mit $R=200$~$\Omega$ auf der horizontalen Achse und $X=100$~$\Omega$
+    auf der vertikalen Achse (blau), sowie einer Reihe anderer Impedanzen (schwarz).}
+    \label{fig:euler}
+\end{figure}
+
+In Abbildung \ref{fig:smithimpedance} sind die selben Impedanzen zu sehen wir in Abbildung \ref{fig:euler}, nur
+sind sie nun in einem Smith-Diagramm dargestellt. Berechtigterweise stellt sich die Frage, wozu denn das Ganze
+gut sein soll.
+
+\begin{itemize}
+    \item Richtung der Impedanzen, Matching
+    \item Leitungstheoretische Aspekte
+\end{itemize}
+
+\begin{figure}
+    \begin{tikzpicture}
+        \begin{smithchart}[width=\textwidth,show origin code/.code={},clip=false,xticklabel style={font=\small},yticklabel style={font=\small}]
+            \tikzstyle{note}=[align=center,fill=black]
+            \fill [note,fill=HB9UFblue] (axis cs:4,2) circle [radius=4pt] node[above] {$R=200$~\Ohm, $X=100$\Ohm};
+            \fill[note] (axis cs:1,0) circle [radius=3pt] node[below] {$R=50$~\Ohm, $X=0$~\Ohm};
+            \fill[note] (axis cs:0,2) circle [radius=3pt] node[below left] {$R=0$~\Ohm, $X=100$~\Ohm\\ (Spule)};
+            \fill[note] (axis cs:0,-2) circle [radius=3pt] node[above left] {$R=0$~\Ohm, $X=-100$~\Ohm\\ (Kondensator)};
+            \fill[note] (axis cs:0,0) circle [radius=3pt] node[below right] {$R=0$~\Ohm, $X=0$~\Ohm\\ (Kurzschluss)};
+            \fill[note] (axis cs:1000,1000) circle [radius=3pt] node[below left] {Offen};
+        \end{smithchart}
+    \end{tikzpicture}
+    \caption{Smith-Diagramm der Impedanzen aus Abbildung \ref{fig:euler}.}
+    \label{fig:smithimpedance}
+\end{figure}
+
+\subsection{Kalibrierung}
+
+Zur Korrektur von Messabweichungen in Testkabeln und dem Gerät
+(Frequenzabhängkeit von Stimulus und Detektor) muss vor jeder Messung eine
+Kalibrierung durchgeführt werden. Wie in Abschnitt \ref{sec:tl} erläutert,
+werden Impedanzen durch Leitungen transformiert. Eine Kalibrierung macht
+auch diesen Effekt rückgängig. Dafür wird ein Kalibrierungs-Standard
+benötigt; in Abbildung \ref{fig:calkit} sind zwei solche Standards abgedruckt.
+Es gibt eine ganze Reihe von Kalibrierungstechniken, welche z.B.
+in \cite{hiebel2007fundamentals}  und \cite{hiebel2008vector} erklärt sind.
+An dieser Stelle werden für Reflexions- und Transmissionsmessung je eine
+einfache Kalibrierung vorgestellt:
+
+\subsubsection{Reflexionsmessung}
+Diese Messung wir mit einer offenen Verbindung (open, O), einem Kurzschluss
+(short, S) und einer 50~\Ohm Last (load bzw. match, L/M) durchgeführt. Diese Art von
+Kalibrierung wird deshalb auch OSL- bzw. OSM-Kalibrierung genannt. Diese
+werden der Reihe nach angeschlossen und das Messgerät über den aktuell angeschlossenen
+Abschluss orientiert. Dabei ist es wichtig, dass der Standard dort angeschlossen
+wird, wo auch die Messung erfolgen soll. Das Gerät kann so die Transformation
+der Messleitung sowie weitere Fehler rückgängig machen.
+
+\subsection{Transmissionsmessung}
+Bei der Transmissionsmessung wird das Gerät mit einem Verbindungsstück (thru, T) kalibriert,
+welcher dann entfernt bzw. durch den Prüfling ersetzt wird. So weiss das  Gerät,
+wieviel Energie in welcher Phase vom einen in den anderen Port gelangt, wenn der
+Prüfling nicht eingeschleift wird. Diese Messung wird dann als 0~dB bzw. 0° Referenz
+genutzt. Jeder Fehler im Verbindungsstück (Dämpfung $>$ 0~dB, Phasengang $\ne$~0°)
+wirkt sich direkt auf die Messung aus.
+
 
 \section{Bedienung NanoVNA}
 \begin{itemize}
@@ -143,7 +716,8 @@ mybox/.style={
     \item Dummy Load?
 \end{itemize}
 
-\section{Schwingkreise, Resonanzfrequenzen, Anpassung}
+\newpage % FIXME
+\section{Schwingkreise, Resonanzfrequenzen, Anpassung}\label{sec:schwingkreis}
 % FIXME: Nach Bauteil-Impedanz
 \subsection{Theorie}
 Es gibt mehrere Gründe, sich mit der Messung von Schwingkreisen
@@ -202,7 +776,7 @@ einer Antenne im Umfeld ihrer Resonanzfrequenz ist offensichtlich.
     ymin=-70,ymax=10,
     grid=both,
     xlabel={Frequenz $f$/MHz},
-    ylabel={\uline{R\"uckfluss $S_{11}$}},
+    ylabel={\uline{R\"uckfluss}},
     height=6cm,
     width=0.45\textwidth,
     major grid style={black!10}
@@ -363,7 +937,7 @@ Antennenmodell verwendet, dessen Impedanz mit einem Tuner angepasst wird.
     \item Fügen Sie eines Ihrer Koaxial-Messkabel zwischen dem Schwingkreis und dem
         NanoVNA ein. \textbf{Wie verändert sich die Anzeige im Smith-Diagramm? In welchem
         Zusammenhang steht diese Relation mit der Länge des Messkabels?}
-        \hline
+        %\hline FIXME
     \item Betrachten Sie das Innere des Tuners und identifizieren Sie die Bauteile aus 
         Abbildung \ref{fig:tmatch}.
     \item Schleifen Sie den Tuner zwischen Modell-Antenne und Messgerät und erneuern Sie die
@@ -392,7 +966,7 @@ und dann eingeschleift. Auf die selbe Art und Weise können Filter (Abschnitt
 \ref{sec:filter}) und Stub-Filter (Abschnitt \ref{sec:stubfilter}) charakterisiert
 werden.
 
-Bei vollständiger Isolation wäre die Einfügungsdämpfung unendlich gross. Trotzdem
+Bei vollständiger Isolation wäre die Einfügedämpfung unendlich gross. Trotzdem
 zeigt ein VNA einen endlichen Wert an. Es kann keine Dämpfung/Isolation gemessen
 werden, welche diesen Wert übersteigt.
 
@@ -410,7 +984,7 @@ Stufendämpfungsglieder, Richtkoppler, Hybridkoppler und ein Wilkinson-Splitter.
 Starten Sie bei jeder Messung mit dem vollen Messbereich.
 
 \begin{enumerate}
-    \item Ermitteln Sie nach der Kalibrierung die Einfügungsdämpfung bei
+    \item Ermitteln Sie nach der Kalibrierung die Einfügedämpfung bei
         perfekter Isolation. Damit wissen Sie, welche Dämpfung Sie maximal
         messen können.
     \item \textbf{Dämpfungsglieder:} Vermessen Sie die zu Verfügung stehenden
@@ -492,7 +1066,7 @@ angeschlossenen Leitungen keinen Einfluss hat. Bei der doppelten Frequenz, also
 $\lambda/2$! Da die Leitung am Ende nach wie vor kurzgeschlossen ist, wird dieser
 Kurzschluss bei 60~MHz also unmittelbar in das T-Stück transformiert, und ein
 Kurzschluss führt zu einer Totalreflexion: Die Struktur sperrt bei 60~MHz. Das
-selbe Phänomen tritt auch bei 120~MHz, 180~MHz etc. auf. Die Einfügungsdämpfung
+selbe Phänomen tritt auch bei 120~MHz, 180~MHz etc. auf. Die Einfügedämpfung
 ist in Abbildung \ref{fig:quarterwaveplot} dargestellt. Die gestrichelte Linie
 zeigt ein Stub mit offenem (anstelle eines kurzgeschlossenen) Ende. Die Sperrwirkung
 erfolgt dort bereits bei 30~MHz, da bei dieser Frequenz das offene Ende in einen
@@ -506,7 +1080,7 @@ Kurzschluss transformiert wird.
     ymin=-35, ymax=5,
     grid=both,
     xlabel={Frequenz / MHz},
-    ylabel={Dämpfung $S_{21}$ / dB},
+    ylabel={Transmission / dB},
     xtick = {0,30,...,300},
 %   ticks=none,
     height=6cm,
@@ -518,7 +1092,7 @@ Kurzschluss transformiert wird.
 \end{axis}
 \end{tikzpicture}
 \end{center}
-\caption{Einfügungsdämpfung eines Stub-Filters der Länge 2.5~m. Die ausgezogene Linie beschreibt den Filterverlauf
+\caption{Einfügedämpfung eines Stub-Filters der Länge 2.5~m. Die ausgezogene Linie beschreibt den Filterverlauf
 eines kurzgeschlossenen Stubs, wärend die gestrichelte Linie den Filterverlauf eines Stubs mit offenem Ende beschreibt.}
 \label{fig:quarterwaveplot}
 \end{figure}
@@ -580,7 +1154,7 @@ etc. erfasst werden und wird an dieser Stelle nicht besprochen.
 Die Gegentaktmessung ist einfach: Der VNA wird für eine Transmissionsmessung
 kalibriert, die Sperre wird eingeschleift und die Einfüngungsdämpdung wird
 gemessen. Eine gute Mantelwellensperre sollte bei dieser Messung eine geringe
-Einfügungsdämpfung aufweisen.
+Einfügedämpfung aufweisen.
 
 \subsubsection{Gleichtaktmessung}
 
@@ -592,7 +1166,7 @@ Innenleiter der Ports verbunden; die beiden Aussenleiter der Ports werden
 kurzgeschlossen. Wenn die so präparierte Mantewellensperre als diskretes
 Bauteil betrachtet wird (siehe FIXME), so entspricht diese Messung der
 seriellen Transmissionsmessung dieses Bauteils. Eine gute Mantelwellensperre
-sollte bei dieser Messung eine hohe Einfügungsdämpfung haben.
+sollte bei dieser Messung eine hohe Einfügedämpfung haben.
 
 Für diese Messung steht eine spezielle Apparatur zu Verfügung, welche die
 Aussenleiter der beiden VNA-Ports kurzschliesst. Die Mantelwellensperre
@@ -655,7 +1229,7 @@ $$
     xmin=15.89, xmax=15.95,
     ymin=-65, ymax=5,
     grid=both,
-    ylabel={\uline{Dämpfung $S_{21}$}},
+    ylabel={\uline{Transmission}},
     ytick = {-60,-50,...,0},
     ticks=none,
     height=6cm,
@@ -687,7 +1261,7 @@ $$
 \end{axis}
 \end{tikzpicture}
 \end{center}
-\caption{Einfügungsdämpfung (ausgezogen) und Blindwiderstand $X$ (gestrichelt, negativ wenn kapazitiv) der Ersatzschaltung
+\caption{Einfügedämpfung (ausgezogen) und Blindwiderstand $X$ (gestrichelt, negativ wenn kapazitiv) der Ersatzschaltung
 aus Abbildung \ref{fig:quarzersatz}. Es sind zwei Resonanzstellen sichtbar.}
 \label{fig:quarzidealplot}
 \end{figure}
@@ -734,6 +1308,8 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 \section{FIXME (zu erwägen): Firmware Upgrade}
 
 \section{FIXME (zu erwägen): Zubehör}
+
+\section{FIXME (zu erwägen): Funktionsprinzip}
 
 %   https://www.nonstopsystems.com/radio/frank_radio_coax-sw.htm
 
