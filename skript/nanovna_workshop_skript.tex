@@ -735,6 +735,21 @@ finden aber immer wieder die selben Menüpunkte Anwendung.  Diese sind im
 Folgenden erläutert.
 
 \subsection{Einstellen des Frequenzbereiches}\label{sec:nanovnafreq}
+
+\begin{center}\begin{tikzpicture}[font=\sffamily]
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \tikzstyle{stimulus}=[fill=stimulus]
+    \node[menu,stimulus] (stimulus) {Stimulus};
+    \node[menu,stimulus,right=10em of stimulus] (start) {Start};
+    \node[menu,stimulus,below of=start] (stop) {Stop};
+    \node[menu,stimulus,below of=stop] (center) {Center};
+    \node[menu,stimulus,below of=center] (span) {Span};
+    \node[menu,stimulus,below of=span] (cwfreq) {CW Freq};
+    \node[menu,stimulus,below of=cwfreq] (pausesweep) {Pause Swp.};
+    \draw[thick,-stealth'] (stimulus) -- (start);
+\end{tikzpicture}\end{center}
+
+
 Der Frequenzbereich wird im Menü ``Stimulus'' eingestellt. Die kann auf zwei
 Arten erfolgen:
 
@@ -755,6 +770,31 @@ ist nach einer Änderung des Kanales (Abschnitt \ref{sec:nanovnachannel}) oder
 des Anzeigeformates (Abschnitt \ref{sec:nanovnaformat}) nicht notwendig.
 
 \subsection{Kalibrierung}\label{sec:nanovnacal}
+\begin{center}\begin{tikzpicture}[font=\sffamily]
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \tikzstyle{cal}=[fill=cal]
+    \node[menu,cal,below of=stimulus] (cal) {Cal};
+    \node[menu,cal,right=10em of cal] (calibrate) {Calibrate};
+    \node[menu,cal,below of=calibrate] (calsave) {Save};
+    \node[menu,cal,below of=calsave] (reset) {Reset};
+    \node[menu,cal,below of=reset] (correction) {Correction};
+
+    \node[menu,cal,right=20em of calibrate] (open) {Open};
+    \node[menu,cal,below of=open] (short) {Short};
+    \node[menu,cal,below of=short] (load) {Load};
+    \node[menu,cal,below of=load] (isoln) {Isoln};
+    \node[menu,cal,below of=isoln] (thru) {Thru};
+    \node[menu,cal,below of=thru] (done) {Done};
+
+    \node[menu,cal,right=10em of calsave] (save0) {Save 0};
+    \node[menu,cal,below of=save0] (savei) {...};
+    \node[menu,cal,below of=savei] (save4) {Save 4};
+
+    \draw[thick,-stealth'] (cal) -- (calibrate);
+    \draw[thick,-stealth'] (calibrate) -- (open);
+    \draw[thick,-stealth'] (calsave) -- (save0);
+\end{tikzpicture}\end{center}
+
 Nach jeder Änderung des Frequenzbereiches oder des Messaufbaus sollte der
 NanoVNA rekalibriert werden. Dafür ist das Menü ``Cal'' vorgesehen. Eine
 Kalibrierung für die Reflexionsmessung beinhaltet folgende Schritte:
@@ -808,6 +848,19 @@ angezeigt. Tabelle \ref{tab:calibration} erläutert die dort verwendeten Abkürz
 \end{table}
 
 \subsection{Trace / Spur anzeigen}
+\begin{center}\begin{tikzpicture}[font=\sffamily]
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \node[menu] (display) {Display};
+    \node[menu,right=10em of display] (trace) {Trace};
+    \node[menu,right=10em of trace] (trace0) {\colorbox{trace0}{Trace 0}};
+    \node[menu,below of=trace0] (trace1) {\colorbox{trace1}{Trace 1}};
+    \node[menu,below of=trace1] (trace2) {\colorbox{trace2}{Trace 2}};
+    \node[menu,below of=trace2] (trace3) {\colorbox{trace3}{Trace 3}};
+
+    \draw[thick,-stealth'] (display) -- (trace);
+    \draw[thick,-stealth'] (trace) -- (trace0);
+\end{tikzpicture}\end{center}
+
 Der NanoVNA kann bis zu vier Spuren (engl. Trace) anzeigen. Für jede dieser Spuren
 ist es möglich, den Kanal zu wählen (CH0: Reflexionsmessung, CH1:
 Transmissionsmessung) und zu bestimmen, auf welche Art und Weise die Mess-Ergebnisse
@@ -819,6 +872,18 @@ Hauptbildschirm invertiert beschrieben. Die Kanalwahl (Abschnitt
 betrifft jeweils diese Spur.
 
 \subsection{Kanalwahl}\label{sec:nanovnachannel}
+\begin{center}\begin{tikzpicture}[font=\sffamily]
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \node[menu] (display) {Display};
+    \node[menu,right=10em of display] (channel) {Channel};
+    \node[menu,right=10em of channel] (channel0) {CH 0};
+    \node[menu,below of=channel0] (channel1) {CH 1};
+
+    \draw[thick,-stealth'] (display) -- (channel);
+    \draw[thick,-stealth'] (channel) -- (channel0);
+\end{tikzpicture}\end{center}
+
+
 Der NanoVNA kann sowohl Reflexions- wie auch Transmissionsmessungen durchführen
 (siehe Abschnitt \ref{sec:ports}). Die beiden Ports sind mit ``CH0'' und ``CH1''
 (channel 0 und 1) angeschrieben, wobei der Stimulus stets aus ``CH0'' kommt.
@@ -835,7 +900,32 @@ entsprechenden Spurfarbe der gewählte Kanal, so dass anhand dieser Angabe
 eruiert werden kann, ob eine Reflexions- oder eine Transmissionsmessung
 durchgeführt wird.
 
-\subsection{Anzeigeformat der Spur}\label{sec:nanovnaformat}
+\subsection{Anzeigeformat der Spur}\label{sec:nanovnaformat} % FIXME check wrap
+\begin{center}\begin{tikzpicture}[font=\sffamily]
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \node[menu] (display) {Display};
+    \node[menu,right=10em of display] (format) {Format};
+
+    \node[menu,right=10em of format]  (logmag) {LogMag};
+    \node[menu,below of=logmag]  (phase) {Phase};
+    \node[menu,below of=phase]  (delay) {Delay};
+    \node[menu,below of=delay]  (smith) {Smith};
+    \node[menu,below of=smith]  (swr) {SWR};
+    \node[menu,below of=swr]  (more) {More...};
+
+    \node[menu,right=10em of logmag]  (polar) {Polar};
+    \node[menu,below of=polar]  (linear) {Linear};
+    \node[menu,below of=linear] (real) {Real};
+    \node[menu,below of=real]  (imag) {Imag};
+    \node[menu,below of=imag]  (resistance) {Resistance};
+    \node[menu,below of=resistance] (reactance) {Reactance};
+
+
+    \draw[thick,-stealth'] (display) -- (format);
+    \draw[thick,-stealth'] (format) -- (logmag);
+    \draw[thick,-stealth'] (more) --  +(5.5em,0em) |- (polar);
+\end{tikzpicture}\end{center}
+
 Der NanoVNA kann das Resultat der Reflexions- und Transmissionsmessung auf verschiedene
 Weise anzeigen. Diese Einstellung kann im Menü ``Display'' $\longrightarrow$ ``Trace''
 für jede der 4 Spuren gemacht werden. Die Einstellung gilt für die aktuell gewählte
@@ -853,6 +943,27 @@ Spur. Die wichtigsten Formate sind:
 \end{itemize}
 
 \subsection{Marker}
+\begin{center}\begin{tikzpicture}[font=\sffamily]
+    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
+    \tikzstyle{marker}=[fill=marker]
+
+    \node[menu,marker] (marker) {Marker};
+
+    \node[menu,marker,right=10em of marker] (selectmarker) {Select M.};
+    \node[menu,marker,below of=selectmarker] (markerstart) {Start};
+    \node[menu,marker,below of=markerstart] (markerstop) {Stop};
+    \node[menu,marker,below of=markerstop] (markercenter) {Center};
+    \node[menu,marker,below of=markercenter] (markerspan) {Span};
+
+    \node[menu,marker,right=10em of selectmarker] (marker1) {Marker 1};
+    \node[menu,marker,below of=marker1] (markeri) {...};
+    \node[menu,marker,below of=markeri] (marker4) {Marker 4};
+    \node[menu,marker,below of=marker4] (alloff) {All Off};
+
+    \draw[thick,-stealth'] (marker) -- (selectmarker);
+    \draw[thick,-stealth'] (selectmarker) -- (marker1);
+\end{tikzpicture}\end{center}
+
 Mit Hilfe von Marker können Messwerte der Spuren numerisch angezeigt werden. Der NanoVNA
 unterstützt vier verschiedene Marker, die aber nicht zu je einer Spur gehören. Vielmehr
 wird ein aktiver Marker für jede der vier Spuren berechnet, jedenfalls sofern die entsprechende
