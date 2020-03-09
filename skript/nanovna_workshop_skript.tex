@@ -22,6 +22,17 @@
 \definecolor{HB9UFblue}{RGB}{0,61,165}
 \definecolor{HB9UFred}{HTML}{ED135A}
 
+\definecolor{marker}{HTML}{f9f871}
+\definecolor{stimulus}{HTML}{ffc75f}
+\definecolor{cal}{HTML}{ff9671}
+\definecolor{recall}{HTML}{ff6f91}
+\definecolor{config}{HTML}{d65db1}
+% Spare color: #845ec2
+\definecolor{trace0}{RGB}{255,200,0}
+\definecolor{trace1}{RGB}{0,155,255}
+\definecolor{trace2}{RGB}{0,220,0}
+\definecolor{trace3}{RGB}{220,0,220}
+
 \newcommand{\uline}[1]{%
     \tikz[baseline=(todotted.base)]{
         \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
@@ -1329,21 +1340,11 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 %http://ormpoa.altervista.org/firmware.htm
 % Weiterführende Literatur
 
-\section{Menü-Übersicht} % FIXME Is this printed?
+\section{Menü-Übersicht}\label{sec:menu} % FIXME Is this printed?
 
 \newpage % FIXME
 
 \scalebox{0.93}{\rotatebox{90}{\begin{tikzpicture}[font=\sffamily]
-    \definecolor{marker}{HTML}{f9f871};
-    \definecolor{stimulus}{HTML}{ffc75f};
-    \definecolor{cal}{HTML}{ff9671};
-    \definecolor{recall}{HTML}{ff6f91};
-    \definecolor{config}{HTML}{d65db1};
-    % Spare color: #845ec2
-    \definecolor{trace0}{RGB}{255,200,0};
-    \definecolor{trace1}{RGB}{0,155,255};
-    \definecolor{trace2}{RGB}{0,220,0};
-    \definecolor{trace3}{RGB}{220,0,220};
     \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
     \tikzstyle{marker}=[fill=marker]
     \tikzstyle{stimulus}=[fill=stimulus]
