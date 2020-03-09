@@ -169,9 +169,9 @@ und dort gemessen (Transmissionsmessung).
     \begin{center}
         \begin{tikzpicture}[text width=6em, text centered,, node distance=8em]
             \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=3em]
-            \node[box] (p1) {\sf\Large{Port ①}};
+            \node[box] (p1) {\sf\Large{Port ① \small{(CH0)}}};
             \node[box,right=of p1] (dut) {\sf\Large{DUT}};
-            \node[box,right=of dut] (p2) {\sf\Large{Port ②}};
+            \node[box,right=of dut] (p2) {\sf\Large{Port ② \small{(CH1)}}};
 
             \draw[-stealth',thick,transform canvas={yshift=2mm}] (p1) -- node[above] {\sf Stimulus} (dut);
             \draw[-stealth',thick,transform canvas={yshift=-2mm}] (dut) -- node[below]{\sf Reflexion} (p1);
@@ -182,7 +182,8 @@ und dort gemessen (Transmissionsmessung).
         ein Filter, eine Antenne etc.). Ein Teil der eintreffenden Energie wird zurück zu Port ① reflektiert
         (Reflexionsmessung). Der Rest wird entweder vom Prüfling in Wärme umgewandelt, als Radiowelle
         abgestrahlt oder gelangt (falls vorhanden) an den Ausgang des Prüflings. Die Energie am Ausgang
-        des Prüflings wird Port ② zugeführt und dort gemessen (Transmissionsmessung).}
+        des Prüflings wird Port ② zugeführt und dort gemessen (Transmissionsmessung). Die Begriffe ``CH0''
+        und ``CH1'' beziehen sich auf den NanoVNA und sind ansonsten unüblich.}
     \label{fig:testset}
 \end{figure}
 
