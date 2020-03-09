@@ -137,7 +137,7 @@ mybox/.style={
 
 \section{Grundlagen}
 
-\subsection{Ports, Reflexions- und Transmissionsmessung}
+\subsection{Ports, Reflexions- und Transmissionsmessung}\label{sec:ports}
 Netzwerkanalysatoren sind Geräte, mit denen Transmissions- und
 Reflexionseigenschaften von Hochfrequenznetzwerken frequenzabhängig ermittelt
 werden können. Sie dienen dem Ausmessen von Antennen, Filtern, Transformatoren,
@@ -677,7 +677,7 @@ gut sein soll.
     \label{fig:smithimpedance}
 \end{figure}
 
-\subsection{Kalibrierung}
+\subsection{Kalibrierung}\label{sec:calibration}
 
 Zur Korrektur von Messabweichungen in Testkabeln und dem Gerät
 (Frequenzabhängkeit von Stimulus und Detektor) muss vor jeder Messung eine
@@ -709,12 +709,170 @@ wirkt sich direkt auf die Messung aus.
 
 
 \section{Bedienung NanoVNA}
+Der NanoVNA wird mit einem Schiebe-Schalter ein- und ausgeschalten. Beim Einschalten
+leuchtet eine blaue LED auf, welche nach dem Ausschalten noch bis zu einer Minute
+nachleuchtet. Das Gerät wird über das mitgelieferte USB-C Kabel geladen. Die blaue
+LED blinkt, bis der Akku voll ist, anschliessend leuchtet sie ohne Unterbrüche.
+% FIXME check how LED really is charged.
+
+Der grundsätzliche Messablauf ist immer gleich:
+
+\begin{enumerate}
+    \item Einstellung der Frequenz (Abschnitt \ref{sec:nanovnafreq})
+    \item Kalibrierung (Abschnitt \ref{sec:nanovnacal}) % FIXME: CHeck order of sections
+    \item Kanalwahl (Abschnitt \ref{sec:nanovnachannel} und Einstellung des Anzeigeformates
+        (Abschnitt \ref{sec:nanovnaformat})
+\end{enumerate}
+
+Bei einer Änderung des Frequenzbereiches muss das Gerät für die bestmögliche Messung
+rekalibriert werden.
+
+Weil der Bildschirm etwas klein ist, lohnt sich die Bedienung mit Hilfe eines
+Plastik-Stiftes. Der NanoVNA hat ein relativ umfangreiches Menü, welches in
+Abschnitt \ref{sec:menu} als Referenz abgedruckt ist. Bei der üblichen Bedienung
+finden aber immer wieder die selben Menüpunkte Anwendung.  Diese sind im
+Folgenden erläutert.
+
+\subsection{Einstellen des Frequenzbereiches}\label{sec:nanovnafreq}
+Der Frequenzbereich wird im Menü ``Stimulus'' eingestellt. Die kann auf zwei
+Arten erfolgen:
+
 \begin{itemize}
-    \item Frequenzeinstellung
-    \item Kanaleinstellung
-    \item Kalibrierung
-    \item Trace-Optionen
+    \item Mit ``Start'' und ``Stop'' werden Anfangs- und Endfrequenz eingegeben. Eine Anfangsfrequenz von
+        430~MHz und eine Endfrequenz von 440~MHz führen dazu, dass das  Gerät im Frequenzbereich von 430~MHz bis 440~MHz misst.
+    \item Mit ``Center'' und ``Span'' wird die Mittefrequenz und Bandbreite eingegeben. Eine Mittefrequenz von 435~MHz
+        und eine Bandbreite von 10~MHz führen also zur selben Messung wie oben.
 \end{itemize}
+
+% FIXME: Abkürzungen checken (Freq.)
+Mit der Einstellung ``CW Freq'' wird das Gerät auf eine einzige Frequenz fixiert.
+Der aktuelle Frequenzbereich wird im Display unten in der linken und rechten
+Ecke angezeigt. % FIXME: Check
+Für eine gute Messung muss nach einer Änderung des Frequenzbereiches unbedingt
+rekalibriert werden (siehe Abschnitt \ref{sec:nanovnacal}). Eine erneute Kalibrierung
+ist nach einer Änderung des Kanales (Abschnitt \ref{sec:nanovnachannel}) oder
+des Anzeigeformates (Abschnitt \ref{sec:nanovnaformat}) nicht notwendig.
+
+\subsection{Kalibrierung}\label{sec:nanovnacal}
+Nach jeder Änderung des Frequenzbereiches oder des Messaufbaus sollte der
+NanoVNA rekalibriert werden. Dafür ist das Menü ``Cal'' vorgesehen. Eine
+Kalibrierung für die Reflexionsmessung beinhaltet folgende Schritte:
+
+\begin{enumerate}
+    \item Im Menü ``Cal'' das Feld ``Reset'' wählen.
+    \item Das Untermenü ``Calibrate'' wählen.
+    \item Den offenen Abschluss befestigen und ``Open'' wählen.
+    \item Den Kurzschluss befestigen und ``Short'' wählen.
+    \item Den 50~\Ohm Abschluss befestigen und ``Load'' wählen.
+    \item ``Done'' wählen.
+    \item Die Kalibrierung in Position 0 speichern ``Save 0''.
+\end{enumerate}
+
+Eine Kalibrierung für die Transmissionsmessung beinhaltet folgende Schritte:
+
+\begin{enumerate}
+    \item Im Menü ``Cal'' das Feld ``Reset'' wählen.
+    \item Das Untermenü ``Calibrate'' wählen.
+    \item Die Verbindung zwischen den beiden Ports trennen und ``Isoln'' wählen.
+    \item Mit einem Thru-Verbindungsstück die beiden Ports verbinden und ``Thru'' wählen.
+    \item ``Done'' wählen.
+    \item Die Kalibrierung in Position 0 speichern ``Save 0''.
+\end{enumerate}
+
+Bei Bedarf ist auch eine Kalibrierung für eine kombinierte Reflexions- und Transmissionsmessung
+möglich. In diesem Fall wird im Untermenü ``Calibrate'' jeder Schritt durchgeführt. Mit der
+Kalibrierung werden auch die angezeigten Spuren und deren Format, Marker etc. gespeichert.
+
+Auf der linken Seite des Hauptbildschirms wird der jeweils aktuelle Kalibrierungszustand
+angezeigt. Tabelle \ref{tab:calibration} erläutert die dort verwendeten Abkürzungen.
+
+\begin{table}
+    \begin{center}
+        \caption{Abkürzungen zur Anzeige des Kalibrierungszustandes auf der linken Seite des
+        Hauptbildschirmes.}
+        \label{tab:calibration}
+        \begin{tabular}{ll}\toprule
+            \textbf{Abkürzung} & \textbf{Bedeutung}\\\midrule
+            \texttt{C0}, \texttt{C1}, ... & Kalibrierung aus Position 0, 1, etc. ist aktiv.\\
+            \texttt{C*} & Aktive Kalibrierung ist nicht gespeichert.\\
+            \texttt{c0}, \texttt{c1}, ... & Warnung: Interpolierte Kalibrierung.\\
+            \texttt{D} & Kalibrierung mit ``Load'' ist erfolgt.\\
+            \texttt{R} & Kalibrierung mit ``Open'' ist erfolgt.\\
+            \texttt{T} & Kalibrierung mit ``Thru'' ist erfolgt.\\
+            \texttt{X} & Kalibrierung mit ``Isoln'' ist erfolgt.\\
+            \texttt{S} & Kalibrierung mit ``Short'' ist erfolgt.\\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{Trace / Spur anzeigen}
+Der NanoVNA kann bis zu vier Spuren (engl. Trace) anzeigen. Für jede dieser Spuren
+ist es möglich, den Kanal zu wählen (CH0: Reflexionsmessung, CH1:
+Transmissionsmessung) und zu bestimmen, auf welche Art und Weise die Mess-Ergebnisse
+angezeigt werden. Die Spuren sind farblich codiert und lassen sich im Menü
+``Display'' $\longrightarrow$ ``Trace'' ein- und ausschalten. Im selben Menü
+lässt wird auch die aktuelle Spur ausgewählt. Die aktuell gewählte Spur ist auf dem
+Hauptbildschirm invertiert beschrieben. Die Kanalwahl (Abschnitt
+\ref{sec:nanovnachannel}) und die Wahl des Anzeigeformates (Abschnitt \ref{sec:nanovnaformat})
+betrifft jeweils diese Spur.
+
+\subsection{Kanalwahl}\label{sec:nanovnachannel}
+Der NanoVNA kann sowohl Reflexions- wie auch Transmissionsmessungen durchführen
+(siehe Abschnitt \ref{sec:ports}). Die beiden Ports sind mit ``CH0'' und ``CH1''
+(channel 0 und 1) angeschrieben, wobei der Stimulus stets aus ``CH0'' kommt.
+Für eine Reflexionsmessung wird deshalb an ``CH0'', für eine Transmissionsmessung
+an ``CH1'' gemessen. Das Pfeil-Piktogramm zwischen den Anschlüssen auf der
+Frontblende des NanoVNA erinnert an Abbildung \ref{fig:testset}
+und kann bei Unsicherheit zu Rate gezogen werden.
+
+Diese Kanalwahl erfolgt im Menü ``Display'' $\longrightarrow$ ``Channel''.
+Die Einstellung in diesem Menü gilt deshalb für die aktuell gewählte Spur.
+
+Für jede Spur erscheint im oberen Teil des Hauptbildschirmes in der
+entsprechenden Spurfarbe der gewählte Kanal, so dass anhand dieser Angabe
+eruiert werden kann, ob eine Reflexions- oder eine Transmissionsmessung
+durchgeführt wird.
+
+\subsection{Anzeigeformat der Spur}\label{sec:nanovnaformat}
+Der NanoVNA kann das Resultat der Reflexions- und Transmissionsmessung auf verschiedene
+Weise anzeigen. Diese Einstellung kann im Menü ``Display'' $\longrightarrow$ ``Trace''
+für jede der 4 Spuren gemacht werden. Die Einstellung gilt für die aktuell gewählte
+Spur. Die wichtigsten Formate sind:
+
+\begin{itemize}
+    \item \textbf{LogMag:} Das Resultat wird skalar in dB angezeigt. Bis auf das Vorzeichen sind
+        die Angaben deshalb als Einfüge- bzw. Rückführungsdämpfungen zu verstehen.
+    \item \textbf{Phase:} Der Phasengang wird angezeigt.
+    \item \textbf{SWR:} Aus den skalaren Messresultaten wird das im Amateurfunk
+        beliebte Stehwellenverhältnis (standing wave ratio, SWR) berechnet und
+        angezeigt. Dies ist vor allem bei Reflexionsmessungen sinnvoll.
+    \item \textbf{Smith:} Die Messresultate werden im Smith-Diagramm dargestellt. Auch dies
+        ist vor allem bei Reflexionsmessungen sinnvoll.
+\end{itemize}
+
+\subsection{Marker}
+Mit Hilfe von Marker können Messwerte der Spuren numerisch angezeigt werden. Der NanoVNA
+unterstützt vier verschiedene Marker, die aber nicht zu je einer Spur gehören. Vielmehr
+wird ein aktiver Marker für jede der vier Spuren berechnet, jedenfalls sofern die entsprechende
+Spur aktiviert ist.
+
+% FIXME: Screenshot
+Beispiel: Er wird im Frequenzbereich von 10~MHz bis 20~MHz gemessen. Zwei Spuren sind aktiv,
+nämlich Spur 1 als Reflexionsmessung (CH0) und Spur 2 als Transmissionsmessung. Das Format beider
+Spuren ist LogMag. Ein einziger Marker ist aktiv und auf eine Frequenz von
+15~MHz eingestellt. Dieser Marker misst für die erste Spur die Rückführungsdämpfung und für
+die zweite Spur die Einfügedämpfung, beides bei der eingestellten Frequenz von 15~MHz. Diese
+Frequenz wird in weiss neben der Marker-Nummer (1) angezeigt. Ausserdem wird der Marker als
+kleines Dreieck auf der Spur selbst angezeigt. Die aus den Spuren extrahierte
+Dämpfung (bzw. eigentlich der Gewinn) wird in der entsprechenden Spurfarbe
+angezeigt. Wir ein zweiter Marker aktiviert, so gilt das eben erwähnte genauso für den zweiten
+Marker. Seine Frequenz wird dann in weiss neben der Zahl 2 angezeigt. Analog zur aktuell
+ausgewählten Spur gibt es einen aktuell ausgewählten Marker, in diesem Beispiel entweder 1 oder
+2.
+
+Mit Hilfe eiens Stiftes kann der aktuelle Marker verschoben werden. Alternativ kann dazu auch
+das kleine Rädchen neben dem Hauptschalter verwendet werden.
 
 \section{FIXME: Antenne}
 
@@ -1083,6 +1241,7 @@ zeigt ein Stub mit offenem (anstelle eines kurzgeschlossenen) Ende. Die Sperrwir
 erfolgt dort bereits bei 30~MHz, da bei dieser Frequenz das offene Ende in einen
 Kurzschluss transformiert wird.
 
+
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}
@@ -1371,7 +1530,7 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
         \node[menu,below of=trace1] (trace2) {\colorbox{trace2}{Trace 2}};
         \node[menu,below of=trace2] (trace3) {\colorbox{trace3}{Trace 3}};
 
-    \node[menu,right=20em of format]  (logmag) {Logmag};
+    \node[menu,right=20em of format]  (logmag) {LogMag};
     \node[menu,below of=logmag]  (phase) {Phase};
     \node[menu,below of=phase]  (delay) {Delay};
     \node[menu,below of=delay]  (smith) {Smith};
