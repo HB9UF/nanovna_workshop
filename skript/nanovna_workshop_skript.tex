@@ -1421,40 +1421,20 @@ Die Messung Schwingkreis-Verhaltens wird genau gleich durchgeführt wie die
 Impedanzmessung in Abschnitt \ref{sec:impedance} (Reflexionsmessung). Statt
 eines einzelnen Bauteils wird der ganze Schwingkreis angeschlossen.
 
-\section{Filter}\label{sec:filter}
-
-\subsection{Theorie}
+\newpage % FIXME
+\section{Filter, Dämpfungsglieder, Koppler und Ähnliches}\label{sec:filter}
 Filter lassen einige Frequenzen des Spektrums passieren (Passband), während
-sie andere Frequenzen reflektieren oder dissipieren. Die Pass- und Sperr-Charakteristika von Filtern werden üblicherweise mit einer
-Transmissionsmessung bestimmt. Unter Umständen ist allerdings
-auch eine Reflexionsmessung zielführend, z.B. wenn ein Duplexer abgestimmt
-werden muss. Handelt es sich bei dem Filter nicht um ein 50~$\Omega$ System
-(z.B. ein Keramik-Filter), muss die Fehlanpassung berücksichtigt werden.
+sie andere Frequenzen reflektieren oder dissipieren. Die Pass- und
+Sperr-Charakteristika von Filtern werden üblicherweise mit einer
+Transmissionsmessung bestimmt. Unter Umständen ist allerdings auch eine
+Reflexionsmessung zielführend, z.B. wenn ein Duplexer justiert werden muss.
+Handelt es sich bei dem Filter nicht um ein 50~$\Omega$ System (z.B. ein
+Keramik-Filter), muss die Fehlanpassung berücksichtigt werden.
 
-\subsection{Messung}
-Es werden eine Reihe von Filter (FIXME Bandpass-Filter für das 40~m Band,
-diverse mechanische Kavitäten und Duplexer) auf ihre Eigenschaften hin
-untersucht.
+Zu beachten ist wie üblich, dass keine Einfügedämpfungen gemessen werden
+können, welche den Dynamikbereich des VNAs überschreiten.
 
-\begin{enumerate}
-    \item Wählen Sie einen Filter für Ihre Messung aus. Falls Sie eine 70~cm
-        Duplexer, Tiefpass oder Hochpass wählen, bietet es sich an, das Experiment
-        mit einem Filter mit mehr bzw. weniger Kavitäten zu Wiederholen und
-        allfällige Unterschiede zu begutachten.
-    \item Stellen Sie die gewünschte Zielfrequenz ein und kalibrieren Sie das
-        Gerät für eine Transmissionsmessung. Dabei ist darauf zu achten, dass
-        bei Zuhilfenahme oder Weglassen von Adapter zwischen Kalibrierung und
-        Messung, ein Fehler eingeführt wird.
-    \item Schleifen Sie das Filter ein und charakterisieren Sie es.
-    \item Konsultieren Sie im aktuellen Aufbau auch die Reflexionsmessung.
-    \item Zusatzfrage zur Messung der Kavitäten: Ein UHF Umsetzer benötigt eine
-        Isolation von ca. 80~dB. Kann dieser Umstand mit dem NanoVNA überprüft werden?
-
-
-\end{enumerate}
-
-\section{Koaxiale Stub-Filter}\label{sec:stubfilter}
-\subsection{Theorie}
+\subsection{Koaxiale Stub-Filter}\label{sec:stubfilter}
 Eine Leitung -- z.B. ein Koaxialkabel -- der Länge $\lambda/4$ hat besondere
 Eigenschaften: Ein Kurzschluss am einen Ende sieht vom anderen Ende aus wie
 eine offene Verbindung; eine offene Verbindung am einen Ende sieht vom anderen
@@ -1467,38 +1447,7 @@ Halbkreis bzw. eine Rotation um einen Vollkreis: Die $\lambda/2$-Leitung
 transformiert eine beliebige Impedanz (abgesehen von Verlusten im Kabel) auf
 sich selbst.
 
-Diese Eigenschaft kann genutzt werden, um mit Koaxialkabel einen relativ
-schmalbandigen Sperr-Filter (Notch) zu implementieren. Dazu wird, wie in Abbildung
-\ref{fig:quarterwavestub} gezeigt, mit einem T-Stück die $\lambda/4$-Leitung
-parallel geschaltet. 
-% FIXME: Alternative HB9UF print
-
 \begin{figure}[H]
-    \reflectbox{\includegraphics[width=\textwidth]{figures/illustration_stub.jpg}}
-    \caption{Transmissions-Messung eines Stub-Filters. Das Ende des Stubs kann
-    (je nach gewünschtem Verhalten) offen oder kurzgeschlossen sein.}
-    \label{fig:quarterwavestub}
-\end{figure}
-
-Die Viertelwellentransformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
-soll deshalb an dieser Stelle für etwas Klarheit sorgen: Für eine Frequenz von
-30~MHz ist die Wellenlänge ca. $\lambda$=10~m. Eine Halbwellenleitung hat deshalb
-die Länge $\lambda/2$=5~m und eine Vierteilwellenleitung $\lambda/4$=2.5~m. Ein
-Kurzschluss am Ende dieser $\lambda/4$ Leitung wird deshalb bei 30~MHz zu einer
-offenen Verbindung transformiert, welche die beiden anderen am T-Stück
-angeschlossenen Leitungen keinen Einfluss hat. Bei der doppelten Frequenz, also
-60~MHz, hat diese Leitung aber nicht mehr die Länge  $\lambda/4$, sondern
-$\lambda/2$! Da die Leitung am Ende nach wie vor kurzgeschlossen ist, wird dieser
-Kurzschluss bei 60~MHz also unmittelbar in das T-Stück transformiert, und ein
-Kurzschluss führt zu einer Totalreflexion: Die Struktur sperrt bei 60~MHz. Das
-selbe Phänomen tritt auch bei 120~MHz, 180~MHz etc. auf. Die Einfügedämpfung
-ist in Abbildung \ref{fig:quarterwaveplot} dargestellt. Die gestrichelte Linie
-zeigt ein Stub mit offenem (anstelle eines kurzgeschlossenen) Ende. Die Sperrwirkung
-erfolgt dort bereits bei 30~MHz, da bei dieser Frequenz das offene Ende in einen
-Kurzschluss transformiert wird.
-
-
-\begin{figure}
 \begin{center}
 \begin{tikzpicture}
 \begin{axis}[
@@ -1523,78 +1472,68 @@ eines kurzgeschlossenen Stubs, wärend die gestrichelte Linie den Filterverlauf 
 \label{fig:quarterwaveplot}
 \end{figure}
 
+Diese Eigenschaft kann genutzt werden, um mit Koaxialkabel einen relativ
+schmalbandigen Sperr-Filter (Notch) zu implementieren (siehe Abbildung
+\ref{fig:quarterwaveplot}). Dazu wird, wie in Abbildung
+\ref{fig:quarterwavestub} gezeigt, mit einem T-Stück die $\lambda/4$-Leitung
+parallel geschaltet. Als Alternative zum T-Stück kann auch eine Vorrichtung wie
+die Platine in Abbildung \ref{fig:testfixtures} genutzt werden -- dies ist vor
+allem dann sinnvoll, wenn die $\lambda/4$-Leitung ohne Stecker auskommen soll.
+
+Die Viertelwellentransformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
+soll deshalb an dieser Stelle für etwas Klarheit sorgen: Für eine Frequenz von
+30~MHz ist die Wellenlänge ca. $\lambda$=10~m. Eine Halbwellenleitung hat deshalb
+die Länge $\lambda/2$=5~m und eine Vierteilwellenleitung $\lambda/4$=2.5~m. Ein
+Kurzschluss am Ende dieser $\lambda/4$ Leitung wird deshalb bei 30~MHz zu einer
+offenen Verbindung transformiert, welche die beiden anderen am T-Stück
+angeschlossenen Leitungen keinen Einfluss hat. Bei der doppelten Frequenz, also
+60~MHz, hat diese Leitung aber nicht mehr die Länge  $\lambda/4$, sondern
+$\lambda/2$! Da die Leitung am Ende nach wie vor kurzgeschlossen ist, wird dieser
+Kurzschluss bei 60~MHz also unmittelbar in das T-Stück transformiert, und ein
+Kurzschluss führt zu einer Totalreflexion: Die Struktur sperrt bei 60~MHz. Das
+selbe Phänomen tritt auch bei 120~MHz, 180~MHz etc. auf. Die Einfügedämpfung
+ist in Abbildung \ref{fig:quarterwaveplot} dargestellt. Die gestrichelte Linie
+zeigt ein Stub mit offenem (anstelle eines kurzgeschlossenen) Ende. Die Sperrwirkung
+erfolgt dort bereits bei 30~MHz, da bei dieser Frequenz das offene Ende in einen
+Kurzschluss transformiert wird.
+
+\begin{figure}[t]
+    \reflectbox{\includegraphics[width=\textwidth]{figures/illustration_stub.jpg}}
+    \caption{Transmissions-Messung eines Stub-Filters. Das Ende des Stubs kann
+    (je nach gewünschtem Verhalten) offen oder kurzgeschlossen sein.}
+    \label{fig:quarterwavestub}
+\end{figure}
+
 Das Vorgehen für die Messung eines Stub-Filters mit dem NanoVNA unterscheidet
-sich nicht von den übrigen Filtermessungen in Abschnitt \ref{sec:filter}. Weil
-aber interessante leitungstheoretische Aspekte eine Rolle spielen, werden diese
+sich nicht von den übrigen Filtermessungen in diesem Abschnitt. Weil aber
+interessante leitungstheoretische Aspekte eine Rolle spielen, werden diese
 Stub-Filter hier separat behandelt.
 
-\subsection{Messung}
-% Requirements:
-% 2x BNC-SMA Adapter
-% BNC T-Stück
-% Versch. BNC Kabel
-% BNC Female-Female Adapter
-% Extra BNC-SMA Adapter für Abschluss
-
-Es werden Stub-Filter verschiedenere Länge mit offenem und kurgeschlossenem Ende charakterisiert.
-
-\begin{enumerate}
-    \item Bauen Sie das Stub-Filter wie in Abbildung \ref{fig:quarterwavestub} auf und schliessen Sie ihn für eine
-        Transmissionsmessung an den NanoVNA an.
-    \item Kalibrieren Sie das Messgerät, während der Stub vom T-Stück getrennt ist.
-    \item Schliessen Sie Leitungen verschiedener Länge an den dritten Anschluss des T-Stücks, nachdem Sie deren
-        Länge gemessen haben. Sie können auch mehrere Kabel mit einem Adapter verbinden. Stimmen die Ergebnisse qualitativ?
-    \item Schliessen Sie den Stub mit ihrem Kalibrierungs-Kit und einem Adapter kurz. Wie verändert sich die Filterkurve?
-    \item Bestimmen Sie den Verkürzungsfaktor des verwendeten Koaxialkabels.
-    \item Konsultieren Sie im aktuellen Aufbau auch die Reflexionsmessung.
-\end{enumerate}
-
-\section{Dämpfungsglieder, Koppler und Isolation}
-\subsection{Theorie}
+\subsection{Dämpfungsglieder, Koppler und Isolation}
 Die Dämpfung oder Isolation zwischen zwei Anschlüssen von Dämpfungsgliedern,
 Stufendämpfungsgliedern, Splitter-Combinern, Richt-, Hybrid- und anderer Koppler
-kann mit einer Transmissionsmessung ermittelt werden. Dazu wird der VNA auf den
+kann ebenfalls mit einer Transmissionsmessung ermittelt werden. Dazu wird der VNA auf den
 gewünschten Frequenzbereich eingestellt, mit einem Verbindungsstück kalibriert
-und dann eingeschleift. Auf die selbe Art und Weise können Filter (Abschnitt 
-\ref{sec:filter}) und Stub-Filter (Abschnitt \ref{sec:stubfilter}) charakterisiert
-werden.
+und dann eingeschleift. Damit unterschiedet sich diese Messung nicht von derjenigen
+von Filtern.
 
 Bei vollständiger Isolation wäre die Einfügedämpfung unendlich gross. Trotzdem
-zeigt ein VNA einen endlichen Wert an. Es kann keine Dämpfung/Isolation gemessen
-werden, welche diesen Wert übersteigt.
+zeigt ein VNA einen endlichen Wert an. Wie bereits mehrfach erwähnt kann kann
+keine Dämpfung/Isolation gemessen werden, welche diesen Wert übersteigt.
 
-\subsection{Messung}
-% Requirements:
-% 30 dB att, 3 &  6 dB att with adapters
-% 3 Step attenuators with adapters
-% 2 directional couplers (homebrew and HP) with adapters with adapters
-% FIXME: Hybrid coupler?
-% FIXME: Antennenschalter?
-% FIXME: Einspeiseweiche?
-% Wilkinson
-Es stehen verschiedene Geräet zur Charakterisierung bereit: Fixe Dämpfungsglieder,
-Stufendämpfungsglieder, Richtkoppler, Hybridkoppler und ein Wilkinson-Splitter.
-Starten Sie bei jeder Messung mit dem vollen Messbereich.
+\minisec{Vorgehen mit dem NanoVNA:}
+Für alle Messungen in diesem Abschnitt \ref{sec:filter} gilt folgendes Vorgehen:
 
 \begin{enumerate}
-    \item Ermitteln Sie nach der Kalibrierung die Einfügedämpfung bei
-        perfekter Isolation. Damit wissen Sie, welche Dämpfung Sie maximal
-        messen können.
-    \item \textbf{Dämpfungsglieder:} Vermessen Sie die zu Verfügung stehenden
-        Dämpfungsglieder (3~dB, 6~dB, 10~dB) und nach Belieben Kombinationen davon.
-    \item \textbf{Stufendämpfungsglieder:} Vergleichen Sie das Stufendämpfungsglied
-        für Kurzwelle von MFJ mit einem professionellen Stufendämpfungsglied.
-        \textbf{In welchem Frequenzbereich können diese Geräte eingesetzt werden?}
-    \item \textbf{Richtkoppler:} Auch hier stehen zwei Richtkoppler zur charakterisierung
-        zu Verfügung. % FIXME
-    \item \textbf{FIXME: Hybrid-Koppler}
-    \item \textbf{Splitter-Combinder:} Gemäss Aliexpress Webseite ist dieser
-        Splitter-Combiner für das 70~cm Band ausgelegt. \textbf{Überprüfen Sie
-            diese Behauptung und charakterisieren Sie die Dämpfung (ein idealer
-            Wilkinson-Splitter hat eine Dämpfung von 3~dB) sowie Isolation mit
-            und ohne Abschluss.}
+    \item Frequenzbereich einstellen.
+    \item Messkabel anschliessen und mit Thru-Adapter verbinden.
+    \item Kalibrierung für Transmissionsmessung durchführen.
+    \item Filter einschleifen.
+    \item Anzeigeformat (``Display'' $\longrightarrow$ ``Format''): LogMag.
+    \item Kanalwahl (``Display'' $\longrightarrow$ ``Channel''): CH1 (Transmissionsmessung).
 \end{enumerate}
 
+Je nach Situation kann eine zusätzliche Reflexionsmessung der Filterports zielführend sein.
 
 
 \section{Mantelwellensperren}
@@ -1945,5 +1884,16 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 % Langes, schleches Koax?
 % Dummy Load?
 % RLC Schwingkreis (auch als Simulation für Antenne, Einfluss Tuner etc.)
+% Tiefpass und Hochpass aus diskreten Bauteilen mit Klemmen
+% Kavitäten
+% Lambda/4 Leitung mit Verkürzungsfaktor
+% Koax im Smith Diagramm, mit Verküruzungsfaktor und Verlängerung (adapter)
+% Attenuators of various quality 
+% directional couplers
+% Hybrid coupler
+% Antenna switch
+% Wilkinson splitter
+% Bias T
+% Bestimmung A_L Wert.
 
 \end{document}
