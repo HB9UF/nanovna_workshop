@@ -6,7 +6,7 @@
                <WrittenBySimSmithVersion>16.7i</WrittenBySimSmithVersion>
                <lastLoadStoreName>/home/mathias/hb9uf/nanovna/workshop/skript/feednofeed/feednofeed.ssx</lastLoadStoreName>
                <lastImageFile>/home/mathias/image1.png</lastImageFile>
-               <lastImpedanceFile>/home/mathias/hb9uf/nanovna/workshop/skript/antenna_with_wo_feed/vhf_uhf_antenna.s1p</lastImpedanceFile>
+               <lastImpedanceFile>/home/mathias/hb9uf/nanovna/workshop/skript/feednofeed/vhf_uhf_antenna.s1p</lastImpedanceFile>
                <lastTouchstoneFile>touchstone</lastTouchstoneFile>
                <parameters>
                    <p><n>units</n><v>meters</v></p>
@@ -76,12 +76,13 @@ cloneLoad</v></p>
                <showExtraInfo>false</showExtraInfo>
            </SCREENSIZE>
            <FILECHOOSER>
-               <xLoc>26</xLoc>
-               <yLoc>26</yLoc>
+               <xLoc>732</xLoc>
+               <yLoc>215</yLoc>
                <width>650</width>
                <height>500</height>
                <workingPath>/home/mathias/hb9uf/nanovna/workshop/skript/feednofeed</workingPath>
                <NavButtons>nnnnn</NavButtons>
+               <recent>/home/mathias/hb9uf/nanovna/workshop/skript/feednofeed/feednofeed.ssx</recent>
                <recent>/home/mathias/hb9uf/nanovna/workshop/skript/feednofeed</recent>
                <recent>/home/mathias/hb9uf/nanovna/workshop/skript</recent>
                <recent>/home/mathias/hb9uf/nanovna/workshop</recent>
@@ -151,10 +152,10 @@ cloneLoad</v></p>
                    </p>
                    <p>
                        <n>file</n>
-                       <v>/home/mathias/hb9uf/nanovna/workshop/skript/antenna_with_wo_feed/vhf_uhf_antenna.s1p</v>
+                       <v>./vhf_uhf_antenna.s1p</v>
                        <sweepParam>
                            <impedancesData>
-                               <fileName>/home/mathias/hb9uf/nanovna/workshop/skript/antenna_with_wo_feed/vhf_uhf_antenna.s1p</fileName>
+                               <fileName>./vhf_uhf_antenna.s1p</fileName>
                            </impedancesData>
                            <active>false</active>
                            <listed>true</listed>
@@ -233,11 +234,11 @@ cloneLoad</v>
                    <type>SERIES_TLINE</type>
                    <sweeperLabel>T1</sweeperLabel>
                    <showInPath>true</showInPath>
-                   <p><n>~deg</n><v>15847.155790209295</v></p>
+                   <p><n>~deg</n><v>7923.577895104648</v></p>
                    <p><n>@MHz</n><v>435</v></p>
                    <p>
                        <n>mtrs</n>
-                       <v>20</v>
+                       <v>10</v>
                        <sweepParam>
                            <name>T1.mtrs</name>
                            <listed>false</listed>
@@ -383,7 +384,7 @@ write &quot;%12g %12g %12g %12g&quot; SWR(LG1.Zin) SWR(G.Zin) Real(G.Zin)/50 Ima
            </ROUNDCHART>
            <SQUARECHART>
                <plotYAxis>
-                   <offset>-140000.00000000003</offset>
+                   <offset>-140000</offset>
                    <pivot>0.7000000000000001</pivot>
                    <perDivision>20000</perDivision>
                    <snap/>
