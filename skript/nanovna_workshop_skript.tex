@@ -1421,53 +1421,6 @@ Die Messung Schwingkreis-Verhaltens wird genau gleich durchgeführt wie die
 Impedanzmessung in Abschnitt \ref{sec:impedance} (Reflexionsmessung). Statt
 eines einzelnen Bauteils wird der ganze Schwingkreis angeschlossen.
 
-\section{Dämpfungsglieder, Koppler und Isolation}
-\subsection{Theorie}
-Die Dämpfung oder Isolation zwischen zwei Anschlüssen von Dämpfungsgliedern,
-Stufendämpfungsgliedern, Splitter-Combinern, Richt-, Hybrid- und anderer Koppler
-kann mit einer Transmissionsmessung ermittelt werden. Dazu wird der VNA auf den
-gewünschten Frequenzbereich eingestellt, mit einem Verbindungsstück kalibriert
-und dann eingeschleift. Auf die selbe Art und Weise können Filter (Abschnitt 
-\ref{sec:filter}) und Stub-Filter (Abschnitt \ref{sec:stubfilter}) charakterisiert
-werden.
-
-Bei vollständiger Isolation wäre die Einfügedämpfung unendlich gross. Trotzdem
-zeigt ein VNA einen endlichen Wert an. Es kann keine Dämpfung/Isolation gemessen
-werden, welche diesen Wert übersteigt.
-
-\subsection{Messung}
-% Requirements:
-% 30 dB att, 3 &  6 dB att with adapters
-% 3 Step attenuators with adapters
-% 2 directional couplers (homebrew and HP) with adapters with adapters
-% FIXME: Hybrid coupler?
-% FIXME: Antennenschalter?
-% FIXME: Einspeiseweiche?
-% Wilkinson
-Es stehen verschiedene Geräet zur Charakterisierung bereit: Fixe Dämpfungsglieder,
-Stufendämpfungsglieder, Richtkoppler, Hybridkoppler und ein Wilkinson-Splitter.
-Starten Sie bei jeder Messung mit dem vollen Messbereich.
-
-\begin{enumerate}
-    \item Ermitteln Sie nach der Kalibrierung die Einfügedämpfung bei
-        perfekter Isolation. Damit wissen Sie, welche Dämpfung Sie maximal
-        messen können.
-    \item \textbf{Dämpfungsglieder:} Vermessen Sie die zu Verfügung stehenden
-        Dämpfungsglieder (3~dB, 6~dB, 10~dB) und nach Belieben Kombinationen davon.
-    \item \textbf{Stufendämpfungsglieder:} Vergleichen Sie das Stufendämpfungsglied
-        für Kurzwelle von MFJ mit einem professionellen Stufendämpfungsglied.
-        \textbf{In welchem Frequenzbereich können diese Geräte eingesetzt werden?}
-    \item \textbf{Richtkoppler:} Auch hier stehen zwei Richtkoppler zur charakterisierung
-        zu Verfügung. % FIXME
-    \item \textbf{FIXME: Hybrid-Koppler}
-    \item \textbf{Splitter-Combinder:} Gemäss Aliexpress Webseite ist dieser
-        Splitter-Combiner für das 70~cm Band ausgelegt. \textbf{Überprüfen Sie
-            diese Behauptung und charakterisieren Sie die Dämpfung (ein idealer
-            Wilkinson-Splitter hat eine Dämpfung von 3~dB) sowie Isolation mit
-            und ohne Abschluss.}
-\end{enumerate}
-
-
 \section{Filter}\label{sec:filter}
 
 \subsection{Theorie}
@@ -1595,6 +1548,53 @@ Es werden Stub-Filter verschiedenere Länge mit offenem und kurgeschlossenem End
     \item Bestimmen Sie den Verkürzungsfaktor des verwendeten Koaxialkabels.
     \item Konsultieren Sie im aktuellen Aufbau auch die Reflexionsmessung.
 \end{enumerate}
+
+\section{Dämpfungsglieder, Koppler und Isolation}
+\subsection{Theorie}
+Die Dämpfung oder Isolation zwischen zwei Anschlüssen von Dämpfungsgliedern,
+Stufendämpfungsgliedern, Splitter-Combinern, Richt-, Hybrid- und anderer Koppler
+kann mit einer Transmissionsmessung ermittelt werden. Dazu wird der VNA auf den
+gewünschten Frequenzbereich eingestellt, mit einem Verbindungsstück kalibriert
+und dann eingeschleift. Auf die selbe Art und Weise können Filter (Abschnitt 
+\ref{sec:filter}) und Stub-Filter (Abschnitt \ref{sec:stubfilter}) charakterisiert
+werden.
+
+Bei vollständiger Isolation wäre die Einfügedämpfung unendlich gross. Trotzdem
+zeigt ein VNA einen endlichen Wert an. Es kann keine Dämpfung/Isolation gemessen
+werden, welche diesen Wert übersteigt.
+
+\subsection{Messung}
+% Requirements:
+% 30 dB att, 3 &  6 dB att with adapters
+% 3 Step attenuators with adapters
+% 2 directional couplers (homebrew and HP) with adapters with adapters
+% FIXME: Hybrid coupler?
+% FIXME: Antennenschalter?
+% FIXME: Einspeiseweiche?
+% Wilkinson
+Es stehen verschiedene Geräet zur Charakterisierung bereit: Fixe Dämpfungsglieder,
+Stufendämpfungsglieder, Richtkoppler, Hybridkoppler und ein Wilkinson-Splitter.
+Starten Sie bei jeder Messung mit dem vollen Messbereich.
+
+\begin{enumerate}
+    \item Ermitteln Sie nach der Kalibrierung die Einfügedämpfung bei
+        perfekter Isolation. Damit wissen Sie, welche Dämpfung Sie maximal
+        messen können.
+    \item \textbf{Dämpfungsglieder:} Vermessen Sie die zu Verfügung stehenden
+        Dämpfungsglieder (3~dB, 6~dB, 10~dB) und nach Belieben Kombinationen davon.
+    \item \textbf{Stufendämpfungsglieder:} Vergleichen Sie das Stufendämpfungsglied
+        für Kurzwelle von MFJ mit einem professionellen Stufendämpfungsglied.
+        \textbf{In welchem Frequenzbereich können diese Geräte eingesetzt werden?}
+    \item \textbf{Richtkoppler:} Auch hier stehen zwei Richtkoppler zur charakterisierung
+        zu Verfügung. % FIXME
+    \item \textbf{FIXME: Hybrid-Koppler}
+    \item \textbf{Splitter-Combinder:} Gemäss Aliexpress Webseite ist dieser
+        Splitter-Combiner für das 70~cm Band ausgelegt. \textbf{Überprüfen Sie
+            diese Behauptung und charakterisieren Sie die Dämpfung (ein idealer
+            Wilkinson-Splitter hat eine Dämpfung von 3~dB) sowie Isolation mit
+            und ohne Abschluss.}
+\end{enumerate}
+
 
 
 \section{Mantelwellensperren}
