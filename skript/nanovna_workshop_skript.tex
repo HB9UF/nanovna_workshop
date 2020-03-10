@@ -1114,7 +1114,7 @@ Antenne weiterhin unbekannt.
 \end{figure}
 
 \newpage % FIXME
-\section{Impedanzmessungen}
+\section{Impedanzmessungen}\label{sec:impedance}
 Der NanoVNA kann die Impedanz von Widerständen, Spulen, Kondensatoren, Abschlüssen etc.
 bestimmen, da er in der Lage ist, sowohl Amplitude, wie auch Phasenverschiebung zu
 quantifizieren. Im Gegensatz zu einem LCR-Meter kann der VNA auf der Frequenz messen,
@@ -1163,7 +1163,7 @@ $C$ würde analog ein bekanntes Referenz-$L$ verwendet werden.
     \begin{circuitikz} \draw
         (0.5,0) to[short,o-o] (3.5,0)
         (0.5,-2) to[short,o-o] (3.5,-2)
-        (2,0) to[L=$Z$,*-*]  (2,-2),
+        (2,0) to[L=$Z$,*-*]  (2,-2);
         \node at (0.5,-1) {\small{Port 1}};
         \node at (3.5,-1) {\small{Port 2}};
         \node at (2,-2.5) {\small{(3)}};
@@ -1230,19 +1230,7 @@ A-B für (2) und AB-C für (3)) montiert werden.
 \end{center}\end{figure}
 
 \newpage % FIXME
-\section{FIXME: Abschlüsse/Impedanzen: Widerstände, Spulen, Kondensatoren}
-\begin{itemize}
-    \item Vergleich mit Bauteiltester
-    \item Parasitäre Kapazität in Spulen
-    \item Koaxialkabel (insb. 75 Ohm)?
-    \item Langes, schleches Koax?
-    \item Dummy Load?
-\end{itemize}
-
-\newpage % FIXME
 \section{Schwingkreise, Resonanzfrequenzen, Anpassung}\label{sec:schwingkreis}
-% FIXME: Nach Bauteil-Impedanz
-\subsection{Theorie}
 Es gibt mehrere Gründe, sich mit der Messung von Schwingkreisen
 auseinanderzusetzen. Der einfachste besteht darin, die Resonanzfrequenz
 eines solchen zu ermitteln -- dies schliesst auch die Eigenresonanzfrequenz von
@@ -1254,7 +1242,7 @@ gemessen und mit der gemessenen Resonanzfrequenz $f$ und der bekannten
 Kapazität $C$ die gesuchte Induktivität $L$ berechnet. Schliesslich sind
 Schwingkreise einfache Modelle von Antennen.
 
-\subsubsection{Schwingkreis und Resonanzfrequenz}
+\subsection{Schwingkreis und Resonanzfrequenz}
 Ein Schwinkreis ergibt sich, wenn ein Widerstand $R$, eine Induktivität $L$
 und eine Kapazität $C$ in Serie geschaltet werden (Serienschwingkreis, siehe
 Abbildung \ref{fig:schwingkreis}). Es besteht auch die Möglichkeit, diese drei
@@ -1279,14 +1267,14 @@ f_r = \frac{1}{2\pi\sqrt{L\cdot C}}
 $$
 
 Sind also $L$ und $C$ bekannt, so lässt sich $f_r$ berechnen, ebenso lässt ich
-$L$ berechnen, falls $C$ und $f_r$ bekannt sind etc. Abbildung \ref{fig:resonanzplot}
+$L$ berechnen, falls $C$ und $f_r$ bekannt sind, etc. Abbildung \ref{fig:resonanzplot}
 zeigt den Blindwiderstand (links, gestrichelte Linie) im Serienschwingkreis als Funktion der Frequenz. Es
 handelt sich dabei um die Darstellung der Grösse $X_L-X_C$ aus Abbildung \ref{fig:XRLC}.
 Unterhalb der Resonanzfrequenz ist der Blindwiderstand negativ, der
 Schwingkreis hat also eine kapazitive Komponente bzw. der Kondensator
 dominiert. Oberhalb der Resonanzfrequenz ist der Blindwiderstand positiv, der
 Schwingkreis ist induktiv bzw. die Spule dominiert. Bei einer Resonanzfrequenz
-von $f_r\approx$5~MHz ist der Blindwiderstand 0~$\Omega$, lediglich $R=50$~$\Omega$
+von $f_r\approx$~5~MHz ist der Blindwiderstand 0~$\Omega$, lediglich $R=50$~$\Omega$
 ist am Eingang sichtbar. Ein Abschluss von 50~$\Omega$ entspricht einer perfekten
 Anpassung und deshalb entsteht bei dieser Frequenz überhaupt kein Rückfluss.
 Die selben Sachverhalte sind auf der rechten Seite von Abbildung
@@ -1344,13 +1332,12 @@ $L$=1~$\mu$H, $C$=1~nF, $R$=50~$\Omega$. Rechts: Smith-Diagramm der Eingangsimpe
 \label{fig:resonanzplot}
 \end{figure}
 
-\subsubsection{Anpassung}
+\subsection{Anpassung}
 Manchmal ist es wünschenswert, eine Impedanz in eine andere umzuwandeln. Dies ist beispielsweise der Fall,
 wenn ein hochomiges Bauteil in einem 50~$\Omega$ System verwendet werden soll, oder wenn eine Last
 (z.B. Antenne) auf der Zielfrequenz eine Impedanz aufweist, die fernab der Systemimpedanz liegt und eine
 genügende Leistungsübertragung nicht erbracht wird. In diesem Fall kommen Transformatoren zur Impedanzwandlung
-(siehe \ref{sec:impedanztrafo}), speziell konfigurierte Leitungen 
-% FIXME: siehe ...
+(siehe Abschnitt \ref{sec:impedanztrafo}), speziell konfigurierte Leitungen
 oder Anpass-Netzwerke zum Einsatz. Letztere bestehen aus Kombinationen von Kapazitäten und Induktivitäten,
 mit denen die Impedanzanpassung vorgenommen wird. Die einfachste Möglichkeit hierfür ist der in Abbildung
 \ref{fig:lmatch} gezeigte L-Match.
@@ -1428,56 +1415,11 @@ ist der in Abbildung \ref{fig:tmatch} dargestellte T-Match.
     \label{fig:tmatch}
 \end{figure}
 
-\subsection{Messung}
-% Requirements_
-% - RLC Schwingkreis
-% - Alligator lead
-% - Mess-Apparatur Reflexionsmessung
-% - Tuner
-% - Adapter for tuner
-% - Extra Calkit
+\minisec{Vorgehen mit dem NanoVNA:}
 
-
-% FIXME: Zwei verschiedene Schwingkreise
-Diese Messung ist zweiteilig. Zunächst wird ein Serienschwinkgkreis ($R$=50~$\Omega$a
-$L$=FIXME~H und $C$=FIXME~F), als solches gemessen. Anschliessend wird er als
-Antennenmodell verwendet, dessen Impedanz mit einem Tuner angepasst wird.
-
-\begin{enumerate}
-    \item Berechnen Sie die Resonanzfrequenz des Schwingkreises und stellen Sie den
-        Frequenzbereich des NanoVNA auf einen sinnvollen Bereich ein, so dass die
-        Resonanzfrequenz in der Mitte ist.
-    \item Kalibrieren Sie den NanoVNA für eine Reflexionsmessung und schliessen Sie
-        anschliessend den Schwingkreis (FIXME: mit welchem Adapter?) an.
-    \item Betrachten Sie die Rückflussdämpfung (``LogMag''), wie auch Wirkwiderstand
-        (``Resistance'') und Blindwiderstand (``Reactance'').
-        \textbf{Entspricht das Resultat Ihren Erwartungen?}
-    \item Betrachten Sie anschliessend die Messung im Smith-Diagramm. \textbf{Können Sie die
-        Anzeige erklären?}
-    \item Schliessen Sie den Widerstand für diese Teilaufgabe mit einer Klemme
-        kurz. \textbf{Wie verändert sich die Rückflussdämpfung und die Anzeige
-        im Smith-Diagramm?}
-    \item Fügen Sie eines Ihrer Koaxial-Messkabel zwischen dem Schwingkreis und dem
-        NanoVNA ein. \textbf{Wie verändert sich die Anzeige im Smith-Diagramm? In welchem
-        Zusammenhang steht diese Relation mit der Länge des Messkabels?}
-        %\hline FIXME
-    \item Betrachten Sie das Innere des Tuners und identifizieren Sie die Bauteile aus 
-        Abbildung \ref{fig:tmatch}.
-    \item Schleifen Sie den Tuner zwischen Modell-Antenne und Messgerät und erneuern Sie die
-        Kalibrierung? \textbf{Wo schliessen Sie das Kalibirierungskit an, um die Impedanz
-        am Eingang des Tuners zu sehen?}
-    \item Schalten Sie den Tuner auf ``Bypass'' und stellen Sie sicher, dass Sie das selbe
-        Messresultat sehen wie bisher.
-    \item Verwenden Sie den Tuner, um unter Betrachtung der Rückführungsdämpfung eine
-        Anpassung bei FIXME~MHz zu erzielen. \textbf{Was geschieht beim Betätigen der
-        Abstimmknöpfe mit dem Dämpfungsminimum?}
-    \item Reduzieren Sie die Frequenzspanne so, dass im Smith-Diagramm lediglich ein
-        kleiner Punkt für FIXME~MHz angezeigt wird. Wiederholen Sie die
-        vorausgehende Teilaufgabe und \textbf{vergewissern Sie sich, dass die Anpassung
-        dann erfolgt, wenn der Punkt ins Zentrum des Diagrammes wandert}.
-    \item Machen Sie die Reduktion der Frequenzspanne rückgängig und betrachten Sie, wie
-        der Tuner die ganze Impedanzkurve im Smith-Diagramm beeinflusst.
-\end{enumerate}
+Die Messung Schwingkreis-Verhaltens wird genau gleich durchgeführt wie die
+Impedanzmessung in Abschnitt \ref{sec:impedance} (Reflexionsmessung). Statt
+eines einzelnen Bauteils wird der ganze Schwingkreis angeschlossen.
 
 \section{Dämpfungsglieder, Koppler und Isolation}
 \subsection{Theorie}
@@ -1996,5 +1938,12 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 \bibliographystyle{unsrt} % FIXME is in TOC?
 \bibliography{nanovna_workshop_skript}
 
+% FIXME: Sammmel-Ecke für Ideen:
+% Vergleich mit Bauteiltester
+% Parasitäre Kapazität in Spulen
+% Koaxialkabel (insb. 75 Ohm)?
+% Langes, schleches Koax?
+% Dummy Load?
+% RLC Schwingkreis (auch als Simulation für Antenne, Einfluss Tuner etc.)
 
 \end{document}
