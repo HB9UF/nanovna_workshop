@@ -1604,9 +1604,8 @@ mit den beiden Innenleitern verbunden werden. (Siehe Abbildung
     \item Dann Gleichtaktmessung wie in Abbildung \ref{fig:illustration_choke} durchführen.
 \end{enumerate}
 
+\newpage % FIXME
 \section{Schwingquarz}
-
-\subsection{Theorie}
 Ein Schwingquarz ist ein Bauteil, welches zur Erzeugung von Schwingungen oder
 als Filter verwendet werden kann. Ein vereinfachtes Ersatzschaltbild ist in
 Abbildung \ref{fig:quarzersatz} dargestellt. 
@@ -1623,8 +1622,9 @@ Abbildung \ref{fig:quarzersatz} dargestellt.
     \label{fig:quarzersatz}
 \end{figure}
 
-Im Ersatzschaltbild ist zu erkennen, dass der Schwingquarz aus einem Serien-Schwingkreis ($L_1$, $C_1$, $R_1$)
-und einer dazu parallelen Kapazität C$_0$ besteht. Der Quarz hat aufgrund dieser Schaltung zwei Resonanzstellen:
+Im Ersatzschaltbild ist zu erkennen, dass der Schwingquarz aus einem
+Serien-Schwingkreis ($L_1$, $C_1$, $R_1$) und einer dazu parallelen Kapazität
+C$_0$ besteht. Der Quarz hat aufgrund dieser Schaltung zwei Resonanzstellen:
 Wie in Abbildung \ref{fig:quarzidealplot} gezeigt erfolgt die erste beim
 Nulldurchgang des Blindwiderstandes, bei der zweiten ist der Blindwiderstand
 unendlich gross. Diese beiden Resonanzstellen werden Resonanzfrequenz $f_r$
@@ -1637,9 +1637,19 @@ $$
 f_r = \frac{1}{2\pi\sqrt{L_1\cdot C_1}}
 $$
 
+Mit einer Transmissionsmessung lassen sich $f_r$ und $f_a$ messen, wobei besonders $f_a$ von parasitären Komponenten
+stark beeinflusst werden kann. Der Quarz wird für die Messung in die Zusatzapparatur eingespannt, die auch für die
+Charakterisierung der Mantelwellensperre benutzt worden ist. Dabei müssen folgende Punkte beachtet werden:
 
+\begin{itemize}
+    \item Weil Schwingquarze sehr schmalbandig sind und der NanoVNA nur 101 Punkte aufnimmt, muss zur Verhinderung grosser Messfehler ein entsprechend kleiner Frequenzbereich ausgewählt werden.
+    \item Weil das Ersatzschaltbild aus Abbildung \ref{fig:quarzersatz} lediglich eine Vereinfachung darstellt, werden bei der Messung in der Praxis oberhalb von $f_r$ Nebenresonanzen auftreten.
+\end{itemize}
 
-\begin{figure}
+Es gibt weitere, teilweise bessere Methoden, einen Schwingquarz zu charakterisieren (mit einem VNA und auch mit
+anderen Gerätschaften.) Für eine gute Übersicht sei auf \cite{kortke2002} verwiesen.
+
+\begin{figure}[H]
 \begin{center}
 \begin{tikzpicture}
 \pgfplotsset{set layers}
@@ -1684,36 +1694,9 @@ aus Abbildung \ref{fig:quarzersatz}. Es sind zwei Resonanzstellen sichtbar.}
 \label{fig:quarzidealplot}
 \end{figure}
 
-Mit einer Transmissionsmessung lassen sich $f_r$ und $f_a$ messen, wobei besonders $f_a$ von parasitären Komponenten
-stark beeinflusst werden kann. Der Quarz wird für die Messung in die Zusatzapparatur eingespannt, die auch für die
-Charakterisierung der Mantelwellensperre benutzt worden ist. Dabei müssen folgende Punkte beachtet werden:
-
-\begin{itemize}
-    \item Weil Schwingquarze sehr schmalbandig sind und der NanoVNA nur 101 Punkte aufnimmt, muss zur Verhinderung grosser Messfehler ein entsprechend kleiner Frequenzbereich ausgewählt werden.
-    \item Weil das Ersatzschaltbild aus Abbildung \ref{fig:quarzersatz} lediglich eine Vereinfachung darstellt, werden bei der Messung in der Praxis oberhalb von $f_r$ Nebenresonanzen auftreten.
-\end{itemize}
-
-Es gibt weitere, teilweise bessere Methoden, einen Schwingquarz zu charakterisieren (mit einem VNA und auch mit
-anderen Gerätschaften.) Für eine gute Übersicht sei auf \cite{kortke2002} verwiesen.
-
-\subsection{Messung}
-
-Es wird ein 16~MHz Schwingquarz charakterisiert.
-
-\begin{enumerate}
-    \item Befestigen Sie die Testapparatur für das Einschleifen von Bauteilen (FIXME) an Ihren NanoVNA.
-    \item Decken Sie mit dem Frequenzbereich den gesamten Kurzwellenbereich ab und kalibrieren Sie den VNA für eine
-        Durchgangsmessung, nachdem Sie die beiden Klemmen kurzgeschlossen haben.
-    \item Montieren Sie den Quarz und führen Sie eine Transmissionsmessung durch? Finden Sie die Resonanzfrequenz und
-        mit dem Marker und notieren Sie sie.
-    \item Wählen Sie eine feinere Spanne von 15.75~MHz bis 16.25~MHz,
-        rekalibrieren Sie das Gerät und suchen Sie die Resonanzfrequenz erneut. Wie stark unterscheiden sich die ermittelten Werte?
-    \item Stellen Sie sicher, dass Sie den Grund für die Abweichung der beiden Messungen genau verstehen. Wie genau ist die zweite Messung?
-    \item Beachten Sie die Nebenresonanzen, die in Abbildung \ref{fig:quarzidealplot} nicht auftreten.
-    \item Wählen Sie eine Frequenzspanne, mit der fast nur noch die beiden Resonanzstellen zu sehen sind. Erhöhen Sie $C_0$, indem Sie einen 10~pF Kondensator parallel zum Schwingquarz schalten. Wie verändern sich die Resonanzstellen, und was bedeutet dies im Zusammenhang mit der externen Beschaltung des Quarzes?
-    \item Untersuchen Sie das Oberschwingungsverhalten des Bauteils.
-
-\end{enumerate}
+\minisec{Vorgehen mit dem NanoVNA:}
+Die Messung erfolgt wie bei der Gleichtaktmessung der Mantelwellensperre: Nach der Kalibrierung wird
+eine serielle Transmissionsmessung durchgeführt.
 
 \section{FIXME: Transformatoren zur Impedanzwandlung}\label{sec:impedanztrafo}
 
@@ -1903,5 +1886,6 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 % Bias T
 % Bestimmung A_L Wert.
 % Mantelwellensperren vergleichen, Perle um Perle aufziehen.
+% Resonanzfrequenz, Nebenresonanzen, Obertöne etc. eines Schwingquarzes
 
 \end{document}
