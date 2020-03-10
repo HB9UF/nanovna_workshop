@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage[pdfauthor={},pdftitle={},pdfstartview=FitH,pdfborder={0 0 0}]{hyperref}
 \usepackage[ngerman]{babel}
+\usepackage{babelbib}
 \usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows}
@@ -1535,13 +1536,9 @@ Für alle Messungen in diesem Abschnitt \ref{sec:filter} gilt folgendes Vorgehen
 
 Je nach Situation kann eine zusätzliche Reflexionsmessung der Filterports zielführend sein.
 
-
+\newpage % FIXME
 \section{Mantelwellensperren}
-% FIXME: Kerne usw.
-
-\subsection{Theorie}
-
-Eine Mantelwelle ist eine Welle, die sich auf dem Aussenleiter (Mantel) eines
+Eine Mantelwelle ist eine elektromagnetische Welle, die sich auf dem Aussenleiter (Mantel) eines
 Koaxialkabels ausbreitet. Dies ist in aller Regel aus verschiedenen Gründen
 unterwünscht; um die Mantelwelle zu unterbinden, wird eine Mantelwellensperre
 eingesetzt. Diese Mantelwellensperre soll für Gegentaktsignale wie das
@@ -1561,14 +1558,14 @@ Mit einem VNA werden typischerweise nur die ersten beiden Aspekte erfasst,
 Erwärmung unter Last kann z.B. mit einem Thermomenter, einer Wärmebildkamera
 etc. erfasst werden und wird an dieser Stelle nicht besprochen.
 
-\subsubsection{Gegentaktmessung}\label{sec:gegentaktmessung}
+\subsection{Gegentaktmessung}\label{sec:gegentaktmessung}
 
 Die Gegentaktmessung ist einfach: Der VNA wird für eine Transmissionsmessung
 kalibriert, die Sperre wird eingeschleift und die Einfüngungsdämpdung wird
 gemessen. Eine gute Mantelwellensperre sollte bei dieser Messung eine geringe
 Einfügedämpfung aufweisen.
 
-\subsubsection{Gleichtaktmessung}
+\subsection{Gleichtaktmessung}
 
 Für die Gleichtaktmessung wird die Mantelwellensperre auf eine besondere
 Art und Weise mit dem VNA verbunden: Der Eingang wird mit dem Stimulus,
@@ -1576,26 +1573,35 @@ der Ausgang mit dem detektierenden Port verbunden. Allerdings werden die
 beiden beiden Leiter der Leitung jeweils kurzgeschlossen und mit dem
 Innenleiter der Ports verbunden; die beiden Aussenleiter der Ports werden
 kurzgeschlossen. Wenn die so präparierte Mantewellensperre als diskretes
-Bauteil betrachtet wird (siehe FIXME), so entspricht diese Messung der
-seriellen Transmissionsmessung dieses Bauteils. Eine gute Mantelwellensperre
+Bauteil betrachtet wird, so entspricht diese Messung der seriellen
+Transmissionsmessung dieses Bauteils -- also Messvariante (2) aus
+Abschnitt \ref{sec:impedance}. Eine gute Mantelwellensperre
 sollte bei dieser Messung eine hohe Einfügedämpfung haben.
 
-Für diese Messung steht eine spezielle Apparatur zu Verfügung, welche die
-Aussenleiter der beiden VNA-Ports kurzschliesst. Die Mantelwellensperre
-kann dann über  Klemmen mit den beiden Innenleitern verbunden werden.
+Für diese Messung ist eine Vorrichtung notwendig, um die Aussenleiter der
+beiden VNA-Ports kurzschliesst. Die Mantelwellensperre kann dann über Klemmen
+mit den beiden Innenleitern verbunden werden. (Siehe Abbildung
+\ref{fig:illustration_choke} für eine Vorrichtung mit Klemmen).
 
-\subsection{Messung}
-Es werden eine Reihe von Mantelwellensperren unterschiedlicher Ausführung
-(FIXME) und Qualität auf ihre Eigenschaften hin untersucht. 
+\begin{figure}
+    % FIXME
+    \includegraphics[width=\textwidth,draft,height=6cm]{figures/illustration_choke.jpg}
+    \caption{Gleichtaktmessung von Mantelwellensperren. Die Mantelwellensperre
+        ist in Serie zwischen den beien Ports geschaltet. FIXME: Mantelwellensperre
+    nach W2DU \cite{maxwell1983w2du}. FIXME: Mantelwellensperre nach DG0SA.}
+    \label{fig:illustration_choke}
+\end{figure}
 
+\minisec{Vorgehen mit dem NanoVNA:}
 \begin{enumerate}
-    \item Wählen Sie eine Mantelwellensperre für Ihre Messung aus.
-    \item Bereiten Sie den VNA für eine Transmissionsmessung im Kurzwellenbereich vor und kalibrieren Sie das Gerät.
-    \item Prüfen Sie die Gegentakteigenschaften der Sperre wie in Abschnitt \ref{sec:gegentaktmessung} beschrieben.
-    \item Entfernen Sie die Messkabel und befestigen Sie die Testapparatur für die Messung der Gleichtakteigenschaften (Siehe Abbildung \ref{fig:gleichtaktmessung}). %FIXME Bild
-    \item Bewegen Sie die Klemmen und betrachten Sie die Auswirkungen auf die gemessene Dämpfung. Werden die beiden Klemmen nahe beieinander gehalten, nimmt die Dämpfung aufgrund von Kopplung ab.
-    \item Verbinden Sie die beiden Klemmen und kalibrieren Sie das Gerät erneut für eine Transmissionsmessung.
-    \item Schlissen Sie die Mantelwellensperre an, indem Sie an Ein- und Ausgang der Mantelwellensperre jeweils eine Klemme befestigen. Die Klemme soll jeweils beide Leitungen kurzschliessen oder mit dem Aussenleiter verbunden sein.
+    \item NanoVNA für Gegentaktmessung vorbereiten wie in Abschnitt \ref{sec:filter} beschrieben.
+        (Frequenz einstellen, Kalibrierung für Transmissionsmessung mit Thru, Kanalwahl ``CH1'',
+        Anzeigeformat ``LogMag''.)
+    \item Mantelwellensperre einschleifen, d.h. wie im normalen Gebrauch anschliessen.
+    \item NanoVNA für Gleichtaktmessung vorbereiten: Messvorrrichtung montieren und für
+        Transmissionsmessung rekalibrierung -- die Thru-Kalibrierung erfolgt mit kurzgeschlossener
+        Vorrichtung.
+    \item Dann Gleichtaktmessung wie in Abbildung \ref{fig:illustration_choke} durchführen.
 \end{enumerate}
 
 \section{Schwingquarz}
@@ -1874,7 +1880,8 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
     \draw[thick,-stealth'] (calsave) -- +(4.5em,0em) |-(save0);
 \end{tikzpicture}}}
 
-\bibliographystyle{unsrt} % FIXME is in TOC?
+\bibliographystyle{babunsrt}
+%\bibliographystyle{unsrt} % FIXME is in TOC?
 \bibliography{nanovna_workshop_skript}
 
 % FIXME: Sammmel-Ecke für Ideen:
@@ -1895,5 +1902,6 @@ Es wird ein 16~MHz Schwingquarz charakterisiert.
 % Wilkinson splitter
 % Bias T
 % Bestimmung A_L Wert.
+% Mantelwellensperren vergleichen, Perle um Perle aufziehen.
 
 \end{document}
