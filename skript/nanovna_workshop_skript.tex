@@ -983,20 +983,29 @@ Marker. Seine Frequenz wird dann in weiss neben der Zahl 2 angezeigt. Analog zur
 ausgewählten Spur gibt es einen aktuell ausgewählten Marker, in diesem Beispiel entweder 1 oder
 2.
 
-Mit Hilfe eiens Stiftes kann der aktuelle Marker verschoben werden. Alternativ kann dazu auch
+Mit Hilfe eines Stiftes kann der aktuelle Marker verschoben werden. Alternativ kann dazu auch
 das kleine Rädchen neben dem Hauptschalter verwendet werden.
 
+\newpage % FIXME
 \section{Antenne}
 Unter Funkamateuren ist das beliebteste Messobjekt wohl die Antenne. Sie wird mit einer
 Reflexionsmessung charakterisiert, wobei die Kalibrierung am Antennenfusspunkt erfolgt. Oft
 wird zwischen dem VNA und der Antenne eine kurze Speiseleitung angeschlossen, deren
-Einfluss durch die Kalibrierung wettgemacht werden soll. Erfolgt stattdessen die Kalibrierung
-und Messung vom Shack aus, so wird die vielfach lange Speiseleitung
-mitgemessen. Das ist grundsätzlich nicht falsch, aber führt zu
-unterschiedlichen Messergebnissen -- schliesslich wird die Speiseleitung einmal mitgemessen
-und ein andermal nicht. Abbildung \ref{fig:antenna_with_wo_feed} zeigt das SWR einer
-VHF/UHF Zweibandantenne, einmal gemessen am Fusspunkt, und einmal gemessen mit dem ganzen
-Antennensystem bestehend aus 20~m RG-213 Koaxialkabel.
+Einfluss durch die Kalibrierung wettgemacht werden soll (siehe Abbildung \ref{fig:antennmessung}).
+Erfolgt stattdessen die Kalibrierung und Messung vom Shack aus, so wird die
+vielfach lange Speiseleitung mitgemessen. Das ist grundsätzlich nicht falsch,
+aber führt zu unterschiedlichen Messergebnissen -- schliesslich wird die
+Speiseleitung einmal mitgemessen und ein andermal nicht. Abbildung
+\ref{fig:antenna_with_wo_feed} zeigt das SWR einer VHF/UHF Zweibandantenne,
+einmal gemessen am Fusspunkt, und einmal gemessen mit dem ganzen Antennensystem
+bestehend aus 20~m RG-213 Koaxialkabel.
+
+Für die Kalibrierung am Fusspsunkt ist das mit dem NanoVNA gelieferte Kalibrierungskit
+etwas ungünstig -- idealerweise würde man mit dem inversen Kit (also SMA Weibchen)
+kalibrieren. So wird durch den zusätzlichen Adapter ein Fehler eingeführt, der jedoch
+kaum ins Gewicht fällt, insbesondere wenn der Sachverhalt bekannt ist. Für genauste
+Messungen käme ohnehin ein Kalibrierungskit für den passenden Steckertyp, ein spezielles
+Messkabel etc. zum Einsatz.
 
 \begin{figure}[H]
     \begin{tikzpicture}
@@ -1019,7 +1028,7 @@ Antennensystem bestehend aus 20~m RG-213 Koaxialkabel.
     \label{fig:antenna_with_wo_feed}
 \end{figure}
 
-Ebenfalls wichtig ist die Erkenntnis, dass die charakterisierung einer Antenne mit einem VNA 
+Ebenfalls wichtig ist die Erkenntnis, dass die Charakterisierung einer Antenne mit einem VNA
 nicht abschliessend klärt, wie ``gut'' eine Antenne oder ein Antennensystem (mit Speiseleitung)
 ist. Dies einerseits, weil der Begriff ``gut'' je nach Anwendungsfall ganz andere Anforderungen
 an die Antenne stellt (Rundstrahler vs. Richtwirkung, steiler Abstrahlwinkel für NVIS vs.
@@ -1072,7 +1081,7 @@ Abschliessend sei auf Abbildung \ref{fig:antennenmessung} verwiesen, welche die 
 einer Antenne mit einem kurzen Messkabel schematisch zeigt. Wie bereits erläutert
 sind folgende Punkte wichtig:
 
-\begin{enumterate}
+\begin{enumerate}
 \item Vor der Messung: Kalibrierung am Fusspunkt
 \item Die Messung erfasst lediglich einen Teilaspekt, insbesondere bleiben Gewinn und Effizienz der
     Antenne weiterhin unbekannt.
@@ -1081,6 +1090,7 @@ sind folgende Punkte wichtig:
 \begin{figure}
     \includegraphics[width=\textwidth]{figures/illustration_antenna.png}
     \caption{Illustration der Charakterisierung einer Antenne mit einem kurzen Messkabel. Die Kalibrierung erfolgt am Fusspunkt.}
+    \label{fig:antennenmessung}
 \end{figure}
 
 
