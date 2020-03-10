@@ -720,6 +720,7 @@ genutzt. Jeder Fehler im Verbindungsstück (Dämpfung $>$ 0~dB, Phasengang $\ne$
 wirkt sich direkt auf die Messung aus.
 
 
+\newpage % FIXME
 \section{Bedienung NanoVNA}
 Der NanoVNA wird mit einem Schiebe-Schalter ein- und ausgeschalten. Beim Einschalten
 leuchtet eine blaue LED auf, welche nach dem Ausschalten noch bis zu einer Minute
@@ -1101,18 +1102,134 @@ Antenne weiterhin unbekannt.
 \begin{enumerate}
     \item Frequenzbereich einstellen.
     \item Kalibrierung für Reflexionsmessung am Fusspunkt.
-    \item Antenne anschliessen.
+    \item Antenne anschliessen (Abbildung \ref{fig:antennenmessung}).
     \item Anzeigeformat (``Display'' $\longrightarrow$ ``Format''): LogMag oder SWR.
     \item Kanalwahl (``Display'' $\longrightarrow$ ``Channel''): CH0 (Reflexionsmessung).
 \end{enumerate}
 
-\begin{figure}
+\begin{figure}[H]
     \includegraphics[width=\textwidth]{figures/illustration_antenna.png}
     \caption{Illustration der Charakterisierung einer Antenne mit einem kurzen Messkabel. Die Kalibrierung erfolgt am Fusspunkt.}
     \label{fig:antennenmessung}
 \end{figure}
 
+\newpage % FIXME
+\section{Impedanzmessungen}
+Der NanoVNA kann die Impedanz von Widerständen, Spulen, Kondensatoren, Abschlüssen etc.
+bestimmen, da er in der Lage ist, sowohl Amplitude, wie auch Phasenverschiebung zu
+quantifizieren. Im Gegensatz zu einem LCR-Meter kann der VNA auf der Frequenz messen,
+auf der das Bauteil schlussendlich betrieben wird. Es wäre beispielsweise denkbar,
+dass Streukapazitäten zwischen den Windungen einer Spule auf dieser Betriebsfrequenz
+nicht mehr vernachlässigbar sind. Was im LCR-Meter bei einigen 100~kHz nach einer
+ausgezeichneten Spule aussieht, wird dann bei höheren Frequenzen zu einem Schwingkreis
+und erfüllt seinen Zweck nicht mehr.
 
+Mit seiner Quell-Impedanz von 50~\Ohm bildet entsteht bei einer
+Reflexionsmessung der Spannungsteiler aus Abbildung
+\ref{fig:phasenverschiebung}. So kann das Gerät die Impedanz des Prüflings
+berechnen und, unter Zuhilfenahme der momentanen Frequenz des Stimulus, bei
+Bedarf daraus sogar die Induktivität bzw. Kapazität berechnen.
+
+Es gibt drei gängige Wege, die Impedanz $Z$ eine Bauteils mit einem VNA zu messen:
+(1) Eine Reflexionsmessung, (2) eine Transmissionsmessung mit der unbekannten
+Impedanz in Serie, und (3) eine Transmissionsmessung mit der unbekannten
+Impedanz parallel zu den Ports. Diese drei Varianten sind in Abbildung
+\ref{fig:impedancemeasurement} gezeigt. Falls eine genaue Messung gewünscht ist,
+kann ein unbekanntes $L$ mit einem bekannten Referenz-$C$ in Serie geschaltet
+und die Resonanzfrequenz des so entstandenen Schwingkreises ermittelt werden.
+Aus dieser Resonanzfrequenz kann anschliessend das unbekannte $L$ berechnet werden.
+Diese Methode ist genauer als die anderen drei Ansätze -- bei einem unbekannten
+$C$ würde analog ein bekanntes Referenz-$L$ verwendet werden.
+
+\begin{figure}[H]
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[short] (3,0)
+        (3,0) to[L=$Z$] (3,-2) to[short,-o] (0.5,-2);
+        \node at (0.5,-1) {\small{Port 1}};
+        \node at (2,-2.5) {\small{(1)}};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L=$Z$] (3,0) to[short,-o] (3.5,0)
+        (0.5,-2) to[short,o-o] (3.5,-2);
+        \node at (0.5,-1) {\small{Port 1}};
+        \node at (3.5,-1) {\small{Port 2}};
+        \node at (2,-2.5) {\small{(2)}};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-o] (3.5,0)
+        (0.5,-2) to[short,o-o] (3.5,-2)
+        (2,0) to[L=$Z$,*-*]  (2,-2),
+        \node at (0.5,-1) {\small{Port 1}};
+        \node at (3.5,-1) {\small{Port 2}};
+        \node at (2,-2.5) {\small{(3)}};
+     \end{circuitikz}}
+     \caption{Drei Varianten zur Messung einer Unbekannten Impedanz $Z$. Von
+         links nach rechts: (1) Reflexionsmessung, (2) Transmissionsmessung mit $Z$ in
+     Serie, (3) Transmissionsmessung mit $Z$ parallel zu den Ports.}
+    \label{fig:impedancemeasurement}
+\end{figure}
+
+Gemäss \cite{tech2018performing} ist Variante (1), also die Reflexionsmessung, generell
+empfohlen. Bei sehr grossen Impedanzen führt Variante (2), also Transmissionsmessung
+mit $Z$ in Serie, zu genaueren Resultaten, und bei sehr kleinen Impedanzen
+ist Variante (3), also Transmissionsmessung mit parallelem $Z$, zu bevorzugen.
+
+% FIXME: s/Apparatur/Vorrichtung
+
+Für eine genaue Messung muss das zu charakterisierende Bauteil in eine Test-Vorrichtung
+(engl. test fixture) montiert werden. Die Qualität der Messung ist dabei vielfach
+mehr abhängig von der Qualität dieser Vorrichtung als von derjenigen des verwendeten
+Messgerätes. Der Anspruch an die Vorrichtung steigt mit zunehmender Frequenz,
+denn kleine parasitäre Komponenten gewinnen dann an Einfluss. Abbildung
+\ref{fig:testfixtures} zeigt verschiedene Ansätze für solche Vorrichtungen.
+Oben links wurde aus SMA-Steckern und Krokodilklemmen eine vielseitig
+einsetzbare Apparatur gebaut. Insbesondere bei höheren Frequenzen ist dieser
+Ansatz jedoch völlig ungenügend. Oben rechts ist eine bessere Alternative zu
+sehen: Auf eine freiliegende 50~\Ohm Leiterbahn kann dort das unbekannte
+Bauteil aufgelötet werden. Besonders raffiniert ist der Aufbau von Larry
+Benko), der aus Koaxialbuchsen einfach gebaut werden kann
+\cite{benko2020impedance}.  Wie im unteren Teil von Abbildung
+\ref{fig:testfixtures} zu sehen, kann ein Bauteil zwischen zwei rechtwinklig
+zueinander liegenden N-Buchsen auf die drei oben genannten Arten (A-C für (1),
+A-B für (2) und AB-C für (3)) montiert werden.
+
+\minisec{Vorgehen mit dem NanoVNA (Reflexionsmessung, Variante (1)):}
+
+\begin{enumerate}
+    \item Test-Vorrichtung befestigen (z.B. Klemmen).
+    \item Frequenzbereich einstellen.
+    \item Kalibrierung für Reflexionsmessung: Klemmen kurzschliessen für Kurzschluss, 50 Ohm Widerstand
+        einsetzen für Last.
+    \item Bauteil in Vorrichtung einsetzen (Abbildung \ref{fig:illustrationimpedance})
+    \item Anzeigeformat (``Display'' $\longrightarrow$ ``Format''): Smith.
+    \item Kanalwahl (``Display'' $\longrightarrow$ ``Channel''): CH0 (Reflexionsmessung).
+    \item Marker verwenden und Werte ablesen.
+\end{enumerate}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{figures/illustration_impedance.png}
+    \caption{Illustration der Charakterisierung einer Antenne mit einem kurzen Messkabel. Die Kalibrierung erfolgt am Fusspunkt.}
+    \label{fig:illustrationimpedance}
+\end{figure}
+
+\begin{figure}\begin{center}
+    \includegraphics[width=0.49\textwidth,height=5cm,draft]{figures/impedanzklemmen.png}
+    \includegraphics[width=0.49\textwidth,height=5cm,draft]{figures/impedanzpcb.png}
+
+    \includegraphics[width=\textwidth]{figures/w0qe_fixture.png}
+    \caption{Oben links: Klemmen zur Impedanzmessung. Oben rechts: Leiterplatte zur Impedanzmessung
+        mit 50~\Ohm Spur und eingesetztem Bauteil gemäss Messvariante (3). Unten: Vorrichtung von Larry Benko zur Impedanzmessung mit einem VNA \cite{benko2020impedance}.
+    Ein zu charakterisierendes Bauteil wird gemäss einer der drei Varianten aus Abbildung \ref{fig:impedancemeasurement}
+    an die Koaxialbuchsen gelötet.}
+    \label{fig:testfixtures}
+\end{center}\end{figure}
+
+\newpage % FIXME
 \section{FIXME: Abschlüsse/Impedanzen: Widerstände, Spulen, Kondensatoren}
 \begin{itemize}
     \item Vergleich mit Bauteiltester
