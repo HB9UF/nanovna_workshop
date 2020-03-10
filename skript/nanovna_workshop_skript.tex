@@ -1091,13 +1091,19 @@ elektrischen Eigenschaften verändern. Ein VNA mit seiner geringen Ausgangsleist
 die Erwärmung natürlich nicht herbeiführen, so dass diese Effekte verborgen bleiben.
 
 Abschliessend sei auf Abbildung \ref{fig:antennenmessung} verwiesen, welche die Charakterisierung
-einer Antenne mit einem kurzen Messkabel schematisch zeigt. Wie bereits erläutert
-sind folgende Punkte wichtig:
+einer Antenne mit einem kurzen Messkabel schematisch zeigt. Wie bereits erläutert erfasst
+Die Messung erfasst lediglich einen Teilaspekt, insbesondere bleiben Gewinn und Effizienz der
+Antenne weiterhin unbekannt.
+
+\newpage % FIXME
+\minisec{Vorgehen mit dem NanoVNA:}
 
 \begin{enumerate}
-\item Vor der Messung: Kalibrierung am Fusspunkt
-\item Die Messung erfasst lediglich einen Teilaspekt, insbesondere bleiben Gewinn und Effizienz der
-    Antenne weiterhin unbekannt.
+    \item Frequenzbereich einstellen.
+    \item Kalibrierung für Reflexionsmessung am Fusspunkt.
+    \item Antenne anschliessen.
+    \item Anzeigeformat (``Display'' $\longrightarrow$ ``Format''): LogMag oder SWR.
+    \item Kanalwahl (``Display'' $\longrightarrow$ ``Channel''): CH0 (Reflexionsmessung).
 \end{enumerate}
 
 \begin{figure}
