@@ -986,7 +986,90 @@ ausgewählten Spur gibt es einen aktuell ausgewählten Marker, in diesem Beispie
 Mit Hilfe eiens Stiftes kann der aktuelle Marker verschoben werden. Alternativ kann dazu auch
 das kleine Rädchen neben dem Hauptschalter verwendet werden.
 
-\section{FIXME: Antenne}
+\section{Antenne}
+Unter Funkamateuren ist das beliebteste Messobjekt wohl die Antenne. Sie wird mit einer
+Reflexionsmessung charakterisiert, wobei die Kalibrierung am Antennenfusspunkt erfolgt. Oft
+wird zwischen dem VNA und der Antenne eine kurze Speiseleitung angeschlossen, deren
+Einfluss durch die Kalibrierung wettgemacht werden soll. Erfolgt stattdessen die Kalibrierung
+und Messung vom Shack aus, so wird die vielfach lange Speiseleitung
+mitgemessen. Das ist grundsätzlich nicht falsch, aber führt zu
+unterschiedlichen Messergebnissen -- schliesslich wird die Speiseleitung einmal mitgemessen
+und ein andermal nicht. Abbildung \ref{fig:antenna_with_wo_feed} zeigt das SWR einer
+VHF/UHF Zweibandantenne, einmal gemessen am Fusspunkt, und einmal gemessen mit dem ganzen
+Antennensystem bestehend aus 20~m RG-213 Koaxialkabel.
+
+\begin{figure}[H]
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=100., xmax=500.,
+            ymin=1, ymax=20,
+            grid=both,
+            xlabel={Frequenz $f$/MHz},
+            ylabel={SWR},
+            height=6cm,
+            width=\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {feednofeed/vhf_uhf_antenna.dat};
+        \addplot[color=HB9UFred,thick,dashed] table[,x index = {0}, y index = {2}] {feednofeed/vhf_uhf_antenna.dat};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{SWR-Messung einer VHF/UHF Zweibandantenne am Fusspunkt (ausgezogen) sowie im Shack hinter 20~m
+    RG-213 Koaxialkabel (gestrichelt). Die Antenne strahlt trotz tieferem SWR keineswegs mehr Leistung ab.}
+    \label{fig:antenna_with_wo_feed}
+\end{figure}
+
+Ebenfalls wichtig ist die Erkenntnis, dass die charakterisierung einer Antenne mit einem VNA 
+nicht abschliessend klärt, wie ``gut'' eine Antenne oder ein Antennensystem (mit Speiseleitung)
+ist. Dies einerseits, weil der Begriff ``gut'' je nach Anwendungsfall ganz andere Anforderungen
+an die Antenne stellt (Rundstrahler vs. Richtwirkung, steiler Abstrahlwinkel für NVIS vs.
+flacher Abstrahlwinkel für DX, Monoband- vs. Multiband-Antennen usw.). Ein VNA
+kann hier nicht wissen, welche dieser Eigenschaften erwünscht sind. Andererseits -- und dieser
+Aspekt ist recht subtil -- misst ein VNA im Reflexionsmodus einfach, wieviel vom Stimulus
+zurück in den Port reflektiert wird. Was mit dem nicht reflektierten Teil geschieht, kann
+das Gerät nicht eruieren. Vielleicht verheizt ein verlustbehaftetes Anpassungsglied am
+Antennenfusspunkt einen beachtlichen Teil der Leistung. Die Energie wird in diesem Fall nicht
+reflektiert, gelangt aber auch nicht in die Antenne. Möglich ist auch, dass beim Versuch,
+den Impedanzsprung von Speiseleitung zu Antenne mit einem Tuner im Shack anzupassen, zu
+beachtlichen Verlusten auf der Speiseleitung führen \cite{walraven2006understanding}. Es ist
+auch möglich, dass ein Anpassungsnetzwerk aus Transformations- und Stichleitungen die
+Sendeleistung in Wärme umwandelt \cite{doberenz2019swrgut}. In den beiden letzten Fällen
+gelangt die Sendeleistung gar nicht zur Antenne, der VNA merkt davon jedoch nicht. Denn
+jede Energie, die auf dem Weg zur Antenne in Wärme umgewandelt wird, kann nicht reflektiert
+werden.
+
+\begin{figure}[H]
+    \begin{center}
+    \begin{circuitikz} \draw
+        (0,0) to[short,o-] (1,0) to[L=$L$] (3,0) to[C=$C$] (5,0) to[R=$R_\text{strahl}$] (7,0) to[R=$R_\text{ohm}$] (9,0) to[short,-o] (10,0);
+    \end{circuitikz}
+    \end{center}
+    \caption{Ein einfaches Antennenmodell: Der Wirkwiderstand setzt sich zusammen au $R_\text{strahl}$
+    und $R_\text{ohm}$, aber nur die Leistung in $R_\text{strahl}$ wird von der Antenne abgestrahlt.}
+    \label{fig:antennenmodell}
+\end{figure}
+
+Doch auch wenn die Sendeleitung die Antenne erreicht, muss sie nicht unbedingt
+abegstrahlt werden. Ein einfaches Antennen-Modell ist in Abbildung \ref{fig:antennamodel}
+dargestellt. Wenn die Antenne in Resonanz ist, so heben sich die Blindwiderstände von
+$L$ und $C$ genau auf und die Impedanz der Antenne entspricht dem Wirkanteil
+$R_\text{strahl}+R_\text{ohm}$. $R_\text{strahl}$ ist dabei der Strahlungswiderstand und
+$R_\text{ohm}$ sind die übrigen Widerstände, z.B. der verwendeten Antennendrähte oder
+verantwortlich für den Bodenverlust. Nur die Leistung in $R_\text{strahl}$ wird
+abgestrahlt. $R_\text{strahl}$ kann unter Umständen aber bloss einen kleinen
+Anteil an der Gesamtimpedanz haben, worauf hin die Antenne ineffizient ist
+\cite{smith1947performance}.  Ein VNA sieht bestenfalls die Summe
+$R_\text{strahl}+R_\text{ohm}$ und kann nicht eruieren, welcher Anteil der
+eingehenden Leistung abgestrahlt wird.
+
+Ein weiterer Aspekt, der bei der Messung mit dem VNA nicht
+berücksichtigt wird, sind thermische Effekte: Wenn ein Bauteil in der Speiseleitung
+(z.B. eine Mantelwellensperre) aufgrund von Leistungsdissipation warm wird, kann es seine
+elektrischen Eigenschaften verändern. Ein VNA mit seiner geringen Ausgangsleistung kann
+die Erwärmung natürlich nicht herbeiführen, so dass diese Effekte verborgen bleiben.
+
+% FIXME: Abbildung Anschluss Antenne
+
 
 \section{FIXME: Abschlüsse/Impedanzen: Widerstände, Spulen, Kondensatoren}
 \begin{itemize}
