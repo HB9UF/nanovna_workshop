@@ -774,6 +774,10 @@ rekalibriert werden (siehe Abschnitt \ref{sec:nanovnacal}). Eine erneute Kalibri
 ist nach einer Änderung des Kanales (Abschnitt \ref{sec:nanovnachannel}) oder
 des Anzeigeformates (Abschnitt \ref{sec:nanovnaformat}) nicht notwendig.
 
+Egal wie breit oder schmal der Frequenzbereich eingestellt ist, der NanoVNA erfasst in diesem Bereich stets
+101 Messpunkte. Insbesondere bei einem grossen Frequenzbereich ist deshalb darauf zu achten, dass zwischen
+den Messpunkten keine wichtige Information verloren geht.
+
 \subsection{Kalibrierung}\label{sec:nanovnacal}
 \begin{center}\begin{tikzpicture}[font=\sffamily]
     \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
