@@ -1006,7 +1006,7 @@ Mit Hilfe eines Stiftes kann der aktuelle Marker verschoben werden. Alternativ k
 das kleine Rädchen neben dem Hauptschalter verwendet werden.
 
 \newpage % FIXME
-\section{Antennen}
+\section{Antennen}\label{sec:antennen}
 Unter Funkamateuren ist das beliebteste Messobjekt wohl die Antenne. Sie wird mit einer
 Reflexionsmessung charakterisiert, wobei die Kalibrierung am Antennenfusspunkt erfolgt. Oft
 wird zwischen dem VNA und der Antenne eine kurze Speiseleitung angeschlossen, deren
@@ -1703,7 +1703,80 @@ Die Messung erfolgt wie bei der Gleichtaktmessung der Mantelwellensperre: Nach d
 eine serielle Transmissionsmessung durchgeführt.
 
 \newpage % FIXME
-\section{FIXME: Transformatoren zur Impedanzwandlung}\label{sec:impedanztrafo}
+\section{Transformatoren zur Impedanzwandlung}\label{sec:impedanztrafo}
+Transformatoren zur Impedanzwandlung sind beliebt, z.B. um Fusspunktimpedanzen in den Bereich
+des Wellenwiderstandes einer Speiseleitung zu transformieren. Darüber hinaus
+können sie grundsätzlich zur Impedanztransformation verwendet werden. Sie sind im Gegensatz zu
+anderen Anpassmethoden (wie z.B. der L-Match) breitbanding, wobei allerdings gleichzeitig gesagt
+werden muss, dass es nicht einfach ist, einen breitbandingen Impedanztransformator zu bauen:
+parasitäre Komponenten machen eine gute Anpassung schwierig; was bei tiefen Frequenzen gut
+funktioniert, führt bei höheren Frequenzen z.B. zu Verlusten im verwendeten Ringkern oder
+zu massgeblichen Kapazitäten zwischen den einzelnen Windungen.
+
+Eine einfache Überprüfung des Impedanzwandlers erfolgt durch Reflexionsmessung: Die eine Seite
+des Transformators wird mit dem VNA verbunden, der für eine Reflexionsmessung konfiguriert ist.
+Die andere Seite wird mit dem richtigen Widerstand abgeschlossen. Beispiel: Ein Transformator
+mit 10 Windungen auf der Primärseite und 20 Windungen auf der Sekundärseite
+wird mit der Primärseite mit dem VNA verbunden. Dieser Transformator hat das Windungsverhältnis
+1:2 und somit ein Impedanzverhältnis von 1:4. Die Sekundärseite wird entsprechend mit 200~\Ohm
+($4\cdot 50$~\Ohm) abgeschlossen. Unter perfekten Bedingungen müsste dieser Aufbau keine
+Leistung zurückführen. In \cite{ferreira2019evaluating} wird ausserdem die Alternative diskutiert,
+auch die Sekundärseite mit 50~\Ohm abzuschliessen und das Messresultat mit der theoretische
+Fehlanpassung zu vergleichen. Die Reflexionsmessung ist in Abbildung \ref{fig:impedancetransformermeasurement}
+auf der linken Seite dargestellt.
+
+Wie in Abschnitt \ref{sec:antennen} bereits erläuert, ist es möglich, dass der Stimulus zwar
+nicht reflektiert wird, aber auch nicht bis zum Abschlusswiderstand gelangt. Insbesondere
+Verluste im Kern können hierfür verantwortlich sein. Die Prüfung dieses Sachverhaltes ist
+weniger einfach. Ein gängiger Ansatz ist es, zwei baugleiche Impedanztransformatoren mit
+der Sekundärseite zusammenzuschalten und mit einer Transmissionsmessung zu prüfen, welcher
+Anteil des Stimulus in den anderen Port gelangt \cite{ferreira2019evaluating}.
+Idealerweise sollte die Einfügedämpfung dieses Netzwerkes 0~dB sein. Die Transmissionsmessung
+ist in Abbildung \ref{fig:impedancetransformermeasurement} auf der rechten Seite dargestellt.
+
+\begin{figure}[H]
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz}\draw
+        (0,0) node[transformer core,american] (T) {}
+        node[ocirc] (A) at ([xshift=-1cm]T.A1) {}
+        node[ocirc] (B) at ([xshift=-1cm]T.A2) {}
+        (T.A1) to[-o] (A)
+        (T.A2) to [-o] (B)
+        (T.B1) to[R] (T.B2)
+        ;
+        \node at (-2,0) {\small{Port 1}};
+        \node at (0,1.5) {\small{1:N}};
+     \end{circuitikz}}
+    \hfill
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0,0) node[transformer core,american] (T) {}
+        node[ocirc] (A) at ([xshift=-1cm]T.A1) {}
+        node[ocirc] (B) at ([xshift=-1cm]T.A2) {}
+        (T.A1) to[-o] (A)
+        (T.A2) to [-o] (B)
+        (3,0) node[transformer core,american] (TT) {}
+        node[ocirc] (AA) at ([xshift=1cm]TT.B1) {}
+        node[ocirc] (BB) at ([xshift=1cm]TT.B2) {}
+        (TT.B1) to[-o] (AA)
+        (TT.B2) to [-o] (BB)
+        (T.B1) to[short] (TT.A1)
+        (T.B2) to[short] (TT.A2)
+        ;
+        \node at (-2,0) {\small{Port 1}};
+        \node at (5,0) {\small{Port 2}};
+        \node at (0,1.5) {\small{1:N}};
+        \node at (3,1.5) {\small{N:1}};
+     \end{circuitikz}}
+    \hfill
+     \caption{Links: Reflexionsmessung eines Impedanztransformators. Rechts: Transmissionsmessung
+     mit zwei baugleichen Impedanztransformatoren.}
+     \label{fig:impedancetransformermeasurement}
+\end{figure}
+
+\minisec{Vorgehen mit dem NanoVNA:}
+Die Messung erfolgt gemäss Beschreibung in diesem Abschnitt.
 
 \newpage % FIXME
 \section{Menü-Übersicht}\label{sec:menu}
@@ -1871,6 +1944,7 @@ zu Verfügung zu stellen.
 % Bestimmung A_L Wert.
 % Mantelwellensperren vergleichen, Perle um Perle aufziehen.
 % Resonanzfrequenz, Nebenresonanzen, Obertöne etc. eines Schwingquarzes
+% Messung Impedanzwandler
 % Antennengewinn
 % TDR
 % NanoVNA Saver
