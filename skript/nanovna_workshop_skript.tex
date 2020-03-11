@@ -67,46 +67,8 @@
 \pagestyle{scrheadings}
 %\setkomafont{pagehead}{\sf}
 
-% FIXME
 \usepackage{tikz}
-\usetikzlibrary{shadows}
-\addtokomafont{descriptionlabel}{\normalfont}
-\usepackage{tcolorbox}
-\tcbuselibrary{skins,breakable}
 
-\tcbset{
-mybox/.style={
-  breakable,
-  enhanced standard,
-  boxrule=0.4pt,titlerule=-0.2pt,drop fuzzy shadow,
-  width=\linewidth,
-  title style={top color=myblue!30,bottom color=myblue!0.5},
-  overlay unbroken and first={
-    \path[fill=myblue]
-    ([xshift=5pt,yshift=-\pgflinewidth]frame.north west) to[out=0,in=180] ([xshift=20pt,yshift=-5pt]title.south west) -- ([xshift=-20pt,yshift=-5pt]title.south east) to[out=0,in=180] ([xshift=-5pt,yshift=-\pgflinewidth]frame.north east) -- cycle;
-  },
-  fonttitle=\Large\bfseries\sffamily,
-  fontupper=\sffamily,
-  fontlower=\sffamily,
-  before=\par\medskip\noindent,
-  after=\par\medskip,
-  center title,
-  toptitle=3pt,
-  top=11pt,topsep at break=-5pt,
-  colback=white
-}}
-
-\newtcolorbox{lernziele}[1][\linewidth]{mybox,width=#1,title=Lernziele}
-
-\newcounter{uebungscounter}
-\newcommand{\uebung}[1]{
-    \stepcounter{uebungscounter}
-    \section{Übung \arabic{uebungscounter}: #1}
-    \renewcommand{\labelenumi}{\arabic{uebungscounter}.\arabic{enumi}}
-}
-\newcommand{\loesungen}{
-    \section*{Lösungen zu Übung \arabic{uebungscounter}}
-}
 %\setcounter{secnumdepth}{0} % sections are level 1
 
 \sloppy
@@ -123,20 +85,6 @@ mybox/.style={
 %\hfill\includegraphics[width=2cm]{figures/hb9uf_logo.pdf}
 
 \newpage
-
-%   \uebung{Erste Schritte}
-%   In dieser Übung trainieren Sie den Umgang mit dem GNU Radio Companion (GRC) und lernen erste Blöcke kennen.
-
-%   \begin{lernziele}
-%   \begin{itemize}
-%   \item Sie können in GNU Radio Blöcke einfügen, löschen, verbinden und trennen.
-%   \item Sie können einfache Wellenformen mit \hl{Signal Source} generieren.
-%   \item Sie können Signale im Zeit- und Frequenzraum visualisieren.
-%   \item Sie wissen, dass das Spektrum eigentlich auch negative Frequenzen aufweist.
-%   \item Sie können Flows in GRC starten und stoppen.
-%   \item Sie verstehen, wann der \hl{Throttle}-Block zum Einsatz kommt.
-%   \end{itemize}
-%   \end{lernziele}
 
 % FIXME: Einleitung
 
@@ -204,8 +152,6 @@ in diesem Fall -3~dB, was nicht ganz korrekt ist - es handelt sich ja schliessli
 und -3~dB Dämpfung wären +3~dB Verstärkung, was in dieser passiven Situation nicht eintreten kann.
 Im Folgenden wird diese Konvention trotzdem verwendet, weil sie sich eingebürgert hat.
 
-% FIXME: Einfügedämpfung: Definieren, sicherstellen dass diese Grösse richtig ist.
-
 Das im Amateurfunk beliebte Stehwellenverhältnis (standing wave ratio, SWR) bezeichnet eigentlich
 ein Amplitudenverhältnis von speziellen Stellen entlang einer Leitung (z.B. Koaxialkabel oder
 Hühnerleiter). Bei der Bestimmung des SWR wird aber in den seltensten Fällen die Leitung an sich
@@ -260,7 +206,6 @@ Eine andere Darstellung des selben Zusammenhangs ist im Nomogramm in Abbildung
 \ref{fig:rlnomogramm} zu sehen.
 
 \begin{figure}[t]
-    % FIXME: Check if the math is right
     \begin{center}\begin{tikzpicture}[scale=1.25]
         % Return loss
         % [13, 10, 8.5, 7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.9, 0.7, 0.5, 0.3, 0.1]
@@ -282,7 +227,6 @@ Eine andere Darstellung des selben Zusammenhangs ist im Nomogramm in Abbildung
         \node[right] at (10,0) {~\sf\scriptsize{RL (dB)}};
 
         % SWR
-        % FIXME: infty
         % [1, 1.5, 1.9, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 12, 16, 20, 40]
         % [1.3, 1.7, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 18, 30, 50]
         %for i in x: print("%.1f / %f, " % (i,  ((i-1) / (i+1))**2 ))
@@ -505,8 +449,9 @@ oder kapazitiv ist. Auch über diese Konvention lässt sich debattieren.
 \end{figure}
 
 \subsection{Phasenverschiebung mit reaktiven Lasten}
-Ein Spannungsteiler bestehend aus zwei 100~$\Omega$ (Wirk-)Widerständen halbiert die Eingangspannung,
-bei Gleichspannung wie auch bei Wechselspannung. % FIXME SIehe Abbildung ...?
+Ein Spannungsteiler bestehend aus zwei 100~$\Omega$ (Wirk-)Widerständen
+halbiert die Eingangspannung, bei Gleichspannung wie auch bei Wechselspannung.
+Dieser Sachverhalt ist im oberen Teil von Abbildung \ref{fig:phasenverschiebung} festgehalten.
 Es wäre nun naheliegend anzunehmen, dass man einen dieser beiden Widerstände
 durch eine Induktivität oder Kapazität mit einem Blindwiderstand von 100~$\Omega$
 ersetzen könnte und nach wie vor über einen Spannungsteiler verfügt, welcher
@@ -730,14 +675,15 @@ wirkt sich direkt auf die Messung aus.
 Der NanoVNA wird mit einem Schiebe-Schalter ein- und ausgeschalten. Beim Einschalten
 leuchtet eine blaue LED auf, welche nach dem Ausschalten noch bis zu einer Minute
 nachleuchtet. Das Gerät wird über das mitgelieferte USB-C Kabel geladen. Die blaue
-LED blinkt, bis der Akku voll ist, anschliessend leuchtet sie ohne Unterbrüche.
-% FIXME check how LED really is charged.
+LED blinkt, bis der Akku voll ist, anschliessend hört sie auf zu blinken.
+% FIXME: Leuchtet konstant oder ist erloschen?
 
 Der grundsätzliche Messablauf ist immer gleich:
 
 \begin{enumerate}
     \item Einstellung der Frequenz (Abschnitt \ref{sec:nanovnafreq})
-    \item Kalibrierung (Abschnitt \ref{sec:nanovnacal}) % FIXME: CHeck order of sections
+    \item Kalibrierung (Abschnitt \ref{sec:nanovnacal})
+    \item Anzeige von Spuren ein- und ausschalten (Abschnitt \ref{sec:nanovnatraces})
     \item Kanalwahl (Abschnitt \ref{sec:nanovnachannel} und Einstellung des Anzeigeformates
         (Abschnitt \ref{sec:nanovnaformat})
 \end{enumerate}
@@ -777,10 +723,9 @@ Arten erfolgen:
         und eine Bandbreite von 10~MHz führen also zur selben Messung wie oben.
 \end{itemize}
 
-% FIXME: Abkürzungen checken (Freq.)
 Mit der Einstellung ``CW Freq'' wird das Gerät auf eine einzige Frequenz fixiert.
-Der aktuelle Frequenzbereich wird im Display unten in der linken und rechten
-Ecke angezeigt. % FIXME: Check
+Der aktuelle Frequenzbereich wird im Display unten in der linken (Start) bzw.
+rechten (Stop) Ecke angezeigt.
 Für eine gute Messung muss nach einer Änderung des Frequenzbereiches unbedingt
 rekalibriert werden (siehe Abschnitt \ref{sec:nanovnacal}). Eine erneute Kalibrierung
 ist nach einer Änderung des Kanales (Abschnitt \ref{sec:nanovnachannel}) oder
@@ -866,7 +811,7 @@ angezeigt. Tabelle \ref{tab:calibration} erläutert die dort verwendeten Abkürz
     \end{center}
 \end{table}
 
-\subsection{Trace / Spur anzeigen}
+\subsection{Trace / Spur anzeigen}\label{sec:nanovnatraces}
 \begin{center}\begin{tikzpicture}[font=\sffamily]
     \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
     \node[menu] (display) {Display};
@@ -1183,8 +1128,6 @@ Gemäss \cite{tech2018performing} ist Variante (1), also die Reflexionsmessung, 
 empfohlen. Bei sehr grossen Impedanzen führt Variante (2), also Transmissionsmessung
 mit $Z$ in Serie, zu genaueren Resultaten, und bei sehr kleinen Impedanzen
 ist Variante (3), also Transmissionsmessung mit parallelem $Z$, zu bevorzugen.
-
-% FIXME: s/Apparatur/Vorrichtung
 
 Für eine genaue Messung muss das zu charakterisierende Bauteil in eine Test-Vorrichtung
 (engl. test fixture) montiert werden. Die Qualität der Messung ist dabei vielfach
@@ -1919,7 +1862,7 @@ einem NanoVNA Workshop erstellt. Weitergabe, Vervielfältigung und Änderungen s
 im Rahmen der Lizenz CC BY-SA 4.0 gestattet. In diesem Fall ist der \LaTeX Quelltext
 zu Verfügung zu stellen.
 
-% FIXME: Sichertellen dass latex source verfügbar bleibt, github
+%  github
 
 \bibliographystyle{babunsrt}
 \bibliography{nanovna_workshop_skript}
