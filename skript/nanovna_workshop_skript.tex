@@ -161,7 +161,7 @@ gemessen und mit den entsprechenden Formeln in ein Stehwellenverhältnis umgeset
 gibt den Zusammenhang zwischen Rückführungsdämpfung und SWR für ausgewählte Grössen an.
 
 \begin{table}[H]
-    \caption{Gegenübertellung von SWR, Rückführungsdämpfung und dem prozentualen Anteil reflektierter Leistung.}
+    \caption{Gegenüberstellung von SWR, Rückführungsdämpfung und dem prozentualen Anteil reflektierter Leistung.}
     \label{tab:rlswr}
 \begin{center}\begin{tabular}{SSS}\toprule
 {\textbf{SWR}} & {\textbf{Rückführung}} & {\textbf{\% Reflkt.}}\\\midrule
@@ -258,7 +258,7 @@ Eine andere Darstellung des selben Zusammenhangs ist im Nomogramm in Abbildung
         \node[right] at (10,0) {~\sf\scriptsize{\% Reflkt.}};
         \end{scope}
     \end{tikzpicture}\end{center}
-    \caption{Nomogramm des Zusammenhangs zwischen Rückfürungsdämpfung (return loss, RL),
+    \caption{Nomogramm des Zusammenhangs zwischen Rückführungsdämpfung (return loss, RL),
     Stehwellenverhältnis (standing wave ratio, SWR) und dem Anteil der reflektierten Leistung (\% Reflkt.).}
     \label{fig:rlnomogramm}
 \end{figure}
@@ -450,7 +450,7 @@ oder kapazitiv ist. Auch über diese Konvention lässt sich debattieren.
 
 \subsection{Phasenverschiebung mit reaktiven Lasten}
 Ein Spannungsteiler bestehend aus zwei 100~$\Omega$ (Wirk-)Widerständen
-halbiert die Eingangspannung, bei Gleichspannung wie auch bei Wechselspannung.
+halbiert die Eingangsspannung, bei Gleichspannung wie auch bei Wechselspannung.
 Dieser Sachverhalt ist im oberen Teil von Abbildung \ref{fig:phasenverschiebung} festgehalten.
 Es wäre nun naheliegend anzunehmen, dass man einen dieser beiden Widerstände
 durch eine Induktivität oder Kapazität mit einem Blindwiderstand von 100~$\Omega$
@@ -565,7 +565,7 @@ im Smith-Diagramm folgen diesen Regeln:
 \item Üblicherweise wird das Smith-Diagramm auf 50~$\Omega$ normalisiert, so dass
     der Punkt genau in der Mitte $R=50$~\Ohm und $X=0$~\Ohm aufweist.
 \item Auf der Horizontalen in der Mitte des Diagrammes sind alle Impedanzen mit $X=0$~\Ohm, also alle Impedanzen
-    ohne Blindanteil.
+    ohne Blind-Anteil.
 \item Der Punkt ganz links auf dieser Horizontalen ist $R=0$~\Ohm, also eine Impedanz ohne Wirk- und Blindwiderstand
     bzw. ein Kurzschluss.
 \item Der Punkt ganz rechts auf der selben Horizontalen ist $R=\infty$~\Ohm, also eine offene Verbindung.
@@ -717,7 +717,7 @@ wirkt sich direkt auf die Messung aus.
 
 \newpage % FIXME
 \section{Bedienung NanoVNA}
-Der NanoVNA wird mit einem Schiebe-Schalter ein- und ausgeschalten. Beim Einschalten
+Der NanoVNA wird mit einem Schiebe-Schalter ein- und ausgeschaltet. Beim Einschalten
 leuchtet eine blaue LED auf, welche nach dem Ausschalten noch bis zu einer Minute
 nachleuchtet. Das Gerät wird über das mitgelieferte USB-C Kabel geladen. Die blaue
 LED blinkt, bis der Akku voll ist, anschliessend hört sie auf zu blinken.
@@ -843,7 +843,7 @@ angezeigt. Tabelle \ref{tab:calibration} erläutert die dort verwendeten Abkürz
 \begin{table}
     \begin{center}
         \caption{Abkürzungen zur Anzeige des Kalibrierungszustandes auf der linken Seite des
-        Hauptbildschirmes.}
+        Hauptbildschirms.}
         \label{tab:calibration}
         \begin{tabular}{ll}\toprule
             \textbf{Abkürzung} & \textbf{Bedeutung}\\\midrule
@@ -908,7 +908,7 @@ und kann bei Unsicherheit zu Rate gezogen werden.
 Diese Kanalwahl erfolgt im Menü ``Display'' $\longrightarrow$ ``Channel''.
 Die Einstellung in diesem Menü gilt deshalb für die aktuell gewählte Spur.
 
-Für jede Spur erscheint im oberen Teil des Hauptbildschirmes in der
+Für jede Spur erscheint im oberen Teil des Hauptbildschirms in der
 entsprechenden Spurfarbe der gewählte Kanal, so dass anhand dieser Angabe
 eruiert werden kann, ob eine Reflexions- oder eine Transmissionsmessung
 durchgeführt wird.
@@ -1077,7 +1077,7 @@ werden.
 \end{figure}
 
 Doch auch wenn die Sendeleitung die Antenne erreicht, muss sie nicht unbedingt
-abegstrahlt werden. Ein einfaches Antennen-Modell ist in Abbildung \ref{fig:antennenmodell}
+abgestrahlt werden. Ein einfaches Antennen-Modell ist in Abbildung \ref{fig:antennenmodell}
 dargestellt. Wenn die Antenne in Resonanz ist, so heben sich die Blindwiderstände von
 $L$ und $C$ genau auf und die Impedanz der Antenne entspricht dem Wirkanteil
 $R_\text{strahl}+R_\text{ohm}$. $R_\text{strahl}$ ist dabei der Strahlungswiderstand und
@@ -1280,7 +1280,7 @@ von $f_r\approx$~5~MHz ist der Blindwiderstand 0~$\Omega$, lediglich $R=50$~$\Om
 ist am Eingang sichtbar. Ein Abschluss von 50~$\Omega$ entspricht einer perfekten
 Anpassung und deshalb entsteht bei dieser Frequenz überhaupt kein Rückfluss.
 Die selben Sachverhalte sind auf der rechten Seite von Abbildung
-\ref{fig:resonanzplot} im Smith-Diagram erkennbar. Die Analogie zu Verhalten
+\ref{fig:resonanzplot} im Smith-Diagramm erkennbar. Die Analogie zu Verhalten
 einer Antenne im Umfeld ihrer Resonanzfrequenz ist offensichtlich.
 \begin{figure}
 \begin{center}\begin{tikzpicture}
@@ -1541,22 +1541,22 @@ Je nach Situation kann eine zusätzliche Reflexionsmessung der Filterports zielf
 \section{Mantelwellensperren}
 Eine Mantelwelle ist eine elektromagnetische Welle, die sich auf dem Aussenleiter (Mantel) eines
 Koaxialkabels ausbreitet. Dies ist in aller Regel aus verschiedenen Gründen
-unterwünscht; um die Mantelwelle zu unterbinden, wird eine Mantelwellensperre
+unerwünscht; um die Mantelwelle zu unterbinden, wird eine Mantelwellensperre
 eingesetzt. Diese Mantelwellensperre soll für Gegentaktsignale wie das
 Empfangssignal von der Antenne zum Empfänger und das Sendesignal vom Sender
 zur Antenne durchlässig sein; für Gleichtaktsignale wie die Mantelwelle soll
 die Mantelwellensperre nicht durchlässig sein.
 
-Die Messung einer Mantewellensperre hat deshalb drei Aspekte:
+Die Messung einer Mantelwellensperre hat deshalb drei Aspekte:
 (1) Durchlässigkeit von Gegentaktsignalen;
 (2) Dämpfung von Gleichtaktsignalen;
 (3) Verhalten unter Last (Erwärmung etc.).
 Mit einem VNA werden typischerweise nur die ersten beiden Aspekte erfasst,
-Erwärmung unter Last kann z.B. mit einem Thermomenter, einer Wärmebildkamera
+Erwärmung unter Last kann z.B. mit einem Thermometer, einer Wärmebildkamera
 etc. erfasst werden und wird an dieser Stelle nicht besprochen.
 
 Die \textbf{Gegentaktmessung} ist einfach: Der VNA wird für eine Transmissionsmessung
-kalibriert, die Sperre wird eingeschleift und die Einfüngungsdämpdung wird
+kalibriert, die Sperre wird eingeschleift und die Einfügedämpfung wird
 gemessen. Eine gute Mantelwellensperre sollte bei dieser Messung eine geringe
 Einfügedämpfung aufweisen.
 
@@ -1565,7 +1565,7 @@ Art und Weise mit dem VNA verbunden: Der Eingang wird mit dem Stimulus,
 der Ausgang mit dem detektierenden Port verbunden. Allerdings werden die
 beiden beiden Leiter der Leitung jeweils kurzgeschlossen und mit dem
 Innenleiter der Ports verbunden; die beiden Aussenleiter der Ports werden
-kurzgeschlossen. Wenn die so präparierte Mantewellensperre als diskretes
+kurzgeschlossen. Wenn die so präparierte Mantelwellensperre als diskretes
 Bauteil betrachtet wird, so entspricht diese Messung der seriellen
 Transmissionsmessung dieses Bauteils -- also Messvariante (2) aus
 Abschnitt \ref{sec:impedance}. Eine gute Mantelwellensperre
@@ -1583,7 +1583,7 @@ mit den beiden Innenleitern verbunden werden. (Siehe Abbildung
         Anzeigeformat ``LogMag''.)
     \item Mantelwellensperre einschleifen, d.h. wie im normalen Gebrauch anschliessen.
     \item NanoVNA für Gleichtaktmessung vorbereiten: Messvorrrichtung montieren und für
-        Transmissionsmessung rekalibrierung -- die Thru-Kalibrierung erfolgt mit kurzgeschlossener
+        Transmissionsmessung rekalibrieren -- die Thru-Kalibrierung erfolgt mit kurzgeschlossener
         Vorrichtung.
     \item Dann Gleichtaktmessung wie in Abbildung \ref{fig:illustration_choke} durchführen.
 \end{enumerate}
@@ -1592,7 +1592,7 @@ mit den beiden Innenleitern verbunden werden. (Siehe Abbildung
     \includegraphics[width=0.7\textwidth]{figures/illustration_w2du_short.png}
     \includegraphics[width=\textwidth]{figures/illustration_DG0SA.png}
     \caption{Gleichtaktmessung von Mantelwellensperren. Die Mantelwellensperre
-        ist in Serie zwischen den beien Ports geschaltet. Oben: Mantelwellensperre
+        ist in Serie zwischen den beiden Ports geschaltet. Oben: Mantelwellensperre
         nach W2DU \cite{maxwell1983w2du}. An den rot eingezeichneten Stellen sollten die
         beiden Leiter kurzgeschlossen werden; idealerweise ist dies Teil der Messvorrichtung.
         Unten: Mantelwellensperre nach DG0SA.}
@@ -1716,7 +1716,7 @@ auch die Sekundärseite mit 50~\Ohm abzuschliessen und das Messresultat mit der 
 Fehlanpassung zu vergleichen. Die Reflexionsmessung ist in Abbildung \ref{fig:impedancetransformermeasurement}
 auf der linken Seite dargestellt.
 
-Wie in Abschnitt \ref{sec:antennen} bereits erläuert, ist es möglich, dass der Stimulus zwar
+Wie in Abschnitt \ref{sec:antennen} bereits erläutert, ist es möglich, dass der Stimulus zwar
 nicht reflektiert wird, aber auch nicht bis zum Abschlusswiderstand gelangt. Insbesondere
 Verluste im Kern können hierfür verantwortlich sein. Die Prüfung dieses Sachverhaltes ist
 weniger einfach. Ein gängiger Ansatz ist es, zwei baugleiche Impedanztransformatoren mit
