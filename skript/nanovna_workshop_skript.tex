@@ -541,7 +541,7 @@ $X_L=100$~$\Omega$. Dennoch wird die Spannung nicht halbiert, stattdessen wird e
     \label{fig:phasenverschiebung}
 \end{figure}
 
-\subsection{Das Smith-Diagramm}
+\subsection{Das Smith-Diagramm}\label{sec:smith}
 Aus dem letzten Abschnitt wird klar: Die betrachteten Bauteile Widerstand, Kondensator und Spule haben Wirk- und
 Blindwiderstände, und eine Serienschaltung aus einem Widerstand von
 $R=100$~$\Omega$ und einer Spule mit einem Blindwiderstand von $X_L=100$~$\Omega$ hat nicht einen Ersatzwiderstand
@@ -607,11 +607,6 @@ In Abbildung \ref{fig:smithimpedance} sind die selben Impedanzen zu sehen wir in
 sind sie nun in einem Smith-Diagramm dargestellt. Berechtigterweise stellt sich die Frage, wozu denn das Ganze
 gut sein soll.
 
-\begin{itemize}
-    \item Richtung der Impedanzen, Matching
-    \item Leitungstheoretische Aspekte
-\end{itemize}
-
 \begin{figure}
     \begin{tikzpicture}
         \begin{smithchart}[width=\textwidth,show origin code/.code={},clip=false,xticklabel style={font=\small},yticklabel style={font=\small}]
@@ -628,11 +623,59 @@ gut sein soll.
     \label{fig:smithimpedance}
 \end{figure}
 
+Werden Komponenten in ein Hochfrequenz-Netzwerk eingefügt, so verändern sie die Impedanz, die ein Generator sieht,
+wenn er ins Netzwerk ``hineinschaut'', bzw. die ein VNA mit einer Reflexionsmessung anzeigt. Mit Hilfe des
+Smith-Diagrammes lässt sich dieser Einfluss von Netzwerk-Komponenten auf die Eingangsimpedanz des Netzwerkes
+sehr einfach visualisieren. Für verschiedene solcher Komponenten wird dies im Folgenden verdeutlicht. Die
+Effekte sind in Abbildung \ref{fig:smithbigpicture} zusammengefasst.
+
+\newpage % FIXME
+
+\textbf{Widerstände:} Ein Widerstand in Serie erhöht die Eingangsimpedanz, da sie mit der Abschlussimpedanz
+in Serie geschaltet ist. Je grösser der Widerstand, desto mehr strebt die Eingangsimpedanz in Richtung des
+Punktes ganz rechts im Smith-Diagramm. Ein zur Abschlussimpedanz parallelgeschalteter Widerstand hat den
+entgegengesetzten Effekt, die Eingangsimpedanz wird mit abnehmendem
+Parallelwiderstand reduziert und strebt zum Punkt ganz links im Smith-Diagramm.
+
+\textbf{Spulen und Kondensatoren in Serie:} Eine Spule in Serie erhöht den Blindwiderstand. Mit zunehmendem
+Blindwiderstand strebt die Impedanz deshalb entlang der Kreislinien dem Punkt ganz rechts im Diagramm entgegen.
+Ein Kondensator in Serie hat den gegenteiligen Effekt: Der Konvention entsprechend ist dessen Blindwiderstand
+negativ, der Punkt ganz links wird deshalb in die andere Richtung erreicht. Wichtig zu erwähnen ist, dass dies
+aufgrund der invers-proportionalen Relation zwischen Blindwiderstand und Kapazität bei kleinen Kapazitäten erfolgt.
+
+\textbf{Parallele Spulen und Kondensatoren:} Für Parallelschaltungen werden die Hilfslinien im Smith-Diagramm
+gespiegelt. Je kleiner die Induktivität einer parallel geschalteten Spule, desto kleiner ihr Blindwiderstand.
+Die Impedanz strebt deshalb mit abnehmendem Blindwiderstand dem Punkt ganz links im Diagramm zu. Analog gilt
+das selbe für parallel geschaltete Kondensatoren, wobei auch hier der Weg in die andere Richtung, aber entlang
+der selben Kreislinien, genommen wird. Auch hier wird ein (betragsmässig) grosser Blindwiderstand in einem
+kleinen Kondensator realisiert.
+
+\textbf{Leitungen:} Eine Leitung (z.B. ein Koaxialkabel) transformiert Impedanzen. Eine solche Transformation
+entspricht im Smith-Diagramm ein Kreis im Uhrzeigersinn vom Abschluss zum
+Stimulus. Die bekannteste Anwendung dieses Phänomens ist vermutlich der Viertelwellen-Transformator: Wird ein
+Koaxialkabel der elektrischen Länge $\lambda/4$ an einem Ende kurzgeschlossen, erscheint am anderen Ende eine
+unendlich grosse Impedanz (offener Stromkreis). Im Smith-Diagramm erscheint diese Transformation als Halbkreis,
+was in Abbildung \ref{fig:smithbigpicture} unten links dargestellt ist: Der Halbkreis beginnt beim Kurzschluss
+ganz links und endet beim offenen Stromkreis ganz rechts. Ein offener Stromkreis würde auf die selbe Art und
+Weise zu einem Kurzschluss transformiert werden. Eine Leitung der Länge $\lambda/2$ entspricht einem Vollkreis
+im Diagramm -- abgesehen von Dämpfungseffekten ist der Ausgangspunkt deckungsgleich mit dem Endpunkt. Alle
+Beispiele im Diagramm unten links sind Viertelwellen-Transformatoren, deshalb sind ausschliesslich Halbkreise
+zu sehen.  Die gestrichelte Linie entspricht einer Leitung mit einem Wellenwiderstand von 100~\Ohm, der
+Kreismittelpunkt ist deshalb nicht mehr identisch mit dem Mittelpunkt des Diagrammes. Unten rechts in Abbildung
+\ref{fig:smithbigpicture} ist schliesslich eine Lange, verlustbehaftete Leitung zu sehen. Die Verluste führen
+dazu, dass mit zunehmender Länge die Eingangsimpedanz immer näher an 50~\Ohm heranrückt, obschon der Abschluss
+am anderen Ende weitab von 50~\Ohm liegt.
+
+\begin{figure}
+    \begin{center}\includegraphics[width=0.9\textwidth]{figures/smith_big_picture/smith_big_picture.pdf}\end{center}
+    \caption{Effekt verschiedenere Komponenten auf die Netzwerk-Impedanz.}
+    \label{fig:smithbigpicture}
+\end{figure}
 \subsection{Kalibrierung}\label{sec:calibration}
 
 Zur Korrektur von Messabweichungen in Testkabeln und dem Gerät
 (Frequenzabhängkeit von Stimulus und Detektor) muss vor jeder Messung eine
-Kalibrierung durchgeführt werden. Wie in Abschnitt \ref{sec:tl} erläutert,
+Kalibrierung durchgeführt werden. Wie in Abschnitt \ref{sec:smith} erläutert,
 werden Impedanzen durch Leitungen transformiert. Eine Kalibrierung macht
 auch diesen Effekt rückgängig. Dafür wird ein Kalibrierungs-Standard
 (auch Kalibrierungskit genannt) benötigt; in Abbildung \ref{fig:calkit} ist
@@ -1387,13 +1430,13 @@ Eine Leitung -- z.B. ein Koaxialkabel -- der Länge $\lambda/4$ hat besondere
 Eigenschaften: Ein Kurzschluss am einen Ende sieht vom anderen Ende aus wie
 eine offene Verbindung; eine offene Verbindung am einen Ende sieht vom anderen
 Ende aus wie ein Kurzschluss. Die Impedanz wird also transformiert, die
-Struktur wird deshalb auch Viertelwellentransformator genannt. Im Smith-Diagramm
+Struktur wird deshalb auch Viertelwellen-Transformator genannt. Im Smith-Diagramm
 wird eine Abschlussimpedanz am Ende der Leitung in einem Halbkreis im Gegenuhrzeigersinn
-rotiert. Zwei $\lambda/4$-Leitungen hintereinander entsprechen einer Leitung
-der Länge $\lambda/2$, im Smith-Diagramm erfolgen zwei Rotationen um je einen
-Halbkreis bzw. eine Rotation um einen Vollkreis: Die $\lambda/2$-Leitung
-transformiert eine beliebige Impedanz (abgesehen von Verlusten im Kabel) auf
-sich selbst.
+rotiert (siehe Abschnitt \ref{sec:smith}). Zwei $\lambda/4$-Leitungen
+hintereinander entsprechen einer Leitung der Länge $\lambda/2$, im
+Smith-Diagramm erfolgen zwei Rotationen um je einen Halbkreis bzw. eine
+Rotation um einen Vollkreis: Die $\lambda/2$-Leitung transformiert eine
+beliebige Impedanz (abgesehen von Verlusten im Kabel) auf sich selbst.
 
 \begin{figure}[H]
 \begin{center}
@@ -1428,7 +1471,7 @@ parallel geschaltet. Als Alternative zum T-Stück kann auch eine Vorrichtung wie
 die Platine in Abbildung \ref{fig:testfixtures} genutzt werden -- dies ist vor
 allem dann sinnvoll, wenn die $\lambda/4$-Leitung ohne Stecker auskommen soll.
 
-Die Viertelwellentransformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
+Die Viertelwellen-Transformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
 soll deshalb an dieser Stelle für etwas Klarheit sorgen: Für eine Frequenz von
 30~MHz ist die Wellenlänge ca. $\lambda$=10~m. Eine Halbwellenleitung hat deshalb
 die Länge $\lambda/2$=5~m und eine Vierteilwellenleitung $\lambda/4$=2.5~m. Ein

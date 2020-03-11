@@ -1,0 +1,13 @@
+\documentclass[varwidth]{standalone}
+\usepackage[european]{circuitikz}
+\definecolor{HB9UFblue}{RGB}{0,61,165}
+\definecolor{HB9UFred}{HTML}{ED135A}
+
+\begin{document}
+\begin{circuitikz}
+  \draw (0,0) to[sinusoidal voltage source] (0,-2)
+  (0,0) to[short] (4,0)
+  (2,0) to[L=$\rightarrow0$~$\Omega$,style={color=HB9UFblue},*-*] (2,-2)
+  (4,0) to[R] (4,-2) to[short] (0,-2);
+\end{circuitikz}
+\end{document}
