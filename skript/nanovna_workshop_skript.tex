@@ -1530,15 +1530,6 @@ beiden VNA-Ports kurzschliesst. Die Mantelwellensperre kann dann über Klemmen
 mit den beiden Innenleitern verbunden werden. (Siehe Abbildung
 \ref{fig:illustration_choke} für eine Vorrichtung mit Klemmen).
 
-\begin{figure}
-    % FIXME
-    \includegraphics[width=\textwidth,draft,height=6cm]{figures/illustration_choke.jpg}
-    \caption{Gleichtaktmessung von Mantelwellensperren. Die Mantelwellensperre
-        ist in Serie zwischen den beien Ports geschaltet. FIXME: Mantelwellensperre
-    nach W2DU \cite{maxwell1983w2du}. FIXME: Mantelwellensperre nach DG0SA.}
-    \label{fig:illustration_choke}
-\end{figure}
-
 \minisec{Vorgehen mit dem NanoVNA:}
 \begin{enumerate}
     \item NanoVNA für Gegentaktmessung vorbereiten wie in Abschnitt \ref{sec:filter} beschrieben.
@@ -1550,6 +1541,17 @@ mit den beiden Innenleitern verbunden werden. (Siehe Abbildung
         Vorrichtung.
     \item Dann Gleichtaktmessung wie in Abbildung \ref{fig:illustration_choke} durchführen.
 \end{enumerate}
+
+\begin{figure}
+    % FIXME
+    \includegraphics[width=\textwidth,]{figures/illustration_w2du_short.png}
+    \caption{Gleichtaktmessung von Mantelwellensperren. Die Mantelwellensperre
+        ist in Serie zwischen den beien Ports geschaltet. Oben: Mantelwellensperre
+        nach W2DU \cite{maxwell1983w2du}. An den rot eingezeichneten Stellen sollten die
+        beiden Leiter kurzgeschlossen werden; idealerweise ist dies Teil der Messvorrichtung.
+    FIXME: Mantelwellensperre nach DG0SA.}
+    \label{fig:illustration_choke}
+\end{figure}
 
 \newpage % FIXME
 \section{Schwingquarz}
