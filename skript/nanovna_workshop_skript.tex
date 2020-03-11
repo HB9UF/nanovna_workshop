@@ -1096,7 +1096,7 @@ $C$ würde analog ein bekanntes Referenz-$L$ verwendet werden.
     \begin{circuitikz} \draw
         (0.5,0) to[short,o-] (1,0) to[short] (3,0)
         (3,0) to[L=$Z$] (3,-2) to[short,-o] (0.5,-2);
-        \node at (0.5,-1) {\small{Port 1}};
+        \node at (0.5,-1) {\small{Port ①}};
         \node at (2,-2.5) {\small{(1)}};
      \end{circuitikz}}
     \hfill
@@ -1104,8 +1104,8 @@ $C$ würde analog ein bekanntes Referenz-$L$ verwendet werden.
     \begin{circuitikz} \draw
         (0.5,0) to[short,o-] (1,0) to[L=$Z$] (3,0) to[short,-o] (3.5,0)
         (0.5,-2) to[short,o-o] (3.5,-2);
-        \node at (0.5,-1) {\small{Port 1}};
-        \node at (3.5,-1) {\small{Port 2}};
+        \node at (0.5,-1) {\small{Port ①}};
+        \node at (3.5,-1) {\small{Port ②}};
         \node at (2,-2.5) {\small{(2)}};
      \end{circuitikz}}
     \hfill
@@ -1114,8 +1114,8 @@ $C$ würde analog ein bekanntes Referenz-$L$ verwendet werden.
         (0.5,0) to[short,o-o] (3.5,0)
         (0.5,-2) to[short,o-o] (3.5,-2)
         (2,0) to[L=$Z$,*-*]  (2,-2);
-        \node at (0.5,-1) {\small{Port 1}};
-        \node at (3.5,-1) {\small{Port 2}};
+        \node at (0.5,-1) {\small{Port ①}};
+        \node at (3.5,-1) {\small{Port ②}};
         \node at (2,-2.5) {\small{(3)}};
      \end{circuitikz}}
      \caption{Drei Varianten zur Messung einer Unbekannten Impedanz $Z$. Von
@@ -1688,7 +1688,7 @@ ist in Abbildung \ref{fig:impedancetransformermeasurement} auf der rechten Seite
         (T.A2) to [-o] (B)
         (T.B1) to[R] (T.B2)
         ;
-        \node at (-2,0) {\small{Port 1}};
+        \node at (-2,0) {\small{Port ①}};
         \node at (0,1.5) {\small{1:N}};
      \end{circuitikz}}
     \hfill
@@ -1707,8 +1707,8 @@ ist in Abbildung \ref{fig:impedancetransformermeasurement} auf der rechten Seite
         (T.B1) to[short] (TT.A1)
         (T.B2) to[short] (TT.A2)
         ;
-        \node at (-2,0) {\small{Port 1}};
-        \node at (5,0) {\small{Port 2}};
+        \node at (-2,0) {\small{Port ①}};
+        \node at (5,0) {\small{Port ②}};
         \node at (0,1.5) {\small{1:N}};
         \node at (3,1.5) {\small{N:1}};
      \end{circuitikz}}
