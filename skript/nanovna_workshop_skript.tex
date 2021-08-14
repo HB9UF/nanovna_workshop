@@ -22,6 +22,7 @@
 \usepackage{booktabs}
 \usepackage{pifont}
 \usepackage{xspace}
+\usepackage{qrcode}
 \DeclareUnicodeCharacter{2460}{\ding{172}\xspace}
 \DeclareUnicodeCharacter{2461}{\ding{173}\xspace}
 \renewcommand{\textdegree}{\si{\degree}\xspace}
@@ -74,8 +75,47 @@
 \sloppy
 
 \begin{document}
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north west] at (current page.north west) {\includegraphics[height=297mm]{logo.jpg}};
+\end{tikzpicture}
+\vfill
+\vspace*{1em}{\hspace{3cm}\centering\Huge\sf\bfseries{NanoVNA Primer\par}}
+\vspace{1em}{\hspace{3cm}\centering\huge\sf UHF-Gruppe der USKA\par}
+\vspace{1em}{\hspace{3cm}\centering\huge\sf Version 1.1, CC BY-SA 4.0 \ccbysa\par}
+\vfill
+\clearpage
+\vspace*{\fill}
+\parbox{0.6\textwidth}{\scriptsize Webseite der UHF-Gruppe der USKA (Informationen, Relais, Projekte, Forum, Beitrittsforumlar etc.):\par
+\url{https://www.hb9uf.ch}
+}
+
+\qrcode[height=3cm]{http://www.hb9uf.ch}
+\vspace{1cm}
+
+\parbox{0.6\textwidth}{\scriptsize Link zur aktuellen Version dieses Dokumentes:\par
+\url{https://github.com/HB9UF/nanovna_workshop/releases}
+}
+
+\qrcode[height=3cm]{https://github.com/HB9UF/nanovna_workshop/releases}
+\vspace{1cm}
+
+\scriptsize © UHF Gruppe der USKA, 2020, 2021
+\end{titlepage}
+
+%\thispagestyle{empty}
+%\areaset[0cm]{\paperwidth}{\paperheight}
+%\typearea[current]{current}
+
+%\includegraphics[height=\textheight]{logo.jpg}
+
+%\vspace{5cm}
+%foo
+
+
+\cleardoublepage
+
 \maketitle
-\thispagestyle{empty}
 
 \setcounter{tocdepth}{1}
 \tableofcontents
@@ -1778,14 +1818,16 @@ zu Verfügung zu stellen.
 
 % FIXME: Danksagung: Georg OE5AEW, Tobi DJ5TD, Andreas HB9TQR, Hansjörg HB9DWS, Mathias HB9FRV
 
-%  github
-
 \bibliographystyle{babunsrt}
 \bibliography{nanovna_workshop_skript}
 
-\newpage % FIXME
-\section*{Menü-Übersicht}\label{sec:menu}
+% A number of empty pages for proper bootklet printing
+\newpage
 \pagestyle{empty}
+~\newpage
+~\newpage
+
+\section*{Menü-Übersicht}\label{sec:menu}
 
 %FIXME: Check if this fits on page
 \scalebox{0.93}{\rotatebox{90}{\begin{tikzpicture}[font=\sffamily]
