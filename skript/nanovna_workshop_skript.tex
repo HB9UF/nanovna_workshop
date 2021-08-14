@@ -1,5 +1,5 @@
 % Authors:
-% M. Weyland (2020)
+% M. Weyland (2020, 2021)
 % A. Weyland (2020)
 % H. Baur (2020)
 
@@ -22,6 +22,7 @@
 \usepackage{booktabs}
 \usepackage{pifont}
 \usepackage{xspace}
+\usepackage{qrcode}
 \DeclareUnicodeCharacter{2460}{\ding{172}\xspace}
 \DeclareUnicodeCharacter{2461}{\ding{173}\xspace}
 \renewcommand{\textdegree}{\si{\degree}\xspace}
@@ -63,7 +64,7 @@
 
 \title{NanoVNA Primer}
 \author{\sf UHF-Gruppe der USKA}
-\date{\sf Version 1.0, CC BY-SA 4.0 \ccbysa}
+\date{\sf Version 1.1, CC BY-SA 4.0 \ccbysa}
 \pagestyle{scrheadings}
 %\setkomafont{pagehead}{\sf}
 
@@ -74,8 +75,47 @@
 \sloppy
 
 \begin{document}
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north west] at (current page.north west) {\includegraphics[height=297mm]{logo.jpg}};
+\end{tikzpicture}
+\vfill
+\vspace*{1em}{\hspace{3cm}\centering\Huge\sf\bfseries{NanoVNA Primer\par}}
+\vspace{1em}{\hspace{3cm}\centering\huge\sf UHF-Gruppe der USKA\par}
+\vspace{1em}{\hspace{3cm}\centering\huge\sf Version 1.1, CC BY-SA 4.0 \ccbysa\par}
+\vfill
+\clearpage
+\vspace*{\fill}
+\parbox{0.6\textwidth}{\scriptsize Webseite der UHF-Gruppe der USKA (Informationen, Relais, Projekte, Forum, Beitrittsforumlar etc.):\par
+\url{https://www.hb9uf.ch}
+}
+
+\qrcode[height=3cm]{http://www.hb9uf.ch}
+\vspace{1cm}
+
+\parbox{0.6\textwidth}{\scriptsize Link zur aktuellen Version dieses Dokumentes:\par
+\url{https://github.com/HB9UF/nanovna_workshop/releases}
+}
+
+\qrcode[height=3cm]{https://github.com/HB9UF/nanovna_workshop/releases}
+\vspace{1cm}
+
+\scriptsize © UHF Gruppe der USKA, 2020, 2021
+\end{titlepage}
+
+%\thispagestyle{empty}
+%\areaset[0cm]{\paperwidth}{\paperheight}
+%\typearea[current]{current}
+
+%\includegraphics[height=\textheight]{logo.jpg}
+
+%\vspace{5cm}
+%foo
+
+
+\cleardoublepage
+
 \maketitle
-\thispagestyle{empty}
 
 \setcounter{tocdepth}{1}
 \tableofcontents
@@ -778,7 +818,9 @@ des Anzeigeformates (Abschnitt \ref{sec:nanovnaformat}) nicht notwendig.
 
 Egal wie breit oder schmal der Frequenzbereich eingestellt ist, der NanoVNA erfasst in diesem Bereich stets
 101 Messpunkte. Insbesondere bei einem grossen Frequenzbereich ist deshalb darauf zu achten, dass zwischen
-den Messpunkten keine wichtige Information verloren geht.
+den Messpunkten keine wichtige Information verloren geht. Mit der Software
+``NanoVNA Saver'' (siehe Abschnitt \ref{sec:nanovnasaver}) kann diese Einschränkung umgangen werden.
+
 
 \subsection{Kalibrierung}\label{sec:nanovnacal}
 \begin{center}\begin{tikzpicture}[font=\sffamily]
@@ -827,7 +869,7 @@ Eine Kalibrierung für die Transmissionsmessung beinhaltet folgende Schritte:
 \begin{enumerate}
     \item Im Menü ``Cal'' das Feld ``Reset'' wählen.
     \item Das Untermenü ``Calibrate'' wählen.
-    \item Die Verbindung zwischen den beiden Ports trennen und ``Isoln'' wählen.
+    \item Die Verbindung zwischen den beiden Ports trennen, Port ①  (CH0) mit 50~\Ohm abschliessen und ``Isoln'' wählen.
     \item Mit einem Thru-Verbindungsstück die beiden Ports verbinden und ``Thru'' wählen.
     \item ``Done'' wählen.
     \item Die Kalibrierung in Position 0 speichern ``Save 0''.
@@ -1563,7 +1605,7 @@ Einfügedämpfung aufweisen.
 Für die \textbf{Gleichtaktmessung} wird die Mantelwellensperre auf eine besondere
 Art und Weise mit dem VNA verbunden: Der Eingang wird mit dem Stimulus,
 der Ausgang mit dem detektierenden Port verbunden. Allerdings werden die
-beiden beiden Leiter der Leitung jeweils kurzgeschlossen und mit dem
+beiden Leiter der Leitung jeweils kurzgeschlossen und mit dem
 Innenleiter der Ports verbunden; die beiden Aussenleiter der Ports werden
 kurzgeschlossen. Wenn die so präparierte Mantelwellensperre als diskretes
 Bauteil betrachtet wird, so entspricht diese Messung der seriellen
@@ -1637,7 +1679,8 @@ stark beeinflusst werden kann. Der Quarz wird für die Messung in die Zusatzappa
 Charakterisierung der Mantelwellensperre benutzt worden ist. Dabei müssen folgende Punkte beachtet werden:
 
 \begin{itemize}
-    \item Weil Schwingquarze sehr schmalbandig sind und der NanoVNA nur 101 Punkte aufnimmt, muss zur Verhinderung grosser Messfehler ein entsprechend kleiner Frequenzbereich ausgewählt werden.
+    \item Weil Schwingquarze sehr schmalbandig sind und der NanoVNA nur 101 Punkte aufnimmt, muss zur Verhinderung grosser Messfehler ein entsprechend kleiner Frequenzbereich ausgewählt
+        oder auf die Software ``NanoVNA Saver'' (siehe Abschnitt \ref{sec:nanovnasaver}) zurückgegriffen werden.
     \item Weil das Ersatzschaltbild aus Abbildung \ref{fig:quarzersatz} lediglich eine Vereinfachung darstellt, werden bei der Messung in der Praxis oberhalb von $f_r$ Nebenresonanzen auftreten.
 \end{itemize}
 
@@ -1769,23 +1812,58 @@ ist in Abbildung \ref{fig:impedancetransformermeasurement} auf der rechten Seite
 \minisec{Vorgehen mit dem NanoVNA:}
 Die Messung erfolgt gemäss Beschreibung in diesem Abschnitt.
 
-\newpage %FIXME
+\section{Fernbedienung mit NanoVNA Saver}\label{sec:nanovnasaver}
+Der NanoVNA kann auch vom PC aus fernbedient werden. Hierfür ist die Software
+``NanoVNA Saver'' geeignet; sie hat einige Vorteile gegenüber der direkten
+Bedienung am Gerät.  Vorteile. Erstens ist der Computer-Bildschirm wesentlich
+grösser als derjenige des NanoVNA und entsprechend ist die Bedienung und das
+Ablesen der Resultate deutlich einfacher. Zweitens kann eine Messung in eine
+beliebige Anzahl Teilmessungen unterteilt werden. Weil der NanoVNA stets nur
+101 Messpunkte erfasst, kann mit dieser Methode die Frequenzauflösung der
+Messung auf Kosten der Messgeschwindigkeit erhöht werden. Drittens kann die
+Software verschiedene Untersuchungen durchführen, die mit dem NanoVNA alleine
+nicht gemacht werden können. Von besonderem Interesse dürften hier die
+``Distance To Fault''-Funktionalität (DTF, Untersuchung von Brüchen und
+Stossstellen entlang einer Leitung) sowie die verschiedenen
+Impedanz-Umrechnungen sein. Schliesslich erlaubt das Programm auch den Export
+der Messresultate zur weiteren Verwendung in Microsoft Excel, SimSmith usw.
+NanoVNA Saver kann auf der folgenden Projektseite kostenlos bezogen werden --
+es handelt sich um freie Software:
+
+\begin{center}
+    \url{https://github.com/NanoVNA-Saver/nanovna-saver/releases/}
+\end{center}
+
+Abbildung \ref{fig:nanovnasaver} zeigt einen Screenshot der Anwendung, welche unter
+Windows, Mac OS X und Linux läuft. Die Bedienung ist im wesentlichen
+selbsterklärend.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{figures/nanovnasaver.png}
+    \caption{Screenshot von NanoVNA Saver. Quelle: Projektwebseite.}
+    \label{fig:nanovnasaver}
+\end{figure}
+
+
+\newpage
 \section*{Lizenz}
 Dieses Dokument wurde 2020 von Mitgliedern der UHF-Gruppe der USKA (HB9UF) als Beilage zu
-einem NanoVNA Workshop erstellt. Weitergabe, Vervielfältigung und Änderungen sind
-im Rahmen der Lizenz CC BY-SA 4.0 gestattet. In diesem Fall ist der \LaTeX Quelltext
-zu Verfügung zu stellen.
+einem NanoVNA Workshop erstellt und daraufhin gepflegt und weiterentwickelt.
+Weitergabe, Vervielfältigung und Änderungen sind im Rahmen der Lizenz CC BY-SA
+4.0 gestattet. In diesem Fall ist der \LaTeX Quelltext zu Verfügung zu stellen.
 
 % FIXME: Danksagung: Georg OE5AEW, Tobi DJ5TD, Andreas HB9TQR, Hansjörg HB9DWS, Mathias HB9FRV
-
-%  github
 
 \bibliographystyle{babunsrt}
 \bibliography{nanovna_workshop_skript}
 
-\newpage % FIXME
-\section*{Menü-Übersicht}\label{sec:menu}
+% A number of empty pages for proper bootklet printing
+\newpage
+\section*{Eigene Notizen}
 \pagestyle{empty}
+~\newpage
+
+\section*{Menü-Übersicht}\label{sec:menu}
 
 %FIXME: Check if this fits on page
 \scalebox{0.93}{\rotatebox{90}{\begin{tikzpicture}[font=\sffamily]
@@ -1941,7 +2019,6 @@ zu Verfügung zu stellen.
 % Messung Impedanzwandler
 % Antennengewinn
 % TDR
-% NanoVNA Saver
 % Firmware Upgrade
 % Funktionsprinzip
 % Grid dip meter
