@@ -1,0 +1,34 @@
+\documentclass{standalone}
+
+\usepackage[european]{circuitikz}
+
+\input{../../config.tex}
+
+\begin{document}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[short] (3,0)
+        (3,0) to[L=$Z$] (3,-2) to[short,-o] (0.5,-2);
+        \node at (0.5,-1) {\small{Port ①}};
+        \node at (2,-2.5) {\small{(1)}};
+     \end{circuitikz}}
+     \hspace{3cm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L=$Z$] (3,0) to[short,-o] (3.5,0)
+        (0.5,-2) to[short,o-o] (3.5,-2);
+        \node at (0.5,-1) {\small{Port ①}};
+        \node at (3.5,-1) {\small{Port ②}};
+        \node at (2,-2.5) {\small{(2)}};
+     \end{circuitikz}}
+     \hspace{3cm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-o] (3.5,0)
+        (0.5,-2) to[short,o-o] (3.5,-2)
+        (2,0) to[L=$Z$,*-*]  (2,-2);
+        \node at (0.5,-1) {\small{Port ①}};
+        \node at (3.5,-1) {\small{Port ②}};
+        \node at (2,-2.5) {\small{(3)}};
+     \end{circuitikz}}
+\end{document}

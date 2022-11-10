@@ -1,0 +1,28 @@
+% This file contains configuration shared between main file and figures
+
+\usepackage{pifont}
+\usepackage{xspace}
+\DeclareUnicodeCharacter{2460}{\ding{172}\xspace}
+\DeclareUnicodeCharacter{2461}{\ding{173}\xspace}
+
+\usepackage{tikz}
+
+\definecolor{HB9UFblue}{RGB}{0,61,165}
+\definecolor{HB9UFred}{HTML}{ED135A}
+
+\newcommand{\Ohm}{$\Omega$\xspace}
+
+
+\newcommand{\uline}[1]{%
+  \tikz[baseline=(todotted.base)]{
+      \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
+      \draw[color=HB9UFblue,thick] (todotted.south west) -- (todotted.south east);
+  }%
+}%
+                           
+\newcommand{\udash}[1]{%
+  \tikz[baseline=(todotted.base)]{
+      \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
+      \draw[dashed,color=HB9UFred,thick] (todotted.south west) -- (todotted.south east);
+  }%
+}%

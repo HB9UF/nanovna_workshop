@@ -1,0 +1,18 @@
+\documentclass[margin=1mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}[text width=6em, text centered,, node distance=8em]
+        \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=3em]
+        \node[box] (p1) {\sf\Large{Port~① \small{(CH0)}}};
+        \node[box,right=of p1] (dut) {\sf\Large{DUT}};
+        \node[box,right=of dut] (p2) {\sf\Large{Port~② \small{(CH1)}}};   
+
+        \draw[-stealth',thick,transform canvas={yshift=2mm}] (p1) -- node[above] {\sf Stimulus} (dut);
+        \draw[-stealth',thick,transform canvas={yshift=-2mm}] (dut) -- node[below]{\sf Reflexion} (p1);
+        \draw[-stealth',thick] (dut) -- node[above] {\sf Transmission} (p2);
+    \end{tikzpicture}
+\end{document}

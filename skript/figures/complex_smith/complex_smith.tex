@@ -1,0 +1,21 @@
+\documentclass[varwidth=17cm]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepgfplotslibrary{smithchart}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{smithchart}[width=\textwidth,show origin code/.code={},clip=false,xticklabel style={font=\small},yticklabel style={font=\small}]
+            \tikzstyle{note}=[align=center,fill=black]
+            \fill [note,fill=HB9UFblue] (axis cs:4,2) circle [radius=4pt] node[above] {$R=200$~\Ohm, $X=100$\Ohm};
+            \fill[note] (axis cs:1,0) circle [radius=3pt] node[below] {$R=50$~\Ohm, $X=0$~\Ohm};
+            \fill[note] (axis cs:0,2) circle [radius=3pt] node[below left] {$R=0$~\Ohm, $X=100$~\Ohm\\ (Spule)};
+            \fill[note] (axis cs:0,-2) circle [radius=3pt] node[above left] {$R=0$~\Ohm, $X=-100$~\Ohm\\ (Kondensator)};
+            \fill[note] (axis cs:0,0) circle [radius=3pt] node[below right] {$R=0$~\Ohm, $X=0$~\Ohm\\ (Kurzschluss)};
+            \fill[note] (axis cs:1000,1000) circle [radius=3pt] node[below left] {Offen};
+        \end{smithchart}
+    \end{tikzpicture}
+\end{document}

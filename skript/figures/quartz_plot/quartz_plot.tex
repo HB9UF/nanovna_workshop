@@ -1,0 +1,46 @@
+\documentclass[varwidth=15cm]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+    \pgfplotsset{set layers}
+    \begin{axis}[
+        xmin=15.89, xmax=15.95,
+        ymin=-65, ymax=5,
+        grid=both,
+        ylabel={\uline{Transmission}},
+        ytick = {-60,-50,...,0},
+        ticks=none,
+        height=6cm,
+        width=0.9\textwidth,
+        major grid style={black!10}
+    ]
+    \addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {quarz.dat};
+    \end{axis}
+    \begin{axis}[
+        xmin=15.89, xmax=15.95,
+        ymin=-10000, ymax=10000,
+        grid=none,
+        separate axis lines,
+        ylabel style = {align=center},
+        xlabel={Frequenz},
+        ylabel={\udash{Blindwiderstand $X/\Omega$}},
+        ticks=none,
+        ymajorticks=true,
+        yminorticks=true,
+        scaled ticks=false,
+        ytick = {0},
+        axis y line*=right,
+        height=6cm,
+        width=0.9\textwidth,
+        major grid style={black!10}
+    ]
+    \addplot[color=HB9UFred,thick,dashed,restrict x to domain=15.89:15.9234] table[,x index = {0}, y index = {2}] {quarz.dat};
+    \addplot[color=HB9UFred,thick,dashed,restrict x to domain=15.9236:15.95] table[,x index = {0}, y index = {2}] {quarz.dat};
+    \end{axis}
+    \end{tikzpicture}
+\end{document}

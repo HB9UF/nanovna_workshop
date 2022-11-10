@@ -12,22 +12,13 @@
 \usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows}
-\usepackage[european]{circuitikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.16}
-\usepgfplotslibrary{smithchart}
 
 \usepackage{ccicons}
 \usepackage{siunitx}
 \usepackage{booktabs}
-\usepackage{pifont}
-\usepackage{xspace}
 \usepackage{qrcode}
-\DeclareUnicodeCharacter{2460}{\ding{172}\xspace}
-\DeclareUnicodeCharacter{2461}{\ding{173}\xspace}
 
-\definecolor{HB9UFblue}{RGB}{0,61,165}
-\definecolor{HB9UFred}{HTML}{ED135A}
+\input{config.tex}
 
 \definecolor{marker}{HTML}{f9f871}
 \definecolor{stimulus}{HTML}{ffc75f}
@@ -39,22 +30,6 @@
 \definecolor{trace1}{RGB}{0,155,255}
 \definecolor{trace2}{RGB}{0,220,0}
 \definecolor{trace3}{RGB}{220,0,220}
-
-\newcommand{\uline}[1]{%
-    \tikz[baseline=(todotted.base)]{
-        \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
-        \draw[color=HB9UFblue,thick] (todotted.south west) -- (todotted.south east);
-    }%
-}%
-
-\newcommand{\udash}[1]{%
-    \tikz[baseline=(todotted.base)]{
-        \node[inner sep=1pt,outer sep=0pt] (todotted) {#1};
-        \draw[dashed,color=HB9UFred,thick] (todotted.south west) -- (todotted.south east);
-    }%
-}%
-
-\newcommand{\Ohm}{$\Omega$\xspace}
 
 \newcommand*\cleartoleftpage{%
   \clearpage
@@ -159,16 +134,7 @@ und dort gemessen (Transmissionsmessung).
 
 \begin{figure}[H]
     \begin{center}
-        \begin{tikzpicture}[text width=6em, text centered,, node distance=8em]
-            \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=3em]
-            \node[box] (p1) {\sf\Large{Port ① \small{(CH0)}}};
-            \node[box,right=of p1] (dut) {\sf\Large{DUT}};
-            \node[box,right=of dut] (p2) {\sf\Large{Port ② \small{(CH1)}}};
-
-            \draw[-stealth',thick,transform canvas={yshift=2mm}] (p1) -- node[above] {\sf Stimulus} (dut);
-            \draw[-stealth',thick,transform canvas={yshift=-2mm}] (dut) -- node[below]{\sf Reflexion} (p1);
-            \draw[-stealth',thick] (dut) -- node[above] {\sf Transmission} (p2);
-        \end{tikzpicture}
+        \includegraphics{figures/vna_dut_setup/vna_dut_setup.pdf}
     \end{center}
     \caption{Ein aus Port ① ausgehender Stimulus trifft auf einen Prüfling (device under test (DUT), z.B
         ein Filter, eine Antenne etc.). Ein Teil der eintreffenden Energie wird zurück zu Port ① reflektiert
@@ -245,58 +211,9 @@ Eine andere Darstellung des selben Zusammenhangs ist im Nomogramm in Abbildung
 \ref{fig:rlnomogramm} zu sehen.
 
 \begin{figure}[t]
-    \begin{center}\begin{tikzpicture}[scale=1.25]
-        % Return loss
-        % [13, 10, 8.5, 7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.9, 0.7, 0.5, 0.3, 0.1]
-        % [9, 8, 7, 6, 5, 4, 3, 2, 1, 0.8, 0.6, 0.4, 0.2, 0]
-        % for i in y1: print("%.1f / %f, " % (i,  10**(-i/10)),)
-        \foreach \rl/\x in {13 / 0.050119, 10 / 0.1, 8.5 / 0.141254, 7.5 / 0.177828, 6.5 / 0.223872, 5.5 / 0.281838, 4.5 / 0.354813, 3.5 / 0.446684, 2.5 / 0.562341, 1.5 / 0.707946, 0.9 / 0.812831, 0.7 / 0.851138, 0.5 / 0.891251, 0.3 / 0.933254, 0.1 / 0.97723}
-        {
-            \node[above] at ({\x*10},0.) {\sf\tiny{\rl}};
-            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
-        }
-        \foreach \rl/\x in { 9 / 0.125893, 8 / 0.158489, 7 / 0.199526, 6 / 0.251189, 5 / 0.316228, 4 / 0.398107, 3 / 0.501187, 2 / 0.630957, 1 / 0.794328, 0.8 / 0.831764, 0.6 / 0.870964, 0.4 / 0.912011, 0.2 / 0.954993, 0 / 1.000000}
-        {
-            \node[below] at ({\x*10},0.) {\sf\tiny{\rl}};
-            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
-        }
-        \node[above] at (0,0) {\sf\tiny{$\infty$}};
-        \draw (0,0.05) -- (0,-0.05);
-        \draw (0,0) -- (10,0);
-        \node[right] at (10,0) {~\sf\scriptsize{RL (dB)}};
-
-        % SWR
-        % [1, 1.5, 1.9, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 12, 16, 20, 40]
-        % [1.3, 1.7, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 18, 30, 50]
-        %for i in x: print("%.1f / %f, " % (i,  ((i-1) / (i+1))**2 ))
-        \begin{scope}[yshift=-20]
-        \foreach \s/\x in {1.0 / 0.000000, 1.5 / 0.040000, 1.9 / 0.096314, 2.5 / 0.183673, 3.5 / 0.308642, 4.5 / 0.404959, 5.5 / 0.479290, 6.5 / 0.537778, 7.5 / 0.584775, 8.5 / 0.623269, 9.5 / 0.655329, 12 / 0.715976, 16 / 0.778547, 20 / 0.818594, 40 / 0.904819}
-        {
-            \node[above] at ({\x*10},0.) {\sf\tiny{\s}};
-            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
-        }
-        \foreach \s/\x in {1.3 / 0.017013, 1.7 / 0.067215, 2 / 0.111111, 3 / 0.250000, 4 / 0.360000, 5 / 0.444444, 6 / 0.510204, 7 / 0.562500, 8 / 0.604938, 9 / 0.640000, 10 / 0.669421, 14 / 0.751111, 18 / 0.800554, 30 / 0.875130, 50 / 0.923106 }
-        {
-            \node[below] at ({\x*10},0.) {\sf\tiny{\s}};
-            \draw ({\x*10},0.05) -- ({\x*10},-0.05);
-        }
-        \node[above] at (10,0) {\sf\tiny{$\infty$}};
-        \draw (10,0.05) -- (10,-0.05);
-        \draw (0,0) -- (10,0);
-        \node[right] at (10,0) {~\sf\scriptsize{SWR}};
-        \end{scope}
-
-        % Reflected power [%]
-        \begin{scope}[yshift=-40]
-         \foreach \x in {0,10,20,...,100}
-         {
-             \node[above] at ({\x/10},0.) {\sf\tiny{\x}};
-             \draw (\x/10,0.05) -- (\x/10,-0.05);
-         }
-        \draw (0,0) -- (10,0);
-        \node[right] at (10,0) {~\sf\scriptsize{\% Reflkt.}};
-        \end{scope}
-    \end{tikzpicture}\end{center}
+    \begin{center}
+        \includegraphics{figures/rl_swr_nomogram/rl_swr_nomogram.pdf}
+    \end{center}
     \caption{Nomogramm des Zusammenhangs zwischen Rückführungsdämpfung (return loss, RL),
     Stehwellenverhältnis (standing wave ratio, SWR) und dem Anteil der reflektierten Leistung (\% Reflkt.).}
     \label{fig:rlnomogramm}
@@ -315,25 +232,7 @@ die Einfügedämpfung salopperweise negativ angegeben, was eigentlich falsch ist
 
 \begin{figure}[H]
     \begin{center}
-        \begin{tikzpicture}[text width=5em,text centered,node distance=4em]
-            \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=2em]
-            \node[box] (p1) {\sf{Port ①}};
-            \node[box] (p2) at (10,0) {\sf{Port ②}, $P_a$};
-
-            \draw[-stealth',thick] (p1) --  (p2);
-        \end{tikzpicture}
-
-        \vspace{5mm}
-
-        \begin{tikzpicture}[text width=5em,text centered,node distance=4em]
-            \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=2em]
-            \node[box] (p1) {\sf{Port ①}};
-            \node[box] (dut) at (5,0) {\sf{DUT}};
-            \node[box] (p2) at (10,0) {\sf{Port ②}, $P_b$};
-
-            \draw[-stealth',thick] (p1) --  (dut);
-            \draw[-stealth',thick] (dut) -- (p2);
-        \end{tikzpicture}
+        \includegraphics{figures/dut_insertionloss/dut_insertionloss.pdf}
     \end{center}
     \caption{Erklärung Einfügedämpfung: Die Leistung $P_a$ ohne Prüfling wird
     verglichen zur Leistung $P_b$ mit Prüfling (device under test, DUT).}
@@ -366,122 +265,7 @@ $X_C$ oft negativ angegeben. So wird erkennbar, ob der Blindwiderstand induktiv
 oder kapazitiv ist. Auch über diese Konvention lässt sich debattieren.
 
 \begin{figure}
-    \begin{tikzpicture}
-        \begin{axis}[
-            title = {Widerstand},
-            xmin=0, xmax=10,
-            ymin=-100,ymax=500,
-            grid=both,
-            xlabel={Frequenz $f$/Hz},
-            ylabel={\uline{Blindwiderstand $X/\Omega$}},
-            xticklabels={},
-            yticklabels={},
-            ytick = {-400,-200,0,200,400},
-            height=4cm,
-            width=0.3\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0};
-        \end{axis}
-        \begin{axis}[
-            xmin=0, xmax=10,
-            ymin=-100,ymax=500,
-            grid=none,
-            separate axis lines,
-            ylabel style = {align=center},
-            ticks=none,
-            xmajorticks=true,
-            xminorticks=false,
-            ymajorticks=true,
-            yminorticks=false,
-            scaled ticks=false,
-            xtick = {0},
-            ytick = {0},
-            axis y line*=right,
-            height=4cm,
-            width=0.3\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {300};
-        \end{axis}
-    \end{tikzpicture}\hfill
-    \begin{tikzpicture}
-        \begin{axis}[
-            title = {Induktivität},
-            xmin=0, xmax=10,
-            ymin=-100,ymax=500,
-            grid=both,
-            xlabel={Frequenz $f$/Hz},
-            xticklabels={},
-            yticklabels={},
-            ytick = {-400,-200,0,200,400},
-            height=4cm,
-            width=0.3\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {40*x};
-        \end{axis}
-        \begin{axis}[
-            xmin=0, xmax=10,
-            ymin=-100,ymax=500,
-            grid=none,
-            separate axis lines,
-            ylabel style = {align=center},
-            ticks=none,
-            xmajorticks=true,
-            xminorticks=false,
-            ymajorticks=true,
-            yminorticks=false,
-            scaled ticks=false,
-            xtick = {0},
-            ytick = {0},
-            axis y line*=right,
-            height=4cm,
-            width=0.3\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {0};
-        \end{axis}
-    \end{tikzpicture}\hfill
-    \begin{tikzpicture}
-        \begin{axis}[
-            title = {Kapazität},
-            xmin=0, xmax=10,
-            ymin=-100,ymax=500,
-            grid=both,
-            xlabel={Frequenz $f$/Hz},
-            xticklabels={},
-            yticklabels={},
-            ytick = {0,200,400},
-            height=4cm,
-            width=0.3\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0.2:10,color=HB9UFblue,thick] {200/x};
-        \end{axis}
-        \begin{axis}[
-            xmin=0, xmax=10,
-            ymin=-100,ymax=500,
-            grid=none,
-            separate axis lines,
-            ylabel style = {align=center},
-            ylabel={\udash{Wirkwiderstand $R/\Omega$}},
-            ticks=none,
-            xmajorticks=true,
-            xminorticks=false,
-            ymajorticks=true,
-            yminorticks=false,
-            scaled ticks=false,
-            xtick = {0},
-            ytick = {0},
-            axis y line*=right,
-            height=4cm,
-            width=0.3\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {0};
-        \end{axis}
-    \end{tikzpicture}
+    \includegraphics{figures/reactance/reactance.pdf}
     \caption{Blindwiderstand eines Widerstandes (Bauteil), einer Induktivität ($X_L$) und einer
     Kapazität ($X_C$) von links nach rechts. Der Wirkwiderstand ist jeweils gestrichelt gezeichnet.}
     \label{fig:XRLC}
@@ -518,61 +302,9 @@ verlustbehaftet ist.
 
 
 \begin{figure}
-    \scalebox{0.8}{\begin{circuitikz}
-        \draw (0,0) to[sinusoidal voltage source=$U_Q$] (0,-4)
-              (0,0) to[short] (3,0) to[R,a=100~$\Omega$] (3,-2) to[short,-o] (5,-2)
-              (3,-2) to[R,a=100~$\Omega$,*-*] (3,-4) to[short,-o] (5,-4)
-              (3,-4) to[short,-*] (0,-4) node[ground] {};
-        \draw[-stealth',shorten >=3mm,shorten <=3mm] (5,-2) -- node[right]{$U_L$} (5,-4);
-     \end{circuitikz}}
-    \hfill
-    \begin{tikzpicture}
-        \begin{axis}[
-            xmin=0, xmax=10,
-            ymin=-1.25,ymax=1.25,
-            ylabel={Spannung / V},
-            grid=both,
-            xlabel={Zeit / ns},
-            yticklabels={},
-            xtick = {0,2.5,5,7.5,10},
-            ytick = {-1,-0.5,0,0.5,1},
-            height=4cm,
-            width=0.6\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0.5*sin(3600*x)} node[below,pos=0.45] {$U_L$};
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {sin(3600*x)} node[above,pos=0.45] {$U_Q$};;
-        \end{axis}
-    \end{tikzpicture}
-
-    \vspace{5mm}
-
-    \scalebox{0.8}{\begin{circuitikz}
-        \draw (0,0) to[sinusoidal voltage source=$U_Q$] (0,-4)
-              (0,0) to[short] (3,0) to[R,a=100~$\Omega$] (3,-2) to[short,-o] (5,-2)
-              (3,-2) to[L,a=160~nH,*-*] (3,-4) to[short,-o] (5,-4)
-              (3,-4) to[short,-*] (0,-4) node[ground] {};
-        \draw[-stealth',shorten >=3mm,shorten <=3mm] (5,-2) -- node[right]{$U_L$} (5,-4);
-     \end{circuitikz}}
-    \hfill
-    \begin{tikzpicture}
-        \begin{axis}[
-            xmin=0, xmax=10,
-            ymin=-1.25,ymax=1.25,
-            ylabel={Spannung / V},
-            grid=both,
-            xlabel={Zeit / ns},
-            yticklabels={},
-            xtick = {0,2.5,5,7.5,10},
-            ytick = {-1,-0.5,0,0.5,1},
-            height=4cm,
-            width=0.6\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0.7*sin(3600*x+45)} node[below,pos=0.45] {$U_L$};
-        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {sin(3600*x)} node[above,pos=0.45] {$U_Q$};;
-        \end{axis}
-    \end{tikzpicture}
+    \scalebox{0.8}{%
+        \includegraphics{figures/divider_resistance_reactance/divider_resistance_reactance.pdf}%
+    }
     \caption{Oben: Ein Spannungsteiler halbiert die Spannung: $U_L$ hat die
     halbe Amplitude von $U_Q$. Unten: Phasenverschiebung durch reaktives Element. Bei
 einer Frequenz von $f=100$~MHz hat eine Induktivität von 160~nH genau
@@ -615,27 +347,7 @@ im Smith-Diagramm folgen diesen Regeln:
 
 \begin{figure}[t]
     \begin{center}
-        \begin{tikzpicture}
-            \begin{axis}[
-                xmin=-5, xmax=355,
-                ymin=-155,ymax=155,
-                xlabel={$R/\Omega$},
-                ylabel={$X/\Omega$},
-                grid=both,
-                height=7cm,
-                axis x line=center,
-                axis y line=center,
-                width=0.9\textwidth,
-                major grid style={black!10}
-            ]
-            \fill [fill=HB9UFblue] (axis cs:200,100) circle [radius=3pt] node[right] {$R=200$~\Ohm, $X=100$\Ohm};
-            \fill [fill=black] (axis cs:50,0) circle [radius=2pt] node[above right] {$R=50$~\Ohm, $X=0$~\Ohm};
-            \fill [fill=black] (axis cs:0,100) circle [radius=2pt] node[right] {$R=0$~\Ohm, $X=100$~\Ohm (Spule)};
-            \fill [fill=black] (axis cs:0,-100) circle [radius=2pt] node[right] {$R=0$~\Ohm, $X=-100$~\Ohm (Kondensator)};
-            \fill [fill=black] (axis cs:0,0) circle [radius=2pt];
-            \draw[stealth'-] (axis cs:5,5) -- (axis cs:40,40) node[above right] {$R=0$~\Ohm, $X=0$~\Ohm (Kurzschluss)};
-        \end{axis}
-        \end{tikzpicture}
+        \includegraphics{figures/complex_plane/complex_plane.pdf}
     \end{center}
     \caption{Darstellung einer Impedanz mit $R=200$~$\Omega$ auf der horizontalen Achse und $X=100$~$\Omega$
     auf der vertikalen Achse (blau), sowie einer Reihe anderer Impedanzen (schwarz).}
@@ -647,17 +359,7 @@ sind sie nun in einem Smith-Diagramm dargestellt. Berechtigterweise stellt sich 
 gut sein soll.
 
 \begin{figure}
-    \begin{tikzpicture}
-        \begin{smithchart}[width=\textwidth,show origin code/.code={},clip=false,xticklabel style={font=\small},yticklabel style={font=\small}]
-            \tikzstyle{note}=[align=center,fill=black]
-            \fill [note,fill=HB9UFblue] (axis cs:4,2) circle [radius=4pt] node[above] {$R=200$~\Ohm, $X=100$\Ohm};
-            \fill[note] (axis cs:1,0) circle [radius=3pt] node[below] {$R=50$~\Ohm, $X=0$~\Ohm};
-            \fill[note] (axis cs:0,2) circle [radius=3pt] node[below left] {$R=0$~\Ohm, $X=100$~\Ohm\\ (Spule)};
-            \fill[note] (axis cs:0,-2) circle [radius=3pt] node[above left] {$R=0$~\Ohm, $X=-100$~\Ohm\\ (Kondensator)};
-            \fill[note] (axis cs:0,0) circle [radius=3pt] node[below right] {$R=0$~\Ohm, $X=0$~\Ohm\\ (Kurzschluss)};
-            \fill[note] (axis cs:1000,1000) circle [radius=3pt] node[below left] {Offen};
-        \end{smithchart}
-    \end{tikzpicture}
+    \includegraphics{figures/complex_smith/complex_smith.pdf}
     \caption{Smith-Diagramm der Impedanzen aus Abbildung \ref{fig:euler}.}
     \label{fig:smithimpedance}
 \end{figure}
@@ -1067,21 +769,7 @@ Messungen käme ohnehin ein Kalibrierungskit für den passenden Steckertyp, ein 
 Messkabel etc. zum Einsatz.
 
 \begin{figure}[H]
-    \begin{tikzpicture}
-        \begin{axis}[
-            xmin=100., xmax=500.,
-            ymin=1, ymax=20,
-            grid=both,
-            xlabel={Frequenz $f$/MHz},
-            ylabel={SWR},
-            height=6cm,
-            width=\textwidth,
-            major grid style={black!10}
-        ]
-        \addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {feednofeed/vhf_uhf_antenna.dat};
-        \addplot[color=HB9UFred,thick,dashed] table[,x index = {0}, y index = {2}] {feednofeed/vhf_uhf_antenna.dat};
-        \end{axis}
-    \end{tikzpicture}
+    \begin{center}\includegraphics{figures/feednofeed/feednofeed.pdf}\end{center}
     \caption{SWR-Messung einer VHF/UHF Zweibandantenne am Fusspunkt (ausgezogen) sowie im Shack hinter 10~m
     RG-213 Koaxialkabel (gestrichelt). Die Antenne strahlt trotz tieferem SWR keineswegs mehr Leistung ab.}
     \label{fig:antenna_with_wo_feed}
@@ -1108,9 +796,7 @@ werden.
 
 \begin{figure}[H]
     \begin{center}
-    \begin{circuitikz} \draw
-        (0,0) to[short,o-] (1,0) to[L=$L$] (3,0) to[C=$C$] (5,0) to[R=$R_\text{strahl}$] (7,0) to[R=$R_\text{ohm}$] (9,0) to[short,-o] (10,0);
-    \end{circuitikz}
+        \includegraphics{figures/antenna_model/antenna_model.pdf}
     \end{center}
     \caption{Ein einfaches Antennenmodell: Der Wirkwiderstand setzt sich zusammen aus $R_\text{strahl}$
     und $R_\text{ohm}$, aber nur die Leistung in $R_\text{strahl}$ wird von der Antenne abgestrahlt.}
@@ -1187,32 +873,9 @@ Diese Methode ist genauer als die anderen drei Ansätze -- bei einem unbekannten
 $C$ würde analog ein bekanntes Referenz-$L$ verwendet werden.
 
 \begin{figure}[H]
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[short] (3,0)
-        (3,0) to[L=$Z$] (3,-2) to[short,-o] (0.5,-2);
-        \node at (0.5,-1) {\small{Port ①}};
-        \node at (2,-2.5) {\small{(1)}};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[L=$Z$] (3,0) to[short,-o] (3.5,0)
-        (0.5,-2) to[short,o-o] (3.5,-2);
-        \node at (0.5,-1) {\small{Port ①}};
-        \node at (3.5,-1) {\small{Port ②}};
-        \node at (2,-2.5) {\small{(2)}};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-o] (3.5,0)
-        (0.5,-2) to[short,o-o] (3.5,-2)
-        (2,0) to[L=$Z$,*-*]  (2,-2);
-        \node at (0.5,-1) {\small{Port ①}};
-        \node at (3.5,-1) {\small{Port ②}};
-        \node at (2,-2.5) {\small{(3)}};
-     \end{circuitikz}}
+    \begin{center}
+        \scalebox{0.8}{\includegraphics{figures/variants_impedance/variants_impedance.pdf}}
+    \end{center}
      \caption{Drei Varianten zur Messung einer Unbekannten Impedanz $Z$. Von
          links nach rechts: (1) Reflexionsmessung, (2) Transmissionsmessung mit $Z$ in
      Serie, (3) Transmissionsmessung mit $Z$ parallel zu den Ports.}
@@ -1293,9 +956,7 @@ Bauteile parallel zu schalten (Parallelschwingkreis).
 
 \begin{figure}[H]
     \begin{center}
-    \begin{circuitikz} \draw
-        (0,0) to[short,o-] (1,0) to[L=$L$] (3,0) to[C=$C$] (5,0) to[R=$R$] (7,0) to[short,-o] (8,0);
-    \end{circuitikz}
+        \includegraphics{figures/tank_circuit/tank_circuit.pdf}
     \end{center}
     \caption{Ein Serienschwingkreis bestehend aus einer Spule/Induktivität $L$,
     einem Kondensator/Kapazität $C$ und einem Widerstand $R$.}
@@ -1324,52 +985,7 @@ Die selben Sachverhalte sind auf der rechten Seite von Abbildung
 \ref{fig:resonanzplot} im Smith-Diagramm erkennbar. Die Analogie zu Verhalten
 einer Antenne im Umfeld ihrer Resonanzfrequenz ist offensichtlich.
 \begin{figure}
-\begin{center}\begin{tikzpicture}
-\begin{axis}[
-    xmin=1, xmax=9,
-    ymin=-70,ymax=10,
-    grid=both,
-    xlabel={Frequenz $f$/MHz},
-    ylabel={\uline{R\"uckfluss}},
-    height=6cm,
-    width=0.45\textwidth,
-    major grid style={black!10}
-]
-\addplot[mark=none,color=HB9UFblue,thick]  table[x index = {0}, y index = {1}] {schwingkreis.dat};
-\end{axis}
-\begin{axis}[
-    xmin=1, xmax=9,
-    ymin=-280,ymax=40,
-    grid=none,
-    separate axis lines,
-    ylabel style = {align=center},
-    ylabel={\udash{Blindwiderstand $X/\Omega$}},
-    ticks=none,
-    xmajorticks=false,
-    xminorticks=false,
-    ymajorticks=true,
-    yminorticks=false,
-    scaled ticks=false,
-    ytick = {-240,-160,-80,0},
-    axis y line*=right,
-    height=6cm,
-    width=0.45\textwidth,
-    major grid style={black!10}
-]
-\addplot[mark=none,dashed,color=HB9UFred,thick]  table[x index = {0}, y index = {2}] {schwingkreis.dat};
-\fill [fill=black] (axis cs:5.033,0) circle [radius=2pt];
-\node [below]  at  (axis cs:5.033,0) {$f_r$};
-\end{axis}
-\end{tikzpicture}
-\hfill
-\begin{tikzpicture}
-    \begin{smithchart}[width=0.46\textwidth]
-\pgfplotsset{yticklabel in circle}
-\addplot[thick,smooth,color=HB9UFblue] table[x index = {3}, y index = {4}] {schwingkreis.dat};
-\fill [fill=black] (axis cs:1,0) circle [radius=2pt];
-\node [below left]  at  (axis cs:1,0) {$f_r$};
-\end{smithchart}
-\end{tikzpicture}\end{center}
+    \begin{center}\includegraphics[scale=0.8]{figures/resonance_plots/resonance_plots.pdf}\end{center}
 \caption{Links: Rückfluss und Blindwiderstand des Schwingkreises aus Abbildung \ref{fig:schwingkreis} mit 
 $L$=1~$\mu$H, $C$=1~nF, $R$=50~$\Omega$. Rechts: Smith-Diagramm der Eingangsimpedanz dieser Schaltung.}
 \label{fig:resonanzplot}
@@ -1386,55 +1002,7 @@ mit denen die Impedanzanpassung vorgenommen wird. Die einfachste Möglichkeit hi
 \ref{fig:lmatch} gezeigte L-Match.
 
 \begin{figure}[H]
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
-                             (3,0) to[L,*-] (3,-2) node[ground] {};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
-                             (3,0) to[C,*-] (3,-2) node[ground] {};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
-                             (3,0) to[L,*-] (3,-2) node[ground] {};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
-                             (3,0) to[C,*-] (3,-2) node[ground] {};
-    \end{circuitikz}}
-
-    \vspace{3em}
-    % zweite Reihe startet hier
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
-                             (1,0) to[L,*-] (1,-2) node[ground] {};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
-                             (1,0) to[C,*-] (1,-2) node[ground] {};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
-                             (1,0) to[L,*-] (1,-2) node[ground] {};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
-                             (1,0) to[C,*-] (1,-2) node[ground] {};
-    \end{circuitikz}}
+    \begin{center}\includegraphics{figures/matching_circuits/matching_circuits.pdf}\end{center}
 
     \caption{L-Match: Verschiedene Anordnungen von Kapazitäten und Induktivitäten zur Anpassung der Impedanz.}
     \label{fig:lmatch}
@@ -1447,12 +1015,7 @@ Anpassungemöglichkeiten zu erweiterten. Ein in diesem Sinn beliebter Ansatz
 ist der in Abbildung \ref{fig:tmatch} dargestellte T-Match.
 
 \begin{figure}[H]
-    \begin{center}
-    \begin{circuitikz} \draw
-        (0,0) to[short,o-] (1,0) to[vC,mirror] (3,0) to[vC,mirror] (5,0) to[short,-o] (6,0)
-        (3,0) to[short,*-] (3,-1) to[vL,invert,mirror] (3,-3) node[ground] {};
-    \end{circuitikz}
-    \end{center}
+    \begin{center}\includegraphics{figures/t_match/t_match.pdf}\end{center}
     \caption{T-Match: Beliebte Schaltung zur Impedanzanpassung (Matchbox/Antennen-Tuner). Es handelt sich um einen
     Verbund zweier variabler L-Matches aus Abbildung \ref{fig:lmatch}.}
     \label{fig:tmatch}
@@ -1491,25 +1054,7 @@ Rotation um einen Vollkreis: Die $\lambda/2$-Leitung transformiert eine
 beliebige Impedanz (abgesehen von Verlusten im Kabel) auf sich selbst.
 
 \begin{figure}[H]
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    xmin=0, xmax=300,
-    ymin=-35, ymax=5,
-    grid=both,
-    xlabel={Frequenz / MHz},
-    ylabel={Transmission / dB},
-    xtick = {0,30,...,300},
-%   ticks=none,
-    height=6cm,
-    width=0.9\textwidth,
-    major grid style={black!10}
-]
-\addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {quarterwave.dat};
-\addplot[color=HB9UFred,thick,dashed] table[,x index = {0}, y index = {2}] {quarterwave.dat};
-\end{axis}
-\end{tikzpicture}
-\end{center}
+    \begin{center}\includegraphics{figures/stub/stub.pdf}\end{center}
 \caption{Einfügedämpfung eines Stub-Filters der Länge 2.5~m. Die ausgezogene Linie beschreibt den Filterverlauf
 eines kurzgeschlossenen Stubs, wärend die gestrichelte Linie den Filterverlauf eines Stubs mit offenem Ende beschreibt.}
 \label{fig:quarterwaveplot}
@@ -1648,11 +1193,7 @@ Abbildung \ref{fig:quarzersatz} dargestellt.
 
 \begin{figure}[H]
     \begin{center}
-    \begin{circuitikz} \draw
-        (0,0) to[short,o-*] (1,0) to[short] 
-            (1,-1) to[L=$L_1$] (3,-1) to[C=$C_1$] (5,-1) to[R=$R_1$] (7,-1) to[short] (7,0) to[short,*-o] (8,0)
-        (1,0) to[short] (1,1) to[C=C$_0$] (7,1) to[short] (7,0);
-    \end{circuitikz}
+        \includegraphics{figures/quartz_model/quartz_model.pdf}
     \end{center}
     \caption{Vereinfachtes Ersatzschaltbild eines Schwingquarzes.}
     \label{fig:quarzersatz}
@@ -1688,43 +1229,7 @@ anderen Gerätschaften.) Für eine gute Übersicht sei auf \cite{kortke2002} ver
 
 \begin{figure}[H]
 \begin{center}
-\begin{tikzpicture}
-\pgfplotsset{set layers}
-\begin{axis}[
-    xmin=15.89, xmax=15.95,
-    ymin=-65, ymax=5,
-    grid=both,
-    ylabel={\uline{Transmission}},
-    ytick = {-60,-50,...,0},
-    ticks=none,
-    height=6cm,
-    width=0.9\textwidth,
-    major grid style={black!10}
-]
-\addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {quarz.dat};
-\end{axis}
-\begin{axis}[
-    xmin=15.89, xmax=15.95,
-    ymin=-10000, ymax=10000,
-    grid=none,
-    separate axis lines,
-    ylabel style = {align=center},
-    xlabel={Frequenz},
-    ylabel={\udash{Blindwiderstand $X/\Omega$}},
-    ticks=none,
-    ymajorticks=true,
-    yminorticks=true,
-    scaled ticks=false,
-    ytick = {0},
-    axis y line*=right,
-    height=6cm,
-    width=0.9\textwidth,
-    major grid style={black!10}
-]
-\addplot[color=HB9UFred,thick,dashed,restrict x to domain=15.89:15.9234] table[,x index = {0}, y index = {2}] {quarz.dat};
-\addplot[color=HB9UFred,thick,dashed,restrict x to domain=15.9236:15.95] table[,x index = {0}, y index = {2}] {quarz.dat};
-\end{axis}
-\end{tikzpicture}
+    \includegraphics{figures/quartz_plot/quartz_plot.pdf}
 \end{center}
 \caption{Einfügedämpfung (ausgezogen) und Blindwiderstand $X$ (gestrichelt, negativ wenn kapazitiv) der Ersatzschaltung
 aus Abbildung \ref{fig:quarzersatz}. Es sind zwei Resonanzstellen sichtbar.}
@@ -1768,41 +1273,9 @@ Idealerweise sollte die Einfügedämpfung dieses Netzwerkes 0~dB sein. Die Trans
 ist in Abbildung \ref{fig:impedancetransformermeasurement} auf der rechten Seite dargestellt.
 
 \begin{figure}[H]
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz}\draw
-        (0,0) node[transformer core,american] (T) {}
-        node[ocirc] (A) at ([xshift=-1cm]T.A1) {}
-        node[ocirc] (B) at ([xshift=-1cm]T.A2) {}
-        (T.A1) to[-o] (A)
-        (T.A2) to [-o] (B)
-        (T.B1) to[R] (T.B2)
-        ;
-        \node at (-2,0) {\small{Port ①}};
-        \node at (0,1.5) {\small{1:N}};
-     \end{circuitikz}}
-    \hfill
-    \scalebox{0.8}{
-    \begin{circuitikz} \draw
-        (0,0) node[transformer core,american] (T) {}
-        node[ocirc] (A) at ([xshift=-1cm]T.A1) {}
-        node[ocirc] (B) at ([xshift=-1cm]T.A2) {}
-        (T.A1) to[-o] (A)
-        (T.A2) to [-o] (B)
-        (3,0) node[transformer core,american] (TT) {}
-        node[ocirc] (AA) at ([xshift=1cm]TT.B1) {}
-        node[ocirc] (BB) at ([xshift=1cm]TT.B2) {}
-        (TT.B1) to[-o] (AA)
-        (TT.B2) to [-o] (BB)
-        (T.B1) to[short] (TT.A1)
-        (T.B2) to[short] (TT.A2)
-        ;
-        \node at (-2,0) {\small{Port ①}};
-        \node at (5,0) {\small{Port ②}};
-        \node at (0,1.5) {\small{1:N}};
-        \node at (3,1.5) {\small{N:1}};
-     \end{circuitikz}}
-    \hfill
+    \begin{center}\scalebox{0.8}{%
+        \includegraphics{figures/transformer/transformer.pdf}%
+    }\end{center}
      \caption{Links: Reflexionsmessung eines Impedanztransformators. Rechts: Transmissionsmessung
      mit zwei baugleichen Impedanztransformatoren.}
      \label{fig:impedancetransformermeasurement}

@@ -1,0 +1,32 @@
+\documentclass[varwidth=17cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=-5, xmax=355,
+            ymin=-155,ymax=155,
+            xlabel={$R/\Omega$},
+            ylabel={$X/\Omega$},
+            grid=both,
+            height=7cm,
+            axis x line=center,
+            axis y line=center,
+            width=0.9\textwidth,
+            major grid style={black!10}
+        ]
+        \fill [fill=HB9UFblue] (axis cs:200,100) circle [radius=3pt] node[right] {$R=200$~\Ohm, $X=100$\Ohm};
+        \fill [fill=black] (axis cs:50,0) circle [radius=2pt] node[above right] {$R=50$~\Ohm, $X=0$~\Ohm};
+        \fill [fill=black] (axis cs:0,100) circle [radius=2pt] node[right] {$R=0$~\Ohm, $X=100$~\Ohm (Spule)};
+        \fill [fill=black] (axis cs:0,-100) circle [radius=2pt] node[right] {$R=0$~\Ohm, $X=-100$~\Ohm (Kondensator)};
+        \fill [fill=black] (axis cs:0,0) circle [radius=2pt];
+        \draw[stealth'-] (axis cs:5,5) -- (axis cs:40,40) node[above right] {$R=0$~\Ohm, $X=0$~\Ohm (Kurzschluss)};
+    \end{axis}
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,26 @@
+\documentclass[varwidth=15cm]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+    \begin{axis}[
+        xmin=0, xmax=300,
+        ymin=-35, ymax=5,
+        grid=both,
+        xlabel={Frequenz / MHz},
+        ylabel={Transmission / dB},
+        xtick = {0,30,...,300},
+    %   ticks=none,
+        height=6cm,
+        width=0.9\textwidth,
+        major grid style={black!10}
+    ]
+    \addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {quarterwave.dat};
+    \addplot[color=HB9UFred,thick,dashed] table[,x index = {0}, y index = {2}] {quarterwave.dat};
+    \end{axis}
+    \end{tikzpicture}
+\end{document}
