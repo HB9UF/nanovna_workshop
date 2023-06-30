@@ -1,5 +1,6 @@
 % Authors:
-% M. Weyland (2020, 2021, 2022)
+% M. Weyland (2020, 2021, 2022, 2023)
+% S. Navert (2022)
 % A. Weyland (2020)
 % H. Baur (2020)
 
@@ -207,7 +208,7 @@ gibt den Zusammenhang zwischen Rückführungsdämpfung und SWR für ausgewählte
 \end{tabular}\end{center}
 \end{table}
 
-Eine andere Darstellung des selben Zusammenhangs ist im Nomogramm in Abbildung
+Eine andere Darstellung des gleichen Zusammenhangs ist im Nomogramm in Abbildung
 \ref{fig:rlnomogramm} zu sehen.
 
 \begin{figure}[t]
@@ -278,7 +279,7 @@ Dieser Sachverhalt ist im oberen Teil von Abbildung \ref{fig:phasenverschiebung}
 Es wäre nun naheliegend anzunehmen, dass man einen dieser beiden Widerstände
 durch eine Induktivität oder Kapazität mit einem Blindwiderstand von 100~$\Omega$
 ersetzen könnte und nach wie vor über einen Spannungsteiler verfügt, welcher
-die Eingangsspannung halbiert, das ist allerdings nicht der Fall, wie Abbildung
+die Eingangsspannung halbiert. Das ist allerdings nicht der Fall, wie Abbildung
 \ref{fig:phasenverschiebung} aufzeigt: Oben erfolgt die Halbierung der Spannung
 wie beschrieben. In der unteren Hälfte der Abbildung ist der 100~$\Omega$
 Widerstand durch eine Spule ersetzt, welche bei der Testfrequenz von $f=$100~MHz
@@ -328,21 +329,22 @@ ist in Abbildung \ref{fig:euler} in  blau gezeichnet.
 Auch im Smith-Diagramm wird genau diese Information (also eine Impedanz bestehend aus Wirk- und Blindwiderstand)
 ebenfalls als Punkt dargestellt. Ein Punkt im Smith-Diagramm unterscheidet sich in dieser Hinsicht also nicht
 von einem Punkt im eingangs besprochenen Koordinaten-System. Der Unterschied ist lediglich, dass im Smith-Diagramm
-die ``Achsen'' eine andere Form, welche auf den ersten Blick sehr sonderbar erscheinen mag. Punkt (und damit Impedanzen)
-im Smith-Diagramm folgen diesen Regeln:
+die ``Achsen'' eine andere Form haben, welche auf den ersten Blick sehr sonderbar erscheinen mag.
+Dabei folgen die Punkte (und damit Impedanzen) im Smith-Diagramm diesen Regeln:
 
 
 \begin{enumerate}
 \item Üblicherweise wird das Smith-Diagramm auf 50~$\Omega$ normalisiert, so dass
-    der Punkt genau in der Mitte $R=50$~\Ohm und $X=0$~\Ohm aufweist.
-\item Auf der Horizontalen in der Mitte des Diagrammes sind alle Impedanzen mit $X=0$~\Ohm, also alle Impedanzen
-    ohne Blind-Anteil.
-\item Der Punkt ganz links auf dieser Horizontalen ist $R=0$~\Ohm, also eine Impedanz ohne Wirk- und Blindwiderstand
+    der Punkt genau in der Mitte die Impedanz $R=50$~\Ohm und $X=0$~\Ohm aufweist.
+\item Auf der Horizontalen in der Mitte des Diagrammes liegen alle Impedanzen mit $X=0$~\Ohm, also alle Impedanzen
+    ohne Blindanteil.
+\item Der Punkt ganz links auf dieser Horizontalen hat die Impedanz $R=0$~\Ohm, also eine Impedanz ohne Wirk- und Blindwiderstand
     bzw. ein Kurzschluss.
-\item Der Punkt ganz rechts auf der selben Horizontalen ist $R=\infty$~\Ohm, also eine offene Verbindung.
+\item Der Punkt ganz rechts auf der gleichen Horizontalen hat die Impedanz $R=\infty$~\Ohm, also eine offene Verbindung.
 \item Punkte oberhalb der Horizontalen sind induktive Impedanzen ($X>0$~\Ohm).
 \item Punkte unterhalb der Horizontalen sind kapazitive Impedanzen ($X<0$~\Ohm).
 \item Punkte auf der umgebenden Kreislinie haben keinen Wirkwiderstand, sie sind also rein induktiv bzw. kapazitiv.
+    Je grösser dieser Blindwiderstsand, desto weiter rechts liegen solche Punkte.
 \end{enumerate}
 
 \begin{figure}[t]
@@ -354,9 +356,11 @@ im Smith-Diagramm folgen diesen Regeln:
     \label{fig:euler}
 \end{figure}
 
-In Abbildung \ref{fig:smithimpedance} sind die selben Impedanzen zu sehen wir in Abbildung \ref{fig:euler}, nur
-sind sie nun in einem Smith-Diagramm dargestellt. Berechtigterweise stellt sich die Frage, wozu denn das Ganze
-gut sein soll.
+Dass ein unendlich grosser Wirkwiderstand nicht von einem unendlich grossen Blindwiderstand unterscheidbar ist,
+sind im Einklang mit diesen Regeln, denn diese Impedanzen liegen allesamt Im Punkt ganz rechts.
+In Abbildung \ref{fig:smithimpedance} sind die selben Impedanzen zu sehen wie in Abbildung \ref{fig:euler}, nur
+sind sie nun in einem Smith-Diagramm dargestellt. Berechtigterweise stellt sich die Frage, wozu das Ganze
+gut sein soll?
 
 \begin{figure}
     \includegraphics{figures/complex_smith/complex_smith.pdf}
@@ -367,43 +371,57 @@ gut sein soll.
 Werden Komponenten in ein Hochfrequenz-Netzwerk eingefügt, so verändern sie die Impedanz, die ein Generator sieht,
 wenn er ins Netzwerk ``hineinschaut'', bzw. die ein VNA mit einer Reflexionsmessung anzeigt. Mit Hilfe des
 Smith-Diagrammes lässt sich dieser Einfluss von Netzwerk-Komponenten auf die Eingangsimpedanz des Netzwerkes
-sehr einfach visualisieren. Für verschiedene solcher Komponenten wird dies im Folgenden verdeutlicht. Die
+sehr einfach darstellen. Für verschiedene solcher Komponenten wird dies im Folgenden verdeutlicht. Die
 Effekte sind in Abbildung \ref{fig:smithbigpicture} zusammengefasst.
 
 \newpage % FIXME
 
-\textbf{Widerstände:} Ein Widerstand in Serie erhöht die Eingangsimpedanz, da sie mit der Abschlussimpedanz
-in Serie geschaltet ist. Je grösser der Widerstand, desto mehr strebt die Eingangsimpedanz in Richtung des
-Punktes ganz rechts im Smith-Diagramm. Ein zur Abschlussimpedanz parallelgeschalteter Widerstand hat den
+\textbf{Widerstände:} Ein Widerstand in Serie erhöht die Impedanz. 
+Je grösser der Widerstand, desto mehr strebt die Eingangsimpedanz in Richtung des
+Punktes ganz rechts im Smith-Diagramm. Ein zum Netzwerk parallelgeschalteter Widerstand hat den
 entgegengesetzten Effekt, die Eingangsimpedanz wird mit abnehmendem
 Parallelwiderstand reduziert und strebt zum Punkt ganz links im Smith-Diagramm.
 
-\textbf{Spulen und Kondensatoren in Serie:} Eine Spule in Serie erhöht den Blindwiderstand. Mit zunehmendem
-Blindwiderstand strebt die Impedanz deshalb entlang der Kreislinien dem Punkt ganz rechts im Diagramm entgegen.
-Ein Kondensator in Serie hat den gegenteiligen Effekt: Der Konvention entsprechend ist dessen Blindwiderstand
-negativ, der Punkt ganz links wird deshalb in die andere Richtung erreicht. Wichtig zu erwähnen ist, dass dies
-aufgrund der invers-proportionalen Relation zwischen Blindwiderstand und Kapazität bei kleinen Kapazitäten erfolgt.
+In Abbildung \ref{fig:smithbigpicture} ist der Fall der Serieschaltung jeweils in der linken Spalte,
+derjenige der Paralleschaltung in der rechten Spalte abgebildet. Im vorliegenden Beispiel, in dem ein ohmscher 
+Widerstand in die Schaltung eingefügt wird, folgen die resultierenden Impedanzen auf Bahnen, die senkrecht auf dem äusseren 
+Kreisrand stehen (Diagramme (a) und (b)). 
 
-\textbf{Parallele Spulen und Kondensatoren:} Für Parallelschaltungen werden die Hilfslinien im Smith-Diagramm
-gespiegelt. Je kleiner die Induktivität einer parallel geschalteten Spule, desto kleiner ihr Blindwiderstand.
-Die Impedanz strebt deshalb mit abnehmendem Blindwiderstand dem Punkt ganz links im Diagramm zu. Analog gilt
-das selbe für parallel geschaltete Kondensatoren, wobei auch hier der Weg in die andere Richtung, aber entlang
-der selben Kreislinien, genommen wird. Auch hier wird ein (betragsmässig) grosser Blindwiderstand in einem
-kleinen Kondensator realisiert.
+
+\textbf{Spulen und Kondensatoren in Serieschaltung:} Eine Spule in Serie ergibt
+einen positiven Beitrag zum Blindwiderstand des vorgeschalteten Netzwerks. Das
+wird im Smith-Diagramm so dargestellt, dass der Punkt, der die Eingangsimpedanz
+des Netzwerks repräsentiert, auf einem Kreisbogen im Uhrzeigersinn zunehmend
+gedreht wird. Im Extremfall strebt der Punkt nach rechts auf den äusseren Rand
+des Smith-Diagramms.
+
+Ein Kondensator in Serie hat einen negativen Beitrag zum Blindwiderstand des Netzwerks.
+Der Punkt, der die Eingansimpedanz des Netzwerks repräsentiert, bewegt sich deshalb
+auf dem selben Kreisbogen in die entgegengesetzte Richtung, also im Gegenuhrzeigersinn
+bei zunehmender Frequenz oder Kapazität. Im Extremfall bildet der Kondensator einen
+Kurzschluss und strebt deshalb dem Punkt ganz links zu (Abbildung \ref{fig:smithbigpicture}c).
+
+\textbf{Spulen und Kondensatoren in Parallelschaltung:} Für Parallelschaltungen
+werden die Hilfslinien (Kreisbögen) im Smith-Diagramm gespiegelt. Schaltet man
+eine Spule parallel zum bestehenden Netzwerk, strebt der Punkt mit abnehmender
+Frequenz oder Induktivität im Gegenuhrzeigersinn zum Punkt ganz links. Ein zum
+bestehenden Netzwerk parallelgeschalteter Kondensator verschiebt den Punkt mit
+zunehmender Frequenz oder Kapazität entlang der selben Kreislinie im
+Uhrzeigernsinn (Abbildung \ref{fig:smithbigpicture}d).
 
 \textbf{Leitungen:} Eine Leitung (z.B. ein Koaxialkabel) transformiert Impedanzen. Eine solche Transformation
-entspricht im Smith-Diagramm ein Kreis im Uhrzeigersinn vom Abschluss zum
-Stimulus. Die bekannteste Anwendung dieses Phänomens ist vermutlich der Viertelwellen-Transformator: Wird ein
+entspricht im Smith-Diagramm einem Kreis im Uhrzeigersinn.
+Die bekannteste Anwendung dieses Impedanztransformation ist vermutlich der Viertelwellen-Transformator: Wird ein
 Koaxialkabel der elektrischen Länge $\lambda/4$ an einem Ende kurzgeschlossen, erscheint am anderen Ende eine
 unendlich grosse Impedanz (offener Stromkreis). Im Smith-Diagramm erscheint diese Transformation als Halbkreis,
-was in Abbildung \ref{fig:smithbigpicture} unten links dargestellt ist: Der Halbkreis beginnt beim Kurzschluss
+was in Abbildung \ref{fig:smithbigpicture}e dargestellt ist: Der Halbkreis beginnt beim Kurzschluss
 ganz links und endet beim offenen Stromkreis ganz rechts. Ein offener Stromkreis würde auf die selbe Art und
 Weise zu einem Kurzschluss transformiert werden. Eine Leitung der Länge $\lambda/2$ entspricht einem Vollkreis
 im Diagramm -- abgesehen von Dämpfungseffekten ist der Ausgangspunkt deckungsgleich mit dem Endpunkt. Alle
 Beispiele im Diagramm unten links sind Viertelwellen-Transformatoren, deshalb sind ausschliesslich Halbkreise
 zu sehen.  Die gestrichelte Linie entspricht einer Leitung mit einem Wellenwiderstand von 100~\Ohm, der
-Kreismittelpunkt ist deshalb nicht mehr identisch mit dem Mittelpunkt des Diagrammes. Unten rechts in Abbildung
-\ref{fig:smithbigpicture} ist schliesslich eine Lange, verlustbehaftete Leitung zu sehen. Die Verluste führen
+Kreismittelpunkt ist deshalb nicht mehr identisch mit dem Mittelpunkt des Diagrammes. In Abbildung
+\ref{fig:smithbigpicture}f ist schliesslich eine lange, verlustbehaftete Leitung zu sehen. Die Verluste führen
 dazu, dass mit zunehmender Länge die Eingangsimpedanz immer näher an 50~\Ohm heranrückt, obschon der Abschluss
 am anderen Ende weitab von 50~\Ohm liegt.
 
@@ -729,12 +747,12 @@ Spur aktiviert ist.
 Beispiel: Er wird im Frequenzbereich von 10~MHz bis 20~MHz gemessen. Zwei Spuren sind aktiv,
 nämlich Spur 1 als Reflexionsmessung (CH0) und Spur 2 als Transmissionsmessung. Das Format beider
 Spuren ist LogMag. Ein einziger Marker ist aktiv und auf eine Frequenz von
-15~MHz eingestellt. Dieser Marker misst für die erste Spur die Rückführungsdämpfung und für
-die zweite Spur die Einfügedämpfung, beides bei der eingestellten Frequenz von 15~MHz. Diese
+15~MHz eingestellt. Dieser Marker zeigt für die erste Spur die Rückführungsdämpfung und für
+die zweite Spur die Einfügedämpfung an, beides bei der eingestellten Frequenz von 15~MHz. Diese
 Frequenz wird in weiss neben der Marker-Nummer (1) angezeigt. Ausserdem wird der Marker als
 kleines Dreieck auf der Spur selbst angezeigt. Die aus den Spuren extrahierte
 Dämpfung (bzw. eigentlich der Gewinn) wird in der entsprechenden Spurfarbe
-angezeigt. Wir ein zweiter Marker aktiviert, so gilt das eben erwähnte genauso für den zweiten
+angezeigt. Wird ein zweiter Marker aktiviert, so gilt das eben erwähnte genauso für den zweiten
 Marker. Seine Frequenz wird dann in weiss neben der Zahl 2 angezeigt. Analog zur aktuell
 ausgewählten Spur gibt es einen aktuell ausgewählten Marker, in diesem Beispiel entweder 1 oder
 2.
@@ -770,7 +788,7 @@ Messkabel etc. zum Einsatz.
 
 \begin{figure}[H]
     \begin{center}\includegraphics{figures/feednofeed/feednofeed.pdf}\end{center}
-    \caption{SWR-Messung einer VHF/UHF Zweibandantenne am Fusspunkt (ausgezogen) sowie im Shack hinter 10~m
+    \caption{SWR-Messung einer VHF/UHF Zweibandantenne am Fusspunkt (ausgezogen) sowie im Shack nach 10~m
     RG-213 Koaxialkabel (gestrichelt). Die Antenne strahlt trotz tieferem SWR keineswegs mehr Leistung ab.}
     \label{fig:antenna_with_wo_feed}
 \end{figure}
@@ -824,7 +842,7 @@ die Erwärmung natürlich nicht herbeiführen, so dass diese Effekte verborgen b
 
 Abschliessend sei auf Abbildung \ref{fig:antennenmessung} verwiesen, welche die Charakterisierung
 einer Antenne mit einem kurzen Messkabel schematisch zeigt. Wie bereits erläutert erfasst
-Die Messung erfasst lediglich einen Teilaspekt, insbesondere bleiben Gewinn und Effizienz der
+die Messung lediglich einen Teilaspekt, insbesondere bleiben Gewinn und Effizienz der
 Antenne weiterhin unbekannt.
 
 \newpage % FIXME
@@ -855,7 +873,7 @@ nicht mehr vernachlässigbar sind. Was im LCR-Meter bei einigen 100~kHz nach ein
 ausgezeichneten Spule aussieht, wird dann bei höheren Frequenzen zu einem Schwingkreis
 und erfüllt seinen Zweck nicht mehr.
 
-Mit seiner Quell-Impedanz von 50~\Ohm bildet entsteht bei einer
+Mit seiner Quell-Impedanz von 50~\Ohm entsteht bei einer
 Reflexionsmessung der Spannungsteiler aus Abbildung
 \ref{fig:phasenverschiebung}. So kann das Gerät die Impedanz des Prüflings
 berechnen und, unter Zuhilfenahme der momentanen Frequenz des Stimulus, bei
@@ -887,16 +905,17 @@ empfohlen. Bei sehr grossen Impedanzen führt Variante (2), also Transmissionsme
 mit $Z$ in Serie, zu genaueren Resultaten, und bei sehr kleinen Impedanzen
 ist Variante (3), also Transmissionsmessung mit parallelem $Z$, zu bevorzugen.
 
-Für eine genaue Messung muss das zu charakterisierende Bauteil in eine Test-Vorrichtung
-(engl. test fixture) montiert werden. Die Qualität der Messung ist dabei vielfach
-mehr abhängig von der Qualität dieser Vorrichtung als von derjenigen des verwendeten
-Messgerätes. Der Anspruch an die Vorrichtung steigt mit zunehmender Frequenz,
+Für eine genaue Messung muss das zu charakterisierende Bauteil in eine
+Test-Vorrichtung (engl. test fixture) montiert werden. Die Qualität der Messung
+ist dabei dominiert von der Qualität dieser Vorrichtung; die Qualität des
+verwendeten Messgerätes ist bei einer ungeeigneten Vorrichtung effektiv
+zweitranging. Der Anspruch an die Vorrichtung steigt mit zunehmender Frequenz,
 denn kleine parasitäre Komponenten gewinnen dann an Einfluss. Abbildung
 \ref{fig:testfixtures} zeigt verschiedene Ansätze für solche Vorrichtungen.
 Oben links wurde aus SMA-Steckern und Krokodilklemmen eine vielseitig
 einsetzbare Apparatur gebaut. Insbesondere bei höheren Frequenzen ist dieser
 Ansatz jedoch völlig ungenügend. Oben rechts ist eine bessere Alternative zu
-sehen: Auf eine freiliegende 50~\Ohm Leiterbahn kann dort das unbekannte
+sehen: Auf eine freiliegende 50~\Ohm Leiterbahn kann das unbekannte
 Bauteil aufgelötet werden. Besonders raffiniert ist der Aufbau von Larry
 Benko), der aus Koaxialbuchsen einfach gebaut werden kann
 \cite{benko2020impedance}.  Wie im unteren Teil von Abbildung
@@ -922,6 +941,12 @@ A-B für (2) und AB-C für (3)) montiert werden.
     \caption{Illustration der Impedanzmessung reaktiver Bauelemente mit Variante~(1) gemäss Abbildung \ref{fig:impedancemeasurement}.}
     \label{fig:illustrationimpedance}
 \end{figure}
+
+Ein einfaches Experiment illustriert die Notwendigkeit einer guten
+Testvorrichtung: Eine einfache Spule wird über zwei Litzen mit dem Port ①  des
+NanoVNA verbunden. Der Blindwiderstand bzw. die daraus berechnete Induktivität
+wird gemessen, wobei die Lage der Litzen zueinander verändert wird. Der Effekt
+ist beeindruckend. 
 
 \begin{figure}\begin{center}
     \includegraphics[height=36mm]{figures/klemmen.jpg}\hfill
@@ -1023,7 +1048,7 @@ ist der in Abbildung \ref{fig:tmatch} dargestellte T-Match.
 
 \minisec{Vorgehen mit dem NanoVNA:}
 
-Die Messung Schwingkreis-Verhaltens wird genau gleich durchgeführt wie die
+Die Messung des Verhaltens des Schwingkreis wird genau gleich durchgeführt wie die
 Impedanzmessung in Abschnitt \ref{sec:impedance} (Reflexionsmessung). Statt
 eines einzelnen Bauteils wird der ganze Schwingkreis angeschlossen.
 
@@ -1071,7 +1096,7 @@ allem dann sinnvoll, wenn die $\lambda/4$-Leitung ohne Stecker auskommen soll.
 Die Viertelwellen-Transformation mag etwas verwirrend erscheinen, ein Zahlenbeispiel
 soll deshalb an dieser Stelle für etwas Klarheit sorgen: Für eine Frequenz von
 30~MHz ist die Wellenlänge ca. $\lambda$=10~m. Eine Halbwellenleitung hat deshalb
-die Länge $\lambda/2$=5~m und eine Vierteilwellenleitung $\lambda/4$=2.5~m. Ein
+die Länge $\lambda/2$=5~m und eine Viertelwellenleitung $\lambda/4$=2.5~m. Ein
 Kurzschluss am Ende dieser $\lambda/4$ Leitung wird deshalb bei 30~MHz zu einer
 offenen Verbindung transformiert, welche die beiden anderen am T-Stück
 angeschlossenen Leitungen keinen Einfluss hat. Bei der doppelten Frequenz, also
@@ -1106,8 +1131,8 @@ und dann eingeschleift. Damit unterschiedet sich diese Messung nicht von derjeni
 von Filtern.
 
 Bei vollständiger Isolation wäre die Einfügedämpfung unendlich gross. Trotzdem
-zeigt ein VNA einen endlichen Wert an. Wie bereits mehrfach erwähnt kann kann
-keine Dämpfung/Isolation gemessen werden, welche diesen Wert übersteigt.
+zeigt ein VNA einen endlichen Wert an. Wie bereits mehrfach erwähnt, kann
+keine Dämpfung/Isolation gemessen werden, welche diesen endlichen Wert übersteigt.
 
 \minisec{Vorgehen mit dem NanoVNA:}
 Für alle Messungen in diesem Abschnitt \ref{sec:filter} gilt folgendes Vorgehen:
@@ -1127,7 +1152,7 @@ Je nach Situation kann eine zusätzliche Reflexionsmessung der Filterports zielf
 \section{Mantelwellensperren}
 Eine Mantelwelle ist eine elektromagnetische Welle, die sich auf dem Aussenleiter (Mantel) eines
 Koaxialkabels ausbreitet. Dies ist in aller Regel aus verschiedenen Gründen
-unerwünscht; um die Mantelwelle zu unterbinden, wird eine Mantelwellensperre
+unerwünscht. Um die Mantelwelle zu unterbinden, wird eine Mantelwellensperre
 eingesetzt. Diese Mantelwellensperre soll für Gegentaktsignale wie das
 Empfangssignal von der Antenne zum Empfänger und das Sendesignal vom Sender
 zur Antenne durchlässig sein; für Gleichtaktsignale wie die Mantelwelle soll
@@ -1137,8 +1162,8 @@ Die Messung einer Mantelwellensperre hat deshalb drei Aspekte:
 (1) Durchlässigkeit von Gegentaktsignalen;
 (2) Dämpfung von Gleichtaktsignalen;
 (3) Verhalten unter Last (Erwärmung etc.).
-Mit einem VNA werden typischerweise nur die ersten beiden Aspekte erfasst,
-Erwärmung unter Last kann z.B. mit einem Thermometer, einer Wärmebildkamera
+Mit einem VNA werden typischerweise nur die ersten beiden Aspekte erfasst, die
+Erwärmung unter Last kann z.B. mit einem Thermometer oder einer Wärmebildkamera
 etc. erfasst werden und wird an dieser Stelle nicht besprochen.
 
 Die \textbf{Gegentaktmessung} ist einfach: Der VNA wird für eine Transmissionsmessung
@@ -1202,9 +1227,9 @@ Abbildung \ref{fig:quarzersatz} dargestellt.
 Im Ersatzschaltbild ist zu erkennen, dass der Schwingquarz aus einem
 Serien-Schwingkreis ($L_1$, $C_1$, $R_1$) und einer dazu parallelen Kapazität
 C$_0$ besteht. Der Quarz hat aufgrund dieser Schaltung zwei Resonanzstellen:
-Wie in Abbildung \ref{fig:quarzidealplot} gezeigt erfolgt die erste beim
-Nulldurchgang des Blindwiderstandes, bei der zweiten ist der Blindwiderstand
-unendlich gross. Diese beiden Resonanzstellen werden Resonanzfrequenz $f_r$
+Wie in Abbildung \ref{fig:quarzidealplot} gezeigt, liegt die erste beim
+Nulldurchgang des Blindwiderstandes. Die zweite liegt vor, wenn der Blindwiderstand
+unendlich gross wird. Diese beiden Resonanzstellen werden Resonanzfrequenz $f_r$
 bzw. Antiresonanzfrequenz $f_a$ genannt. $f_r$ ist stets etwas geringer als
 $f_a$. Für die Frequenz des Schwingquarzes wird $f_r$ angegeben, welche der
 Resonanzfrequenz des Serienschwingkreises aus $L_1$, $C_1$ und $R_1$
@@ -1245,9 +1270,9 @@ eine serielle Transmissionsmessung durchgeführt.
 Transformatoren zur Impedanzwandlung sind beliebt, z.B. um Fusspunktimpedanzen in den Bereich
 des Wellenwiderstandes einer Speiseleitung zu transformieren. Darüber hinaus
 können sie grundsätzlich zur Impedanztransformation verwendet werden. Sie sind im Gegensatz zu
-anderen Anpassmethoden (wie z.B. der L-Match) breitbanding, wobei allerdings gleichzeitig gesagt
+anderen Anpassmethoden (wie z.B. der L-Match) breitbanding, wobei gleichzeitig gesagt
 werden muss, dass es nicht einfach ist, einen breitbandingen Impedanztransformator zu bauen:
-parasitäre Komponenten machen eine gute Anpassung schwierig; was bei tiefen Frequenzen gut
+parasitäre Komponenten machen eine gute Anpassung schwierig. Was bei tiefen Frequenzen gut
 funktioniert, führt bei höheren Frequenzen z.B. zu Verlusten im verwendeten Ringkern oder
 zu massgeblichen Kapazitäten zwischen den einzelnen Windungen.
 
