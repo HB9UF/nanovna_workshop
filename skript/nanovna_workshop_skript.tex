@@ -273,17 +273,16 @@ oder kapazitiv ist. Auch über diese Konvention lässt sich debattieren.
 \end{figure}
 
 \subsection{Phasenverschiebung mit reaktiven Lasten}
-Ein Spannungsteiler bestehend aus zwei 100~$\Omega$ (Wirk-)Widerständen
+Ein Spannungsteiler bestehend aus zwei 50~$\Omega$ (Wirk-)Widerständen
 halbiert die Eingangsspannung, bei Gleichspannung wie auch bei Wechselspannung.
 Dieser Sachverhalt ist im oberen Teil von Abbildung \ref{fig:phasenverschiebung} festgehalten.
 Es wäre nun naheliegend anzunehmen, dass man einen dieser beiden Widerstände
-durch eine Induktivität oder Kapazität mit einem Blindwiderstand von 100~$\Omega$
+durch eine Induktivität oder Kapazität mit einem Blindwiderstand von 50~$\Omega$
 ersetzen könnte und nach wie vor über einen Spannungsteiler verfügt, welcher
-die Eingangsspannung halbiert. Das ist allerdings nicht der Fall, wie Abbildung
-\ref{fig:phasenverschiebung} aufzeigt: Oben erfolgt die Halbierung der Spannung
-wie beschrieben. In der unteren Hälfte der Abbildung ist der 100~$\Omega$
+die Eingangsspannung halbiert. Das ist allerdings nicht der Fall:
+In der unteren Hälfte von Abbildung~\ref{fig:phasenverschiebung} wurde der 50~$\Omega$
 Widerstand durch eine Spule ersetzt, welche bei der Testfrequenz von $f=$100~MHz
-$X_L=100$~$\Omega$ aufweist. Dennoch weist $U_L$ mehr als die halbe Amplitude von
+$X_L=50$~$\Omega$ aufweist. Dennoch weist $U_L$ mehr als die halbe Amplitude von
 $U_Q$ auf; ausserdem wird die Phasenverschiebung sichtbar. Diese Beobachtungen
 lassen eine Reihe von Schlussfolgerungen zu, die im Weiteren wichtig sein werden:
 
@@ -308,29 +307,30 @@ verlustbehaftet ist.
     }
     \caption{Oben: Ein Spannungsteiler halbiert die Spannung: $U_L$ hat die
     halbe Amplitude von $U_Q$. Unten: Phasenverschiebung durch reaktives Element. Bei
-einer Frequenz von $f=100$~MHz hat eine Induktivität von 160~nH genau
-$X_L=100$~$\Omega$. Dennoch wird die Spannung nicht halbiert, stattdessen wird eine Phasenverschiebung sichtbar.}
+einer Frequenz von $f=100$~MHz hat eine Induktivität von 80~nH genau
+$X_L=50$~$\Omega$. Dennoch wird die Spannung nicht halbiert, stattdessen wird eine Phasenverschiebung sichtbar.}
     \label{fig:phasenverschiebung}
 \end{figure}
 
 \subsection{Das Smith-Diagramm}\label{sec:smith}
 Aus dem letzten Abschnitt wird klar: Die betrachteten Bauteile Widerstand, Kondensator und Spule haben Wirk- und
 Blindwiderstände, und eine Serienschaltung aus einem Widerstand von
-$R=100$~$\Omega$ und einer Spule mit einem Blindwiderstand von $X_L=100$~$\Omega$ hat nicht einen Ersatzwiderstand
+$R=50$~$\Omega$ und einer Spule mit einem Blindwiderstand von $X_L=50$~$\Omega$ hat nicht einen Ersatzwiderstand
 von 100~$\Omega$. Bis auf weiteres werden Wirk- und Blindwiderstand als separate Grössen geführt. Ein Bauteil,
 oder eine Kombination von Bauteilen, kann auf diese Art einen Wirkwiderstand
 $R\ge0$, wie auch einen Blindwiderstand $X$ haben. Ist der Blindwiderstand positiv, so handelt es sich um ein
 Induktivität; ein negativer Blindwiderstand beschreibt eine Kapazität. Für ein Bauteil oder eine Schaltung
-aus Bauteilen kann also z.B. gelten: $R=200$~$\Omega$, $X=100$~$\Omega$. Diese Grösse wird Impedanz $Z$ genannt
+aus Bauteilen kann also z.B. gelten: $R=200$~$\Omega$, $X=50$~$\Omega$. Diese Grösse wird Impedanz $Z$ genannt
 und lässt sich in einem Koordinatensystem als Punkt darstellen, wenn $R$ auf
 der horizontalen und $X$ auf der vertikalen Achse abgetragen wird. Das Beispiel
 ist in Abbildung \ref{fig:euler} in  blau gezeichnet. 
 
-Auch im Smith-Diagramm wird genau diese Information (also eine Impedanz bestehend aus Wirk- und Blindwiderstand)
-ebenfalls als Punkt dargestellt. Ein Punkt im Smith-Diagramm unterscheidet sich in dieser Hinsicht also nicht
+Auch im Smith-Diagramm wird genau diese Information, also eine Impedanz bestehend aus Wirk- und Blindwiderstand,
+als Punkt dargestellt. (Genaugenommen entspricht dieser Punkt einem sogenannten komplexen Reflexionskoeffizienten,
+welcher sich aus dieser Impedanz berechnen lässt). Ein Punkt im Smith-Diagramm unterscheidet sich in dieser Hinsicht also nicht
 von einem Punkt im eingangs besprochenen Koordinaten-System. Der Unterschied ist lediglich, dass im Smith-Diagramm
 die ``Achsen'' eine andere Form haben, welche auf den ersten Blick sehr sonderbar erscheinen mag.
-Dabei folgen die Punkte (und damit Impedanzen) im Smith-Diagramm diesen Regeln:
+Dabei gelten für die Punkte (und damit für Impedanzen) im Smith-Diagramm folgende Regeln:
 
 
 \begin{enumerate}
@@ -357,7 +357,7 @@ Dabei folgen die Punkte (und damit Impedanzen) im Smith-Diagramm diesen Regeln:
 \end{figure}
 
 Dass ein unendlich grosser Wirkwiderstand nicht von einem unendlich grossen Blindwiderstand unterscheidbar ist,
-sind im Einklang mit diesen Regeln, denn diese Impedanzen liegen allesamt Im Punkt ganz rechts.
+ist im Einklang mit diesen Regeln, denn diese Impedanzen liegen allesamt Im Punkt ganz rechts.
 In Abbildung \ref{fig:smithimpedance} sind die selben Impedanzen zu sehen wie in Abbildung \ref{fig:euler}, nur
 sind sie nun in einem Smith-Diagramm dargestellt. Berechtigterweise stellt sich die Frage, wozu das Ganze
 gut sein soll?

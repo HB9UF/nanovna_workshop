@@ -4,15 +4,15 @@
 \usetikzlibrary{positioning,arrows}
 \usepackage[european]{circuitikz}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.16}
+\pgfplotsset{compat=1.18}
 
 \input{../../config.tex}
 
 \begin{document}
     \begin{circuitikz}
         \draw (0,0) to[sinusoidal voltage source=$U_Q$] (0,-4)
-              (0,0) to[short] (3,0) to[R,a=100~$\Omega$] (3,-2) to[short,-o] (5,-2)
-              (3,-2) to[R,a=100~$\Omega$,*-*] (3,-4) to[short,-o] (5,-4)
+              (0,0) to[short] (3,0) to[R,a=50~$\Omega$] (3,-2) to[short,-o] (5,-2)
+              (3,-2) to[R,a=50~$\Omega$,*-*] (3,-4) to[short,-o] (5,-4)
               (3,-4) to[short,-*] (0,-4) node[ground] {};
         \draw[-stealth',shorten >=3mm,shorten <=3mm] (5,-2) -- node[right]{$U_L$} (5,-4);
      \end{circuitikz}
@@ -40,8 +40,8 @@
 
     \begin{circuitikz}
         \draw (0,0) to[sinusoidal voltage source=$U_Q$] (0,-4)
-              (0,0) to[short] (3,0) to[R,a=100~$\Omega$] (3,-2) to[short,-o] (5,-2)
-              (3,-2) to[L,a=160~nH,*-*] (3,-4) to[short,-o] (5,-4)
+              (0,0) to[short] (3,0) to[R,a=50~$\Omega$] (3,-2) to[short,-o] (5,-2)
+              (3,-2) to[L,a=80~nH,*-*] (3,-4) to[short,-o] (5,-4)
               (3,-4) to[short,-*] (0,-4) node[ground] {};
         \draw[-stealth',shorten >=3mm,shorten <=3mm] (5,-2) -- node[right]{$U_L$} (5,-4);
     \end{circuitikz}
