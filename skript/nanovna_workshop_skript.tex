@@ -1263,12 +1263,16 @@ auch die Sekundärseite mit 50~\Ohm abzuschliessen und das Messresultat mit der 
 Fehlanpassung zu vergleichen. Die Reflexionsmessung ist in Abbildung \ref{fig:impedancetransformermeasurement}
 auf der linken Seite dargestellt.
 
+% FIXME: Nur die bessere Methode beschreiben, dafür ausführlicher
 Wie in Abschnitt \ref{sec:antennen} bereits erläutert, ist es möglich, dass der Stimulus zwar
 nicht reflektiert wird, aber auch nicht bis zum Abschlusswiderstand gelangt. Insbesondere
 Verluste im Kern können hierfür verantwortlich sein. Die Prüfung dieses Sachverhaltes ist
-weniger einfach. Ein gängiger Ansatz ist es, zwei baugleiche Impedanztransformatoren mit
-der Sekundärseite zusammenzuschalten und mit einer Transmissionsmessung zu prüfen, welcher
-Anteil des Stimulus in den anderen Port gelangt \cite{ferreira2019evaluating}.
+weniger einfach. Ein gängiger Ansatz ist, die theoretische Einfügedämpfung eines perfekten
+Transformators in einem 50~\Ohm System (also mit Fehlanpassung) zu berechnen und diesen
+Wert mit dem tatsächlich gemessenen zu vergleichen. Ein anderer Ansatz ist es,
+zwei baugleiche Impedanztransformatoren mit der Sekundärseite
+zusammenzuschalten und mit einer Transmissionsmessung zu prüfen, welcher Anteil
+des Stimulus in den anderen Port gelangt \cite{ferreira2019evaluating}.
 Idealerweise sollte die Einfügedämpfung dieses Netzwerkes 0~dB sein. Die Transmissionsmessung
 ist in Abbildung \ref{fig:impedancetransformermeasurement} auf der rechten Seite dargestellt.
 
