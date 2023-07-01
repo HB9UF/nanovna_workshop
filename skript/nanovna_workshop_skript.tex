@@ -18,6 +18,7 @@
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{qrcode}
+\usepackage{amssymb}
 
 \input{config.tex}
 
@@ -128,10 +129,10 @@ Die Reflexions- und die Transmissionsmessung sind in
 Abbildung \ref{fig:testset} schematisch dargestellt: Ein aus Port ① ausgehender
 Stimulus trifft auf einen Prüfling (ein Filter, eine Antenne etc.). Ein Teil
 der eintreffenden Energie wird zurück zu Port ① reflektiert und dort gemessen
-(Reflexionsmessung). Der Rest wird entweder vom Prüfling in Wärme umgewandelt,
+(Reflexionsmessung, S11). Der Rest wird entweder vom Prüfling in Wärme umgewandelt,
 als Radiowelle abgestrahlt oder gelangt (falls vorhanden) an den Ausgang des
 Prüflings. Die Energie am Ausgang des Prüflings wird Port ② zugeführt
-und dort gemessen (Transmissionsmessung).
+und dort gemessen (Transmissionsmessung, S21).
 
 \begin{figure}[H]
     \begin{center}
@@ -476,6 +477,10 @@ wirkt sich direkt auf die Messung aus.
 
 \newpage % FIXME
 \section{Bedienung NanoVNA}
+Die Struktur der Menüs hat sich in den letzten Jahren stark verändert. Diese Dokumentation
+setzt die Firmware von DiSlord in der Version 1.2.20 voraus. Andere Firmwares
+oder Firmware-Versionen werden eine leicht unterschiedliche Menüführung aufweisen.
+
 Der NanoVNA wird mit einem Schiebe-Schalter ein- und ausgeschaltet. Beim Einschalten
 leuchtet eine blaue LED auf, welche nach dem Ausschalten noch bis zu einer Minute
 nachleuchtet. Das Gerät wird über das mitgelieferte USB-C Kabel geladen. Die blaue
@@ -488,7 +493,7 @@ Der grundsätzliche Messablauf ist immer gleich:
     \item Einstellung der Frequenz (Abschnitt \ref{sec:nanovnafreq})
     \item Kalibrierung (Abschnitt \ref{sec:nanovnacal})
     \item Anzeige von Spuren ein- und ausschalten (Abschnitt \ref{sec:nanovnatraces})
-    \item Kanalwahl (Abschnitt \ref{sec:nanovnachannel} und Einstellung des Anzeigeformates
+    \item Kanalwahl (Abschnitt \ref{sec:nanovnachannel}) und Einstellung des Anzeigeformates
         (Abschnitt \ref{sec:nanovnaformat})
 \end{enumerate}
 
@@ -512,7 +517,7 @@ Diese sind im Folgenden erläutert.
     \node[menu,stimulus,below of=stop] (center) {Center};
     \node[menu,stimulus,below of=center] (span) {Span};
     \node[menu,stimulus,below of=span] (cwfreq) {CW Freq};
-    \node[menu,stimulus,below of=cwfreq] (pausesweep) {Pause Swp.};
+    \node[menu,stimulus,below of=cwfreq] (jogstep) {...};
     \draw[thick,-stealth'] (stimulus) -- (start);
 \end{tikzpicture}\end{center}
 
@@ -545,18 +550,20 @@ den Messpunkten keine wichtige Information verloren geht. Mit der Software
 \begin{center}\begin{tikzpicture}[font=\sffamily]
     \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
     \tikzstyle{cal}=[fill=cal]
-    \node[menu,cal,below of=stimulus] (cal) {Cal};
+    \node[menu,cal,below of=stimulus] (cal) {Calibrate};
     \node[menu,cal,right=10em of cal] (calibrate) {Calibrate};
-    \node[menu,cal,below of=calibrate] (calsave) {Save};
+    \node[menu,cal,below of=calibrate] (power) {Power};
+    \node[menu,cal,below of=power] (calsave) {Save};
     \node[menu,cal,below of=calsave] (reset) {Reset};
-    \node[menu,cal,below of=reset] (correction) {Correction};
+    \node[menu,cal,below of=reset] (resetrange) {Rst. Range};
+    \node[menu,cal,below of=resetrange] (correction) {Apply};
 
     \node[menu,cal,right=20em of calibrate] (open) {Open};
     \node[menu,cal,below of=open] (short) {Short};
     \node[menu,cal,below of=short] (load) {Load};
     \node[menu,cal,below of=load] (isoln) {Isoln};
     \node[menu,cal,below of=isoln] (thru) {Thru};
-    \node[menu,cal,below of=thru] (done) {Done};
+    \node[menu,cal,below of=thru] (done) {...};
 
     \node[menu,cal,right=10em of calsave] (save0) {Save 0};
     \node[menu,cal,below of=save0] (savei) {...};
@@ -574,24 +581,24 @@ und Abbildung \ref{fig:calkit}) benötigt. Eine Kalibrierung für die
 Reflexionsmessung beinhaltet folgende Schritte:
 
 \begin{enumerate}
-    \item Im Menü ``Cal'' das Feld ``Reset'' wählen.
+    \item Zuerst das Feld ``Reset'' anwählen.
     \item Das Untermenü ``Calibrate'' wählen.
     \item Den offenen Abschluss befestigen und ``Open'' wählen.
     \item Den Kurzschluss befestigen und ``Short'' wählen.
     \item Den 50~\Ohm Abschluss befestigen und ``Load'' wählen.
     \item ``Done'' wählen.
-    \item Die Kalibrierung in Position 0 speichern ``Save 0''.
+    \item Die Kalibrierung in einer der fünf Speicherplätze speichern.
 \end{enumerate}
 
 Eine Kalibrierung für die Transmissionsmessung beinhaltet folgende Schritte:
 
 \begin{enumerate}
-    \item Im Menü ``Cal'' das Feld ``Reset'' wählen.
+    \item Zuerst das Feld ``Reset'' anwählen.
     \item Das Untermenü ``Calibrate'' wählen.
     \item Die Verbindung zwischen den beiden Ports trennen, Port ①  (CH0) mit 50~\Ohm abschliessen und ``Isoln'' wählen.
     \item Mit einem Thru-Verbindungsstück die beiden Ports verbinden und ``Thru'' wählen.
     \item ``Done'' wählen.
-    \item Die Kalibrierung in Position 0 speichern ``Save 0''.
+    \item Die Kalibrierung in einer der fünf Speicherplätze speichern.
 \end{enumerate}
 
 Bei Bedarf ist auch eine Kalibrierung für eine kombinierte Reflexions- und Transmissionsmessung
@@ -640,8 +647,8 @@ ist es möglich, den Kanal zu wählen (CH0: Reflexionsmessung, CH1:
 Transmissionsmessung) und zu bestimmen, auf welche Art und Weise die Mess-Ergebnisse
 angezeigt werden. Die Spuren sind farblich codiert und lassen sich im Menü
 ``Display'' $\longrightarrow$ ``Trace'' ein- und ausschalten. Im selben Menü
-lässt wird auch die aktuelle Spur ausgewählt. Die aktuell gewählte Spur ist auf dem
-Hauptbildschirm invertiert beschrieben. Die Kanalwahl (Abschnitt
+wird auch die aktuelle Spur ausgewählt. Die aktuell gewählte Spur ist auf dem
+Hauptbildschirm mit einem kleinen Pfeil (``$\blacktriangleright$'') markiert. Die Kanalwahl (Abschnitt
 \ref{sec:nanovnachannel}) und die Wahl des Anzeigeformates (Abschnitt \ref{sec:nanovnaformat})
 betrifft jeweils diese Spur.
 
@@ -650,16 +657,16 @@ betrifft jeweils diese Spur.
     \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
     \node[menu] (display) {Display};
     \node[menu,right=10em of display] (channel) {Channel};
-    \node[menu,right=10em of channel] (channel0) {CH 0};
-    \node[menu,below of=channel0] (channel1) {CH 1};
+    \node[menu,right=10em of channel] (channel0) {S11 (Refl)};
+    \node[menu,below of=channel0] (channel1) {S21 (Thru)};
 
     \draw[thick,-stealth'] (display) -- (channel);
     \draw[thick,-stealth'] (channel) -- (channel0);
 \end{tikzpicture}\end{center}
 
 
-Der NanoVNA kann sowohl Reflexions- wie auch Transmissionsmessungen durchführen
-(siehe Abschnitt \ref{sec:ports}). Die beiden Ports sind mit ``CH0'' und ``CH1''
+Der NanoVNA kann sowohl Reflexions- wie auch Transmissionsmessungen durchführen,
+welche auch S11 bzw. S21 genannt werden (siehe Abschnitt \ref{sec:ports}). Die beiden Ports sind mit ``CH0'' und ``CH1''
 (channel 0 und 1) angeschrieben, wobei der Stimulus stets aus ``CH0'' kommt.
 Für eine Reflexionsmessung wird deshalb an ``CH0'', für eine Transmissionsmessung
 an ``CH1'' gemessen. Das Pfeil-Piktogramm zwischen den Anschlüssen auf der
@@ -675,35 +682,12 @@ eruiert werden kann, ob eine Reflexions- oder eine Transmissionsmessung
 durchgeführt wird.
 
 \subsection{Anzeigeformat der Spur}\label{sec:nanovnaformat} % FIXME check wrap
-\begin{center}\begin{tikzpicture}[font=\sffamily]
-    \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
-    \node[menu] (display) {Display};
-    \node[menu,right=10em of display] (format) {Format};
-
-    \node[menu,right=10em of format]  (logmag) {LogMag};
-    \node[menu,below of=logmag]  (phase) {Phase};
-    \node[menu,below of=phase]  (delay) {Delay};
-    \node[menu,below of=delay]  (smith) {Smith};
-    \node[menu,below of=smith]  (swr) {SWR};
-    \node[menu,below of=swr]  (more) {More...};
-
-    \node[menu,right=10em of logmag]  (polar) {Polar};
-    \node[menu,below of=polar]  (linear) {Linear};
-    \node[menu,below of=linear] (real) {Real};
-    \node[menu,below of=real]  (imag) {Imag};
-    \node[menu,below of=imag]  (resistance) {Resistance};
-    \node[menu,below of=resistance] (reactance) {Reactance};
-
-
-    \draw[thick,-stealth'] (display) -- (format);
-    \draw[thick,-stealth'] (format) -- (logmag);
-    \draw[thick,-stealth'] (more) --  +(5.5em,0em) |- (polar);
-\end{tikzpicture}\end{center}
-
 Der NanoVNA kann das Resultat der Reflexions- und Transmissionsmessung auf verschiedene
-Weise anzeigen. Diese Einstellung kann im Menü ``Display'' $\longrightarrow$ ``Trace''
-für jede der 4 Spuren gemacht werden. Die Einstellung gilt für die aktuell gewählte
-Spur. Die wichtigsten Formate sind:
+Weise anzeigen. Diese Einstellung kann im Menü ``Display'' $\longrightarrow$ ``Format S11 (Refl)''
+für die Reflexionsmessung bzw. ``Display'' $\longrightarrow$ ``Format S21 (Thru)''
+für die Transmissionsmessung gemacht werden. Die Einstellung gilt für die aktuell gewählte
+Spur. Es stehen viele Anzeigeformate zur Verfügung; an dieser Stelle sei auf die Menü-Übersicht
+auf der letzten Seite verwiesen. Die wichtigsten Formate sind:
 
 \begin{itemize}
     \item \textbf{LogMag:} Das Resultat wird skalar in dB angezeigt. Bis auf das Vorzeichen sind
@@ -715,6 +699,9 @@ Spur. Die wichtigsten Formate sind:
     \item \textbf{Smith:} Die Messresultate werden im Smith-Diagramm dargestellt. Auch dies
         ist vor allem bei Reflexionsmessungen sinnvoll.
 \end{itemize}
+
+Ausserdem lassen sich Wirk- und Blindwiderstand (Resistance bzw. Reactance) anzeigen und diese Werte
+in Induktivitäten und Kapazitäten umrechnen lassen.
 
 \subsection{Marker}
 \begin{center}\begin{tikzpicture}[font=\sffamily]
@@ -738,24 +725,22 @@ Spur. Die wichtigsten Formate sind:
     \draw[thick,-stealth'] (selectmarker) -- (marker1);
 \end{tikzpicture}\end{center}
 
-Mit Hilfe von Marker können Messwerte der Spuren numerisch angezeigt werden. Der NanoVNA
-unterstützt vier verschiedene Marker, die aber nicht zu je einer Spur gehören. Vielmehr
-wird ein aktiver Marker für jede der vier Spuren berechnet, jedenfalls sofern die entsprechende
-Spur aktiviert ist.
+Mit Hilfe von Markern können Messwerte der Spuren numerisch angezeigt werden. Der NanoVNA
+unterstützt acht verschiedene Marker. Ist nur einer aktiviert, dann werden alle vier
+Spuren auf der Markerfrequenz ausgewertet, jedenfalls sofern die entsprechende
+Spur aktiviert ist. Ist mehr als ein Marker aktiviert, dann werden die Marker für die
+aktuell gewählte Spur ausgewertet. Die Markierung der aktuell gewählten Spur (``$\blacktriangleright$'')
+verschwindet und die Marker erscheinen stattdessen in der Farbe der aktuell gewählten Spur.
 
 % FIXME: Screenshot
 Beispiel: Er wird im Frequenzbereich von 10~MHz bis 20~MHz gemessen. Zwei Spuren sind aktiv,
-nämlich Spur 1 als Reflexionsmessung (CH0) und Spur 2 als Transmissionsmessung. Das Format beider
+nämlich Spur 1 als Reflexionsmessung (S11) und Spur 2 als Transmissionsmessung (S21). Das Format beider
 Spuren ist LogMag. Ein einziger Marker ist aktiv und auf eine Frequenz von
 15~MHz eingestellt. Dieser Marker zeigt für die erste Spur die Rückführungsdämpfung und für
-die zweite Spur die Einfügedämpfung an, beides bei der eingestellten Frequenz von 15~MHz. Diese
-Frequenz wird in weiss neben der Marker-Nummer (1) angezeigt. Ausserdem wird der Marker als
-kleines Dreieck auf der Spur selbst angezeigt. Die aus den Spuren extrahierte
-Dämpfung (bzw. eigentlich der Gewinn) wird in der entsprechenden Spurfarbe
-angezeigt. Wird ein zweiter Marker aktiviert, so gilt das eben erwähnte genauso für den zweiten
-Marker. Seine Frequenz wird dann in weiss neben der Zahl 2 angezeigt. Analog zur aktuell
-ausgewählten Spur gibt es einen aktuell ausgewählten Marker, in diesem Beispiel entweder 1 oder
-2.
+die zweite Spur die Einfügedämpfung an, beides bei der eingestellten Frequenz von 15~MHz. Wird
+ein zweiter Marker aktiviert, so kann dieser auf einer anderen Frequenz plaziert werden, aber
+es werden (je nach aktuell gewählter Spur) entweder die Rückführungsdämpfungen, oder die
+Einfügedämpfungen beider Frequenzen angezeigt.
 
 Mit Hilfe eines Stiftes kann der aktuelle Marker verschoben werden. Alternativ kann dazu auch
 das kleine Rädchen neben dem Hauptschalter verwendet werden.
@@ -1364,79 +1349,126 @@ Weitergabe, Vervielfältigung und Änderungen sind im Rahmen der Lizenz CC BY-SA
 \pagestyle{empty}
 ~\newpage
 
-\section*{Menü-Übersicht}\label{sec:menu}
+\section*{Menü-Übersicht (Firmware DiSlord/NanoVNA-D 1.2.20)}\label{sec:menu}
 
 %FIXME: Check if this fits on page
-\scalebox{0.93}{\rotatebox{90}{\begin{tikzpicture}[font=\sffamily]
+\scalebox{0.8}{\rotatebox{90}{\begin{tikzpicture}[font=\sffamily]
     \tikzstyle{menu}=[draw, text width=5em, text centered, minimum height=2em, node distance=2em,on grid]
     \tikzstyle{marker}=[fill=marker]
     \tikzstyle{stimulus}=[fill=stimulus]
     \tikzstyle{cal}=[fill=cal]
     \tikzstyle{recall}=[fill=recall]
     \tikzstyle{config}=[fill=config]
+    \tikzstyle{menublack}=[fill=black,text=white]
     % Main
     \node[menu] (display) {Display};
     \node[menu,marker,below of=display] (marker) {Marker};
     \node[menu,stimulus,below of=marker] (stimulus) {Stimulus};
-    \node[menu,cal,below of=stimulus] (cal) {Cal};
+    \node[menu,cal,below of=stimulus] (cal) {Calibrate};
     \node[menu,recall,below of=cal] (recall) {Recall};
-    \node[menu,config,below of=recall] (config) {Config};
+    \node[menu,menublack,below of=recall] (measure) {Measure}; % FIXME
+    \node[menu,menublack,below of=measure] (sdcard) {SD Card};
+    \node[menu,config,below of=sdcard] (config) {Config};
 
     % Display
     \node[menu,right=30em of display] (trace) {Trace};
-    \node[menu,below of=trace] (format) {Format};
-    \node[menu,below of=format] (scale) {Scale};
-    \node[menu,below of=scale] (channel) {Channel};
-    \node[menu,below of=channel] (transform) {Transform};
+    \node[menu,below of=trace] (formats11) {Format S11};
+    \node[menu,below of=formats11] (formats21) {Format S21};
+    \node[menu,below of=formats21] (channel) {Channel};
+    \node[menu,below of=channel] (scale) {Scale};
+    \node[menu,below of=scale] (transform) {Transform};
+    \node[menu,below of=transform] (ifbandwidth) {IF Bandw.};
+    \node[menu,below of=ifbandwidth] (datasmooth) {D. Smooth};
+    \node[menu,below of=datasmooth] (portz) {Port Z};
 
-    \node[menu,right=30em of trace] (trace0) {\colorbox{trace0}{Trace 0}};
+    \node[menu,right=40em of trace] (trace0) {\colorbox{trace0}{Trace 0}};
     \node[menu,below of=trace0] (trace1) {\colorbox{trace1}{Trace 1}};
-        \node[menu,below of=trace1] (trace2) {\colorbox{trace2}{Trace 2}};
-        \node[menu,below of=trace2] (trace3) {\colorbox{trace3}{Trace 3}};
+    \node[menu,below of=trace1] (trace2) {\colorbox{trace2}{Trace 2}};
+    \node[menu,below of=trace2] (trace3) {\colorbox{trace3}{Trace 3}};
+    \node[menu,below of=trace3] (trace_store) {Store Trace};
 
-    \node[menu,right=20em of format]  (logmag) {LogMag};
+    \node[menu,right=30em of formats11]  (logmag) {LogMag};
     \node[menu,below of=logmag]  (phase) {Phase};
     \node[menu,below of=phase]  (delay) {Delay};
     \node[menu,below of=delay]  (smith) {Smith};
     \node[menu,below of=smith]  (swr) {SWR};
-    \node[menu,below of=swr]  (more) {More...};
+    \node[menu,below of=swr]    (resist) {Resistance};
+    \node[menu,below of=resist]  (react) {Reactance};
+    \node[menu,below of=react]  (z) {$|$Z$|$};
+    \node[menu,below of=z]  (more) {More...};
 
-    \node[menu,right=10em of more]  (polar) {Polar};
+    \node[menu,above right=7em and 10em of more]  (polar) {Polar};
     \node[menu,below of=polar]  (linear) {Linear};
     \node[menu,below of=linear] (real) {Real};
     \node[menu,below of=real]  (imag) {Imag};
-    \node[menu,below of=imag]  (resistance) {Resistance};
-    \node[menu,below of=resistance] (reactance) {Reactance};
+    \node[menu,below of=imag]  (q) {Q Factor};
+    \node[menu,below of=q]     (cond) {Conduct.};
+    \node[menu,below of=cond]  (susc) {Suscept.};
+    \node[menu,below of=susc ] (y)    {$|$Y$|$};
+    \node[menu,below of=y]  (more2) {More...};
 
-    \node[menu,below right=14em and 20em of scale]  (scalediv) {Scale/Div};
+    \node[menu,below=3em of more2] (zphase)    {Z Phase};
+    \node[menu,below of=zphase] (seriesc)    {Series C};
+    \node[menu,below of=seriesc] (seriesl)    {Series L};
+    \node[menu,below of=seriesl] (parallelr)    {Paralell R};
+    \node[menu,below of=parallelr] (parallelc)    {Paralell C};
+    \node[menu,below of=parallelc] (parallell)    {Paralell L};
+
+    \node[menu,right=20em of formats21]  (logmag2) {LogMag};
+    \node[menu,below of=logmag2]  (phase2) {Phase};
+    \node[menu,below of=phase2]  (delay2) {Delay};
+    \node[menu,below of=delay2]  (smith2) {Smith};
+    \node[menu,below of=smith2]  (polar2) {Polar};
+    \node[menu,below of=polar2]    (linear) {Linear};
+    \node[menu,below of=linear]  (real2) {Real};
+    \node[menu,below of=real2]  (imag2) {Imag};
+    \node[menu,below of=imag2]  (more3) {More...};
+
+    \node[menu,below right=1em and 10em of more3] (seriesr2) {Series R};
+    \node[menu,below of=seriesr2] (seriesx2) {Series X};
+    \node[menu,below of=seriesx2] (seriesz2) {Series $|$Z$|$};
+    \node[menu,below of=seriesz2] (shuntr2) {Shunt R};
+    \node[menu,below of=shuntr2]  (shuntx2) {Shunt X};
+    \node[menu,below of=shuntx2]  (shuntz2) {Shunt $|$Z$|$};
+    \node[menu,below of=shuntz2]  (q2) {Q Factor};
+
+    \node[menu,below right=15em and 20em of scale]  (scalediv) {Scale/Div};
     \node[menu,below of=scalediv]  (referenceposition) {Ref. Pos};
-    \node[menu,below of=referenceposition]  (electricaldelay) {Elec. Delay};
+    \node[menu,below of=referenceposition]  (edelay) {E-Delay};
+    \node[menu,below of=edelay]  (s21offset) {S21 Offset};
+    \node[menu,below of=s21offset]  (showgridval) {Grid Val.};
+    \node[menu,below of=showgridval]  (dotgrid) {Dot Grid};
 
-    \node[menu,right=10em of channel] (channel0) {CH 0};
-    \node[menu,below of=channel0] (channel1) {CH 1};
-
-    \node[menu,below right=5em and 10em of transform] (transformon) {Transf. on};
+    \node[menu,below right=5em and 10em of transform] (transformon) {Off/On};
     \node[menu,below of=transformon] (lowpassimpulse) {LP impulse};
     \node[menu,below of=lowpassimpulse] (lowpassstep) {LP step};
     \node[menu,below of=lowpassstep] (bandpass) {Bandpass};
     \node[menu,below of=bandpass] (window) {Window};
     \node[menu,below of=window] (velocityfactor) {Vel. Factor};
 
-    \node[menu,below right=7em and 10em of window] (minimum) {Minimum};
-    \node[menu,below of=minimum] (normal) {Normal};
-    \node[menu,below of=normal] (maximum) {Maximum};
+    \node[menu,below right=13em and 10em of window] (normal) {Normal};
+    \node[menu,below of=normal] (minimum) {Minimum};
+    \node[menu,below of=minimum] (maximum) {Maximum};
 
     % Marker
     \node[menu,marker,below right=26em and 30em of marker] (selectmarker) {Select M.};
-    \node[menu,marker,below of=selectmarker] (markerstart) {Start};
-    \node[menu,marker,below of=markerstart] (markerstop) {Stop};
-    \node[menu,marker,below of=markerstop] (markercenter) {Center};
-    \node[menu,marker,below of=markercenter] (markerspan) {Span};
+    \node[menu,marker,below of=selectmarker] (markersearch) {Search};
+    \node[menu,marker,below of=markersearch] (markerleft) {Search $\leftarrow$};
+    \node[menu,marker,below of=markerleft] (markerright) {Search $\rightarrow$};
+    \node[menu,marker,below of=markerright] (markerops) {Operations};
+    \node[menu,marker,below of=markerops] (markertracking) {Tracking};
 
     \node[menu,marker,right=10em of selectmarker] (marker1) {Marker 1};
     \node[menu,marker,below of=marker1] (markeri) {...};
-    \node[menu,marker,below of=markeri] (marker4) {Marker 4};
+    \node[menu,marker,below of=markeri] (marker4) {Marker 8};
     \node[menu,marker,below of=marker4] (alloff) {All Off};
+    \node[menu,marker,below of=alloff] (delta) {Delta};
+
+    \node[menu,marker,below right=11em and 10em of selectmarker] (markerstart) {$\rightarrow$Start};
+    \node[menu,marker,below of=markerstart] (markerstop) {$\rightarrow$Stop};
+    \node[menu,marker,below of=markerstop] (markercenter) {$\rightarrow$Center};
+    \node[menu,marker,below of=markercenter] (markerspan) {$\rightarrow$Span};
+    \node[menu,marker,below of=markerspan] (markerdelay) {$\rightarrow$E-Delay};
 
     % Stimulus
     \node[menu,stimulus,right=20em of stimulus] (start) {Start};
@@ -1444,35 +1476,43 @@ Weitergabe, Vervielfältigung und Änderungen sind im Rahmen der Lizenz CC BY-SA
     \node[menu,stimulus,below of=stop] (center) {Center};
     \node[menu,stimulus,below of=center] (span) {Span};
     \node[menu,stimulus,below of=span] (cwfreq) {CW Freq};
-    \node[menu,stimulus,below of=cwfreq] (pausesweep) {Pause Swp.};
+    \node[menu,stimulus,below of=cwfreq] (jogstep) {Jog Step};
+    \node[menu,stimulus,below of=jogstep] (sweeppts) {Sweep Pts.};
 
     % Cal
     \node[menu,cal,right=10em of cal] (calibrate) {Calibrate};
-    \node[menu,cal,below of=calibrate] (calsave) {Save};
-    \node[menu,cal,below of=calsave] (reset) {Reset};
-    \node[menu,cal,below of=reset] (correction) {Correction};
+    \node[menu,cal,below of=calibrate] (power) {Power};
+    \node[menu,cal,below of=power] (calsave) {Save};
+    \node[menu,cal,below of=calsave] (resetrange) {Rst. Range};
+    \node[menu,cal,below of=resetrange] (reset) {Reset};
+    \node[menu,cal,below of=reset] (apply) {Apply};
 
-    \node[menu,cal,below right=12em and 10em of calibrate] (open) {Open};
+    \node[menu,cal,below right=15em and 10em of calibrate] (open) {Open};
     \node[menu,cal,below of=open] (short) {Short};
     \node[menu,cal,below of=short] (load) {Load};
     \node[menu,cal,below of=load] (isoln) {Isoln};
     \node[menu,cal,below of=isoln] (thru) {Thru};
-    \node[menu,cal,below of=thru] (done) {Done};
+    \node[menu,cal,below of=thru] (edelay) {E-Delay};
+    \node[menu,cal,below of=edelay] (done) {Done};
+    \node[menu,cal,below of=done] (doneram) {Done RAM};
 
-    \node[menu,cal,below right=24em and 10em of calsave] (save0) {Save 0};
+    \node[menu,cal,below right=28em and 10em of calsave] (save0) {Save 0};
     \node[menu,cal,below of=save0] (savei) {...};
     \node[menu,cal,below of=savei] (save4) {Save 4};
 
     % Recall
-    \node[menu,recall,below right=10 em and 10em of recall] (recall0){Recall 0};
+    \node[menu,recall,below right=14 em and 10em of recall] (recall0){Recall 0};
     \node[menu,recall,below of=recall0] (recalli){...};
     \node[menu,recall,below of=recalli] (recall4){Recall 4};
 
     % Config
-    \node[menu,config,below right=20em and 10em of config] (touchcal) {Touch Cal};
+    \node[menu,config,below right=22em and 10em of config] (touchcal) {Touch Cal};
     \node[menu,config,below of=touchcal] (touchtest) {Touch Test};
-    \node[menu,config,below of=touchtest] (configsave) {Save};
-    \node[menu,config,below of=configsave] (version) {DFU};
+    \node[menu,config,below of=touchtest] (expert) {Expert};
+    \node[menu,config,below of=expert] (configsave) {Save};
+    \node[menu,config,below of=configsave] (connection) {Connection};
+    \node[menu,config,below of=connection] (version) {Version};
+    \node[menu,config,below of=version] (dfu) {DFU};
 
     \draw[thick,-stealth'] (display) -- (trace);
     \draw[thick,-stealth'] (marker) -- +(25em,0em) |- (selectmarker);
@@ -1482,15 +1522,19 @@ Weitergabe, Vervielfältigung und Änderungen sind im Rahmen der Lizenz CC BY-SA
     \draw[thick,-stealth'] (config) -- +(4.5em,0em) |- (touchcal);
 
     \draw[thick,-stealth'] (trace) -- (trace0);
-    \draw[thick,-stealth'] (format) -- (logmag);
+    \draw[thick,-stealth'] (formats11) -- (logmag);
+    \draw[thick,-stealth'] (formats21) -- (logmag2);
     \draw[thick,-stealth'] (scale) -- +(15em,0em) |- (scalediv);
-    \draw[thick,-stealth'] (channel) -- (channel0);
     \draw[thick,-stealth'] (transform) -- +(5em,0em) |- (transformon);
-    \draw[thick,-stealth'] (window) -- +(5em,0em) |- (minimum);
+    \draw[thick,-stealth'] (window) -- +(4.5em,0em) |- (normal);
 
-    \draw[thick,-stealth'] (more) -- (polar);
+    \draw[thick,-stealth'] (more) -- +(4.5em,0em) |- (polar);
+    \draw[thick,-stealth'] (more2) -- (zphase);
+
+    \draw[thick,-stealth'] (more3) -- +(4.5em,0em) |- (seriesr2);
 
     \draw[thick,-stealth'] (selectmarker) -- (marker1);
+    \draw[thick,-stealth'] (markerops) -- +(5em,0em) |- (markerstart);
 
     \draw[thick,-stealth'] (calibrate) -- +(5.5em,0em) |- (open);
     \draw[thick,-stealth'] (calsave) -- +(4.5em,0em) |-(save0);
