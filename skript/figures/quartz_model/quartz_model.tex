@@ -1,0 +1,12 @@
+\documentclass[varwidth=20cm]{standalone}
+
+\usepackage{amsmath}
+\usepackage[european]{circuitikz}
+
+\begin{document}
+    \begin{circuitikz} \draw
+        (0,0) to[short,o-*] (1,0) to[short] 
+            (1,-1) to[L=$L_1$] (3,-1) to[C=$C_1$] (5,-1) to[R=$R_1$] (7,-1) to[short] (7,0) to[short,*-o] (8,0)
+        (1,0) to[short] (1,1) to[C=C$_0$] (7,1) to[short] (7,0);
+    \end{circuitikz}
+\end{document}

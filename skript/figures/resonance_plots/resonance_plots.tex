@@ -1,0 +1,56 @@
+\documentclass[varwidth=17cm]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepgfplotslibrary{smithchart}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+    \begin{axis}[
+        xmin=1, xmax=9,
+        ymin=-70,ymax=10,
+        grid=both,
+        xlabel={Frequenz $f$/MHz},
+        ylabel={\uline{R\"uckfluss}},
+        height=6cm,
+        width=0.45\textwidth,
+        major grid style={black!10}
+    ]
+    \addplot[mark=none,color=HB9UFblue,thick]  table[x index = {0}, y index = {1}] {schwingkreis.dat};
+    \end{axis}
+    \begin{axis}[
+        xmin=1, xmax=9,
+        ymin=-280,ymax=40,
+        grid=none,
+        separate axis lines,
+        ylabel style = {align=center},
+        ylabel={\udash{Blindwiderstand $X/\Omega$}},
+        ticks=none,
+        xmajorticks=false,
+        xminorticks=false,
+        ymajorticks=true,
+        yminorticks=false,
+        scaled ticks=false,
+        ytick = {-240,-160,-80,0},
+        axis y line*=right,
+        height=6cm,
+        width=0.45\textwidth,
+        major grid style={black!10}
+    ]
+    \addplot[mark=none,dashed,color=HB9UFred,thick]  table[x index = {0}, y index = {2}] {schwingkreis.dat};
+    \fill [fill=black] (axis cs:5.033,0) circle [radius=2pt];
+    \node [below]  at  (axis cs:5.033,0) {$f_r$};
+    \end{axis}
+    \end{tikzpicture}
+    \hspace{1cm}
+    \begin{tikzpicture}
+        \begin{smithchart}[width=0.46\textwidth]
+    \pgfplotsset{yticklabel in circle}
+    \addplot[thick,smooth,color=HB9UFblue] table[x index = {3}, y index = {4}] {schwingkreis.dat};
+    \fill [fill=black] (axis cs:1,0) circle [radius=2pt];
+    \node [below left]  at  (axis cs:1,0) {$f_r$};
+    \end{smithchart}
+    \end{tikzpicture}
+\end{document}

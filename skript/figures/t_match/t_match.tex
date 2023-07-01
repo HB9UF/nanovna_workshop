@@ -1,0 +1,12 @@
+\documentclass[varwidth]{standalone}
+
+\usepackage[european]{circuitikz}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{circuitikz} \draw
+        (0,0) to[short,o-] (1,0) to[vC,mirror] (3,0) to[vC,mirror] (5,0) to[short,-o] (6,0)
+        (3,0) to[short,*-] (3,-1) to[vL,invert,mirror] (3,-3) node[ground] {};
+    \end{circuitikz}
+\end{document}

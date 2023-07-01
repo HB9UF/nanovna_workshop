@@ -1,0 +1,27 @@
+\documentclass[varwidth]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}[text width=5em,text centered,node distance=4em]                     
+        \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=2em]                       
+        \node[box] (p1) {\sf{Port ①}};                                                      
+        \node[box] (p2) at (10,0) {\sf{Port ②}, $P_a$};                                     
+                                                                                            
+        \draw[-stealth',thick] (p1) --  (p2);                                               
+    \end{tikzpicture}
+
+    \vspace{5mm}
+
+    \begin{tikzpicture}[text width=5em,text centered,node distance=4em]
+        \tikzstyle{box}=[draw,rounded corners=3pt,minimum height=2em]
+        \node[box] (p1) {\sf{Port ①}};
+        \node[box] (dut) at (5,0) {\sf{DUT}};
+        \node[box] (p2) at (10,0) {\sf{Port ②}, $P_b$};
+
+        \draw[-stealth',thick] (p1) --  (dut);
+        \draw[-stealth',thick] (dut) -- (p2);
+    \end{tikzpicture}
+\end{document}

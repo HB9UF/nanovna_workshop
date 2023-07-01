@@ -23,6 +23,7 @@
       \addplot[thick,smooth,color=HB9UFblue,->] table[x index = {6}, y index = {7}] {Rseriell.dat};
       \addplot[thick,smooth,color=HB9UFblue,->] table[x index = {8}, y index = {9}] {Rseriell.dat};
       \node[fill=white,anchor=north west] at (current bounding box.north west) {\includegraphics[width=2cm]{Rseriell.pdf}};
+      \node[fill=white,anchor=south west] at (current bounding box.south west) {(a)};
   \end{smithchart}
 \end{tikzpicture}
 \begin{tikzpicture}
@@ -36,6 +37,7 @@
       \addplot[thick,smooth,color=HB9UFblue,->] table[x index = {6}, y index = {7}] {Rparallel.dat};
       \addplot[thick,smooth,color=HB9UFblue,->] table[x index = {8}, y index = {9}] {Rparallel.dat};
       \node[fill=white,anchor=north west] at (current bounding box.north west) {\includegraphics[width=2cm]{Rparallel.pdf}};
+      \node[fill=white,anchor=south west] at (current bounding box.south west) {(b)};
   \end{smithchart}
 \end{tikzpicture}
 
@@ -59,6 +61,7 @@
       \addplot[thick,smooth,color=HB9UFred,dashed,->] table[x index = {10}, y index = {11}] {Cseriell.dat};
       \addplot[thick,smooth,color=HB9UFred,dashed,->] table[x index = {12}, y index = {13}] {Cseriell.dat};
       \node[fill=white,anchor=north west] at (current bounding box.north west) {\includegraphics[width=2cm]{Lseriell.pdf}\hspace{5mm}\includegraphics[width=2cm]{Cseriell.pdf}};
+      \node[fill=white,anchor=south west] at (current bounding box.south west) {(c)};
   \end{smithchart}
 \end{tikzpicture}
 \begin{tikzpicture}
@@ -82,6 +85,7 @@
       \addplot[thick,smooth,color=HB9UFred,dashed,->] table[x index = {10}, y index = {11}] {Cparallel.dat};
       \addplot[thick,smooth,color=HB9UFred,dashed,->] table[x index = {12}, y index = {13}] {Cparallel.dat};
       \node[fill=white,anchor=north west] at (current bounding box.north west) {\includegraphics[width=2cm]{Lparallel.pdf}\hspace{5mm}\includegraphics[width=2cm]{Cparallel.pdf}};
+      \node[fill=white,anchor=south west] at (current bounding box.south west) {(d)};
   \end{smithchart}
 \end{tikzpicture}
 
@@ -97,6 +101,7 @@
 
       \addplot[thick,smooth,color=HB9UFred,dashed,->] table[x index = {0}, y index = {1}] {TL100.dat};
       \node[fill=white,anchor=north west] at (current bounding box.north west) {\includegraphics[width=2cm]{TL.pdf}};
+      \node[fill=white,anchor=south west] at (current bounding box.south west) {(e)};
   \end{smithchart}
 \end{tikzpicture}
 \begin{tikzpicture}
@@ -105,6 +110,7 @@
       \pgfplotsset{ticks=none}
       \addplot[thick,smooth,color=HB9UFblue,->] table[x index = {0}, y index = {1}] {LTL.dat};
       \node[fill=white,anchor=north west] at (current bounding box.north west) {\includegraphics[width=2cm]{LTL.pdf}};
+      \node[fill=white,anchor=south west] at (current bounding box.south west) {(f)};
   \end{smithchart}
 \end{tikzpicture}
 \end{document}

@@ -1,0 +1,41 @@
+\documentclass[varwidth=20cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage[european]{circuitikz}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{circuitikz}\draw
+        (0,0) node[transformer core,american] (T) {}
+        node[ocirc] (A) at ([xshift=-1cm]T.A1) {}
+        node[ocirc] (B) at ([xshift=-1cm]T.A2) {}
+        (T.A1) to[-o] (A)
+        (T.A2) to [-o] (B)
+        (T.B1) to[R] (T.B2)
+        ;
+        \node at (-2,0) {\small{Port ①}};
+        \node at (0,1.5) {\small{1:N}};
+     \end{circuitikz}
+     \hspace{2cm}
+    \begin{circuitikz} \draw
+        (0,0) node[transformer core,american] (T) {}
+        node[ocirc] (A) at ([xshift=-1cm]T.A1) {}
+        node[ocirc] (B) at ([xshift=-1cm]T.A2) {}
+        (T.A1) to[-o] (A)
+        (T.A2) to [-o] (B)
+        (3,0) node[transformer core,american] (TT) {}
+        node[ocirc] (AA) at ([xshift=1cm]TT.B1) {}
+        node[ocirc] (BB) at ([xshift=1cm]TT.B2) {}
+        (TT.B1) to[-o] (AA)
+        (TT.B2) to [-o] (BB)
+        (T.B1) to[short] (TT.A1)
+        (T.B2) to[short] (TT.A2)
+        ;
+        \node at (-2,0) {\small{Port ①}};
+        \node at (5,0) {\small{Port ②}};
+        \node at (0,1.5) {\small{1:N}};
+        \node at (3,1.5) {\small{N:1}};
+     \end{circuitikz}
+\end{document}

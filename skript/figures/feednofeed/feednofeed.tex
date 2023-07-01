@@ -1,0 +1,24 @@
+\documentclass[varwidth=15cm]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=100., xmax=500.,
+            ymin=1, ymax=20,
+            grid=both,
+            xlabel={Frequenz $f$/MHz},
+            ylabel={SWR},
+            height=6cm,
+            width=\textwidth,
+            major grid style={black!10}
+        ]
+        \addplot[color=HB9UFblue,thick] table[,x index = {0}, y index = {1}] {vhf_uhf_antenna.dat};
+        \addplot[color=HB9UFred,thick,dashed] table[,x index = {0}, y index = {2}] {vhf_uhf_antenna.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

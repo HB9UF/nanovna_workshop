@@ -1,0 +1,57 @@
+\documentclass[varwidth]{standalone}
+
+\usepackage[european]{circuitikz}
+
+\input{../../config.tex}
+
+\begin{document}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[L,*-] (3,-2) node[ground] {};
+     \end{circuitikz}}
+    \hspace{3mm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[C,*-] (3,-2) node[ground] {};
+     \end{circuitikz}}
+    \hspace{3mm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[L,*-] (3,-2) node[ground] {};
+     \end{circuitikz}}
+    \hspace{3mm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (3,0) to[C,*-] (3,-2) node[ground] {};
+    \end{circuitikz}}
+
+    \vspace{3em}
+    % zweite Reihe startet hier
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[L,*-] (1,-2) node[ground] {};
+     \end{circuitikz}}
+    \hspace{3mm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[C,*-] (1,-2) node[ground] {};
+     \end{circuitikz}}
+    \hspace{3mm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[L] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[L,*-] (1,-2) node[ground] {};
+     \end{circuitikz}}
+    \hspace{3mm}
+    \scalebox{0.8}{
+    \begin{circuitikz} \draw
+        (0.5,0) to[short,o-] (1,0) to[C] (3,0) to[short,-o] (3.5,0)
+                             (1,0) to[C,*-] (1,-2) node[ground] {};
+    \end{circuitikz}}
+\end{document}

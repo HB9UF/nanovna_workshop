@@ -1,0 +1,125 @@
+\documentclass[margin=1mm]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+
+\input{../../config.tex}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title = {Widerstand},
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=both,
+            xlabel={Frequenz $f$/Hz},
+            ylabel={\uline{Blindwiderstand $X/\Omega$}},
+            xticklabels={},
+            yticklabels={},
+            ytick = {-400,-200,0,200,400},
+            height=4cm,
+            width=5.5cm,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {0};
+        \end{axis}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=none,
+            separate axis lines,
+            ylabel style = {align=center},
+            ticks=none,
+            xmajorticks=true,
+            xminorticks=false,
+            ymajorticks=true,
+            yminorticks=false,
+            scaled ticks=false,
+            xtick = {0},
+            ytick = {0},
+            axis y line*=right,
+            height=4cm,
+            width=5.5cm,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {300};
+        \end{axis}
+    \end{tikzpicture}\hfill
+    \begin{tikzpicture}
+        \begin{axis}[
+            title = {Induktivität},
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=both,
+            xlabel={Frequenz $f$/Hz},
+            xticklabels={},
+            yticklabels={},
+            ytick = {-400,-200,0,200,400},
+            height=4cm,
+            width=5.5cm,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFblue,thick] {40*x};
+        \end{axis}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=none,
+            separate axis lines,
+            ylabel style = {align=center},
+            ticks=none,
+            xmajorticks=true,
+            xminorticks=false,
+            ymajorticks=true,
+            yminorticks=false,
+            scaled ticks=false,
+            xtick = {0},
+            ytick = {0},
+            axis y line*=right,
+            height=4cm,
+            width=5.5cm,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {0};
+        \end{axis}
+    \end{tikzpicture}\hfill
+    \begin{tikzpicture}
+        \begin{axis}[
+            title = {Kapazität},
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=both,
+            xlabel={Frequenz $f$/Hz},
+            xticklabels={},
+            yticklabels={},
+            ytick = {0,200,400},
+            height=4cm,
+            width=5.5cm,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0.2:10,color=HB9UFblue,thick] {200/x};
+        \end{axis}
+        \begin{axis}[
+            xmin=0, xmax=10,
+            ymin=-100,ymax=500,
+            grid=none,
+            separate axis lines,
+            ylabel style = {align=center},
+            ylabel={\udash{Wirkwiderstand $R/\Omega$}},
+            ticks=none,
+            xmajorticks=true,
+            xminorticks=false,
+            ymajorticks=true,
+            yminorticks=false,
+            scaled ticks=false,
+            xtick = {0},
+            ytick = {0},
+            axis y line*=right,
+            height=4cm,
+            width=5.5cm,
+            major grid style={black!10}
+        ]
+        \addplot [mark=none,samples=100,domain=0:10,color=HB9UFred,dashed,thick] {0};
+        \end{axis}
+    \end{tikzpicture}
+\end{document}
