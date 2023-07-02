@@ -9,7 +9,7 @@ class ReflectionScene(Scene):
         # "Space dimension x on the horizontal axis, vertical axis s may have a number of meanings ..."
         self.show_top_coordinate_system()
         self.wait(1)
-        # "... depending on whether we model a rope or string, water or voltage on a cable."
+        # "... here, it represents voltage on a cable."
         self.show_sprites()
         self.wait(2)
         self.wave_func = self.pulse
@@ -52,7 +52,7 @@ class ReflectionScene(Scene):
         # We can also terminate with a slight mismatch and get partial reflections
         # "Note that the animations shown so far are not entirely correct. While the blue incident wave can"
         # "excurse the blue dots, the reflections are unable to do so. However, the reflections should be"
-        # "equally capable of excursing the rope, thus we really should look at the sum of the blue and the"
+        # "equally capable of excursing the voltage, thus we really should look at the sum of the blue and the"
         # "red pulses."
         self.reflection_sign = 0.5
         self.replace_termination('150 Ω')
@@ -63,17 +63,15 @@ class ReflectionScene(Scene):
         self.wait(5)
         # "We add yellow dots. Note that the dark dots are spaced half a wavelength apart, and that the light"
         # "yellow dots are also at a spacing of half a wavelength. Furthermore, dark and light dots are spaced"
-        # "by a quarter of a wavelength" FIXME
+        # "apart by a quarter of a wavelength" FIXME
         self.show_yellow_dots()
         self.wait(5)
-        # "Note how the reflected pulse is now able to excurse the yellow dots. Furthermore, the right boundary"
-        # "of the rope is not excursed at all. This is in line with the practical implementation of the setting"
-        # "where the right end is fixed (e.g. at a wall) and thus cannot move."
+        # "Note how the reflected pulse is now able to excurse the yellow dots.
         self.demonstrate_reflections()
-        # "Finally, if we excite the rope with a harmonic oscillation, the sinusiod is reflected back. Note the"
-        # "formation of a standing wave pattern, where some nodes spaced apart by half a wavelength remain zero"
-        # "at all time, while others are excursed at double the amplitude of the incident wave." These locations"
-        # "are marked by dark and light dots, respectively."
+        # "Finally, if we excite with a harmonic oscillation, the sinusiod is reflected back. Note the"
+        # "formation of a standing wave pattern, where some nodes spaced apart by half a wavelength have minimal"
+        # "excursion amplitude (0.5 V), while others are excursed at 1.5 times the amplitude of the incident wave."
+        # #These locations are marked by dark and light dots, respectively."
         self.wave_func = self.sinusoid
         self.show_pulses(n=1,t=5*self.s/self.v)
         self.wait(4)
@@ -223,7 +221,7 @@ class ReflectionScene(Scene):
         self.play(FadeIn(self.graph_incident))
 
     def show_dots(self,x_vec,ax,graph,col):
-        # Generic function of any marker dot on the rope
+        # Generic function of any marker dot on the cable
         def move_dot(d):
             # We get the x coordinate from the dot itself
             x = ax.point_to_coords( (d.get_x(), 0, 0) )[0]
