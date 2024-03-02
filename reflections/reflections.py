@@ -1,25 +1,26 @@
 from manim import *
+from manim_slides import Slide
 
-class ReflectionScene(Scene):
+class ReflectionScene(Slide):
     def construct(self):
         self.s = 7. # Length of string
         self.v = 2. # Propagation velocity
         self.reflection_sign = 1 # Set to -1 for negative reflections
         self.show_intro()
-        # "Space dimension x on the horizontal axis, vertical axis s may have a number of meanings ..."
+        # "Coordinate system with space dimension x on the horizontal axis, and various things on the vertical axis"
         self.show_top_coordinate_system()
-        self.wait(1)
-        # "... here, it represents voltage on a cable."
+        # Rope, Water, Coax "We start with a piece of 50 Ohm cable, infinite in length"
         self.show_sprites()
-        self.wait(2)
+        # "We hide the cable knowing the plots in the coordinate system still relates to it"
+        self.next_slide()
         self.wave_func = self.pulse
         # "In any case, we can illustrate pulses coming from left to right, which vanish at infinity.
         self.show_incident_plot()
         # "Some specific locations are marked with a dot and excursed as the pulse travels by."
         self.show_blue_dots()
-        self.wait(2)
+        self.next_slide()
         self.show_pulses(n=2,t=4)
-        self.wait(2)
+        self.next_slide()
 
         # FIXME: damped pulse
 
@@ -27,6 +28,7 @@ class ReflectionScene(Scene):
         self.play( FadeOut(self.pml), FadeIn(self.top_termination_dot), Write(self.top_termination_text), FadeIn(self.top_termination_box) )
         # "As expected, nothing changes since all the energy is transferred into the load (e.g. matched antenna)
         self.show_pulses(n=1,t=4)
+        self.next_slide()
 
         # "Now, we swap out the pulse for a harmonic wave with wavelength 2 m."
         # "Note that the two outside dots are spaced one wavelength apart and are excited in phase, while
@@ -35,19 +37,21 @@ class ReflectionScene(Scene):
         self.demonstrate_wavelength()
         # FIXME: damped sinusoid
 
+        self.next_slide()
         self.wave_func = self.pulse
-        self.wait(5)
         # "Since we are interested in reflections, we remove the matched load".
         self.replace_termination('∞  Ω')
         # "Note how the blue incident pulse is reflected, as illustrate by the red reflected pulse."
         self.show_reflected_plot()
         # "We observe the refleciton process in slow motion"
         self.demonstrate_reflections()
+        self.next_slide()
         # "Depending on the boundry conditions, reflections with a negative sign can occur. Here, we replace the"
         # "open termination with a short circuit. Again, we observe this in slow motion."
         self.reflection_sign = -1
         self.replace_termination('0   Ω')
         self.demonstrate_reflections()
+        self.next_slide()
 
         # We can also terminate with a slight mismatch and get partial reflections
         # "Note that the animations shown so far are not entirely correct. While the blue incident wave can"
@@ -57,15 +61,16 @@ class ReflectionScene(Scene):
         self.reflection_sign = 0.5
         self.replace_termination('150 Ω')
         self.demonstrate_reflections()
+        self.next_slide()
         # "This is what we display in the bottom coordinate system."
         self.show_bottom_coordinate_system()
         self.show_total_plot()
-        self.wait(5)
+        self.next_slide()
         # "We add yellow dots. Note that the dark dots are spaced half a wavelength apart, and that the light"
         # "yellow dots are also at a spacing of half a wavelength. Furthermore, dark and light dots are spaced"
         # "apart by a quarter of a wavelength" FIXME
         self.show_yellow_dots()
-        self.wait(5)
+        self.next_slide()
         # "Note how the reflected pulse is now able to excurse the yellow dots.
         self.demonstrate_reflections()
         # "Finally, if we excite with a harmonic oscillation, the sinusiod is reflected back. Note the"
@@ -73,23 +78,22 @@ class ReflectionScene(Scene):
         # "excursion amplitude (0.5 V), while others are excursed at 1.5 times the amplitude of the incident wave."
         # #These locations are marked by dark and light dots, respectively."
         self.wave_func = self.sinusoid
-        self.show_pulses(n=1,t=5*self.s/self.v)
-        self.wait(4)
+        self.show_pulses(n=1,t=5*self.s/self.v, envelope=True)
 
         self.reflection_sign = 1
         self.replace_termination('∞  Ω')
-        self.show_pulses(n=1,t=5*self.s/self.v)
-        self.wait(4)
+        self.show_pulses(n=1,t=5*self.s/self.v, envelope=True)
+        self.next_slide()
 
         self.reflection_sign = -1
         self.replace_termination('0  Ω')
-        self.show_pulses(n=1,t=5*self.s/self.v)
-        self.wait(4)
+        self.show_pulses(n=1,t=5*self.s/self.v, envelope=True)
+        self.next_slide()
 
         self.reflection_sign = -0.5
         self.replace_termination('17 Ω')
-        self.show_pulses(n=1,t=5*self.s/self.v)
-        self.wait(4)
+        self.show_pulses(n=1,t=5*self.s/self.v, envelope=True)
+        self.next_slide()
 
         return
 
@@ -116,8 +120,8 @@ class ReflectionScene(Scene):
     # Return a sinusoid with wavelength 2 m
     def sinusoid(self,x,reflected):
         def f(x):
-            return A0 * np.sin(2*np.pi*x/lambd)
-        lambd = 2.
+            return A0 * np.sin(2*np.pi*x/self.lambd)
+        self.lambd = 2.
         A0 = 1.
         if reflected:
             # Crop the sinusoid: Set values of locations where the wavefront has not reached yet to zero.
@@ -127,6 +131,15 @@ class ReflectionScene(Scene):
             # Crop the sinusoid: Set values of locations where the wavefront has not reached yet to zero.
             if self.t.get_value()*self.v < x: return 0.
             return -f(x-self.v*self.t.get_value())
+
+    def envelope(self,x):
+        A0 = 1.
+        vload   = A0 * (1+self.reflection_sign) # Voltage at load
+        vlambda = A0 * (1-self.reflection_sign) # Voltage lambda/4 before load
+        if self.reflection_sign > 0:
+            return  (vload - vlambda) * np.abs(np.cos(2*np.pi*(self.s-x)/self.lambd)) + vlambda
+        else:
+            return  (vlambda - vload) * np.abs(np.sin(2*np.pi*(self.s-x)/self.lambd)) + vload
 
     def show_intro(self):
         text = Text('Reflections').scale(3)
@@ -209,7 +222,7 @@ class ReflectionScene(Scene):
         file = 'coax.png'
         sprite = ImageMobject(file).scale_to_fit_width(12)
         self.play(FadeIn(sprite))
-        self.wait(4)
+        self.next_slide()
         self.play(FadeOut(sprite,shift=DOWN))
 
     def show_incident_plot(self):
@@ -246,7 +259,7 @@ class ReflectionScene(Scene):
 
     def show_yellow_dots(self):
         self.yellow_dots  = self.show_dots((2,3,4), self.bottom_ax, self.graph_total, YELLOW_E)
-        self.wait(5)
+        self.next_slide()
         self.yellow_dots += self.show_dots((2.5,3.5,4.5), self.bottom_ax, self.graph_total, YELLOW_B)
 
     def show_timer(self):
@@ -283,10 +296,31 @@ class ReflectionScene(Scene):
 
         self.play(FadeIn(self.graph_total))
 
-    def show_pulses(self, n, t):
+    def show_pulses(self, n, t, envelope=False):
         for i in range(n):
             self.t.set_value(-1.)
-            self.play(self.t.animate.set_value(t),run_time=t,rate_func=linear)
+            if not envelope:
+                self.play(self.t.animate.set_value(t),run_time=t,rate_func=linear)
+            else:
+                # Starting at t=-1, for the wave to hit the load, be reflected, and for good measure a third of those cycles
+                # This code only works if after this time, the maximum point is reached. Thus we may need extra time:
+                if self.reflection_sign > 0:
+                    extra_time = self.lambd / self.v / 4
+                else:
+                    extra_time  = 0
+                time_until_envelope = 3 * self.s / self.v + extra_time
+                assert(time_until_envelope < t)
+                self.play(self.t.animate.set_value(time_until_envelope),run_time=time_until_envelope,rate_func=linear)
+                self.bottom_coordinate_system.add( Polygon((self.graph_incident.get_all_points()[0])))
+                envelope_top = self.bottom_ax.plot( lambda x: self.envelope(x), color=WHITE)
+                envelope_bottom = self.bottom_ax.plot( lambda x: -self.envelope(x), color=WHITE)
+                envelope = self.bottom_ax.get_area(envelope_bottom, [0, self.s], bounded_graph=envelope_top, color=GREY, opacity=0.5)
+                self.play(FadeIn(envelope, envelope_top, envelope_bottom))
+                self.next_slide()
+                self.play(self.t.animate.set_value(t),run_time=t-time_until_envelope,rate_func=linear)
+                self.next_slide()
+                self.play(FadeOut(envelope, envelope_top, envelope_bottom))
+                envelope.remove()
         self.t.set_value(-1.)
 
     def demonstrate_velocity(self):
@@ -327,7 +361,7 @@ class ReflectionScene(Scene):
         arrow = DoubleArrow(start=(self.blue_dots[0].get_x(),0,0), end=(self.blue_dots[2].get_x(),0,0), buff=0.).shift( (0, -1.3, 0))
         text = Tex('$\lambda=2$ m').next_to(arrow, DOWN, aligned_edge=DOWN)
         self.play(FadeIn(arrow,text))
-        self.wait(4)
+        self.next_slide()
         self.play(FadeOut(arrow,text))
         self.play(self.t.animate.set_value(10.),run_time=10,rate_func=linear)
         self.t.set_value(-1.)
@@ -371,9 +405,10 @@ class StandingWaves(Scene):
         return ax
 
     def add_plot(self, i, n, color):
-        graph = always_redraw(
-            lambda: self.axes[i].plot( lambda x: self.wave_func(x,2/n), color=color)
-        )
+#       graph = always_redraw(
+#           lambda: self.axes[i].plot( lambda x: self.wave_func(x,2/n), color=color)
+#       )
+        graph = self.axes[i].plot( lambda x: self.wave_func(x,2/n), color=color)
         dot1 = Dot(graph.get_left(),  radius=0.05)
         dot2 = Dot(graph.get_right(), radius=0.05)
         self.add(graph, dot1, dot2)
